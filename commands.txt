@@ -1,0 +1,7 @@
+INSTALL
+npm install -g nodemon
+npm install bcrypt
+npm init (Creates Package.json) add in "start": "nodemon app.js" 
+
+TO RUN
+node app.js || npm start if added to package.json for scripts - "start": "nodemon app.js" (npm install nodemon)

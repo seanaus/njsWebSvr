@@ -8,8 +8,8 @@ let auth = new Auth();
 
 const adminSignIn = async () => {
   const adminUser = new User("", "Admin", "User", "admin01@googlemail.com", "admin01@googlemail.com", "")
-  auth = await signInUser(adminUser)
-  console.log(`ADMIN AUTH: ${JSON.stringify(auth)}`)
+  auth = await signInUser({...adminUser, option:"firebase"})
+  // console.log(`ADMIN AUTH: ${JSON.stringify(auth)}`)
 }
 const displayName = (value , fullname)=> {
   if(value !== undefined && value !== null) {
@@ -33,13 +33,8 @@ const createUser = async (data) => {
   }
 };
 const signInUserWithGoogleAuth = async () => {
-  let cred = {};
-  try {
-    cred = await signInWithPopup(this.auth, new GoogleAuthProvider());
-    const usr = await loadUser(cred.user.uid);
-  } catch (error) {
-    return false
-  }
+  const provider = new firebase.auth.GoogleAuthProvider();
+    return await firebase.auth().signInWithRedirect();
 };
 const createUserWithEmailAndPassword = async (email, password) => {
   try {
@@ -59,15 +54,20 @@ const signInUserWithEmailAndPassword = async (email, password) => {
 }
 const signInUser = async (data) => {
   let cred = {};
+  const option = data.option
   try {
     const user = await loadUser(undefined, data.email); 
     if(user) {
       const hash = user.salt + user.password;
       const match = await compare(data.password, hash);
-      // console.log(`HASH: ${hash}`)
-      // console.log(`MATCH: ${match}`)
       if (match) {
-        cred = await signInUserWithEmailAndPassword(data.email, hash);
+        if(option === "firebase") {
+          cred = await signInUserWithEmailAndPassword(data.email, hash);
+        }
+        if(option === "google") {
+          cred = await signInUserWithGoogleAuth();
+        }
+        console.log(JSON.stringify(cred))
         return new Auth(user.id, displayName(cred.user.displayName,`${user.forename} ${user.surname}`), user.email, false, "");
       }
     } else {
@@ -88,7 +88,5 @@ module.exports = {
   adminSignIn,
   authUser,
   createUser,
-  signInUser,
-  createUserWithEmailAndPassword,
-  signInUserWithEmailAndPassword
+  signInUser
 }

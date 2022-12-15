@@ -26,7 +26,8 @@ const signIn = async (req, res, next) => {
         req.body.password,
         "",
     )
-    const cred = await signInUser(user);
+    const option = req.params.option
+    const cred = await signInUser({...user, option});
     res.json(cred);
     next();
 };

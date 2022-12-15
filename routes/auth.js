@@ -1,9 +1,13 @@
 "use strict";
 const express = require("express");
 const router = express.Router();
-const { getAuthenticated } = require("../controllers/auth");
+const { register, signIn } = require("../controllers/auth");
 
-router.get("/auth", getAuthenticated);
+router.post("/register", register);
+router.post("/signIn", signIn);
+// router.get("/product/:id", getProduct);
+
+
 
 module.exports = {
     routes: router,

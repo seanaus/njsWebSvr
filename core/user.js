@@ -1,12 +1,13 @@
 "use strict";
 const firebase = require("../db");
+// const bcrypt = require("bcrypt");
 const User = require("../models/user");
 const firestore = firebase.firestore();
 
-const loadUser = async (id) => { 
+const loadUser = async (id = undefined, email = undefined) => { 
     const users = await loadUsers();
     return users.find(usr => {
-        return usr.id === id;
+        return id === undefined ? usr.email === email : usr.id === id;
     });
 }
 const loadUsers = async () => {
@@ -38,13 +39,23 @@ const loadUsers = async () => {
 }
 const saveUser = async (user) => {
     try {
-        return await firestore.collection("users").doc().set(user);
+        // console.log(user);
+        return await firestore.collection("users").doc(user.id).set(userMeta(user));
     } catch (error) {
         console.log(error.message);
         return "-1"
     }
 }
-
+const userMeta = (user) => {
+    return {
+        id: user.id,
+        forename: user.forename,
+        surname: user.surname,
+        email: user.email,
+        password: user.password,
+        salt: user.salt
+    };
+}
 module.exports = {
     loadUser,
     loadUsers,

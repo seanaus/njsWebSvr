@@ -1,24 +1,17 @@
 "use strict";
-const {initCart, loadCart, saveCart, updateCart} = require("../core/cart");
+const { initCart, loadCart } = require("../core/cart");
 
-const getCart= async (req, res, next) => {
-    // let cartId =  0;
-    // let userId =  0;
+const getCart = async (req, res, next) => {
+    let id = req.query.id;
+    const uId = req.query.uId;
 
-    const cartId = req.query.id;
-    const userId = req.query.uId;
-    // console.log(userId);
-    // console.log("?|?|?|?|");
-    // console.log(cartId);
-    // console.log(userId);
-    if(cartId !== '') {
-        res.json(await loadCart(cartId));
-    } else {
-        res.json(await initCart(userId));
+    if (id === '') {
+        id = await initCart(uId);
     }
+    res.json(await loadCart(id));
+
     next();
 };
-
 module.exports = {
     getCart
 };

@@ -2,6 +2,32 @@ INSTALL
 npm install -g nodemon
 npm install bcrypt
 npm init (Creates Package.json) add in "start": "nodemon app.js" 
-
+npm install method-override (ensure post etc work)
 TO RUN
 node app.js || npm start if added to package.json for scripts - "start": "nodemon app.js" (npm install nodemon)
+
+
+***************************************************************************************************************************************
+*                                                                                                                                     *
+*                                                                                                                                     *
+***************************************************************************************************************************************
+admin user = admin01@googlemail.com
+admin password = Aus25031549
+bcrypt - site to encrypt passwords (for testing purposes)
+https://www.browserling.com/tools/bcrypt
+
+POST END POINTS:
+
+http://localhost:8080/register
+{
+    "forename" : "Sean",
+    "surname" : "Austin",
+    "email" : "webaddress2@googlemail.com",
+    "password" : "Aus25031549"
+}
+http://localhost:8080/signIn
+{
+    "email" : "webaddress01@googlemail.com",
+    "password" : "Aus25031549"
+}
+

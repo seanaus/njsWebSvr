@@ -1,13 +1,23 @@
+const Delivery = require("../models/delivery");
+const Payment = require("../models/payment");
 class Cart {
     constructor(
-        userId,
-        created
+        id = "",
+        userId = "",
+        items = [],
+        delivery = new Delivery(),
+        payment = new Payment(),
+        totalCost = "0",
+        totalCount = "0",
+        created = ""
     ) {
-        this.id = -1;
+        this.id = id;
         this.userId = userId;
-        this.items = [];
-        this.totalCost = 0;
-        this.totalCount = 0;
+        this.items = items;
+        this.delivery = delivery;
+        this.payment = payment;
+        this.totalCost = totalCost.toString();
+        this.totalCount = totalCount.toString();
         this.created = created;
     }
 

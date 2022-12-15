@@ -12,7 +12,7 @@ class Product {
         this.description = description;
         this.image = image;
         this.gallery = gallery;
-        this.unitCost = parseFloat(unitCost);
+        this.unitCost = unitCost.toString();
     }
 
 }

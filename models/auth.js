@@ -1,10 +1,10 @@
 class Auth {
     constructor(
-        uId,
-        displayName,
-        email,
-        emailVerified,
-        token
+        uId = "",
+        displayName = "",
+        email = "",
+        emailVerified = "",
+        token = ""
     ) {
         this.uId = uId;
         this.displayName = displayName;

@@ -11,9 +11,7 @@ const register = async (req, res, next) => {
         req.body.password,
         ""
     )
-
     const cred = await createUser(user);
-
     res.json(cred);
     next();
 };
@@ -24,18 +22,23 @@ const signIn = async (req, res, next) => {
         req.body.surname,
         req.body.email,
         req.body.password,
-        "",
+        ""
     )
     const option = req.params.option
-    const cred = await signInUser({...user, option});
-    res.json(cred);
+
+    if (option === "firebase") {
+        const cred = await signInUser({ ...user, option });
+        res.json(cred);
+    }
+    if (option === "google") {
+        res.render('gglAuth')
+        // above call renders google auth pop up the results of which passed
+        // to signInUser fumctionality, the results of which passed via user
+        // const cred = await signInUser({ ...user, option });
+        // res.json(cred);
+    }
     next();
 };
-// const getAuthenticated = (req, res, next) => {
-//     const auth = authUser();
-//     res.json(auth);
-//     next();
-// };
 
 module.exports = {
     register,

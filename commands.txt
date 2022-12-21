@@ -1,8 +1,12 @@
 INSTALL
+npm install express
+npm install ejs 
+npm install dotenv
 npm install -g nodemon
 npm install bcrypt
 npm init (Creates Package.json) add in "start": "nodemon app.js" 
 npm install method-override (ensure post etc work)
+
 TO RUN
 node app.js || npm start if added to package.json for scripts - "start": "nodemon app.js" (npm install nodemon)
 
@@ -25,7 +29,7 @@ http://localhost:8080/register
     "email" : "webaddress2@googlemail.com",
     "password" : "Aus25031549"
 }
-http://localhost:8080/signIn
+http://localhost:8080/signIn/google
 {
     "email" : "webaddress01@googlemail.com",
     "password" : "Aus25031549"

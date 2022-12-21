@@ -1,21 +1,23 @@
 "use strict";
 const firebase = require("../db");
-const Auth = require("../models/auth");
 const { genSalt, hash, compare } = require("../core/encrypt");
 const { loadUser, saveUser } = require("../core/user");
+const Auth = require("../models/auth");
 const User = require("../models/user");
 let auth = new Auth();
 
 const adminSignIn = async () => {
-  const adminUser = new User("", "Admin", "User", "admin01@googlemail.com", "admin01@googlemail.com", "")
-  auth = await signInUser({...adminUser, option:"firebase"})
-  // console.log(`ADMIN AUTH: ${JSON.stringify(auth)}`)
+  if (auth.uId === "") {
+    const adminUser = new User("", "Admin", "User", "admin01@googlemail.com", "admin01@googlemail.com", "")
+    auth = await signInUser({ ...adminUser, option: "firebase" })
+  }
+  console.log(`adminSignIn - ${JSON.stringify(auth)}`)
 }
-const displayName = (value , fullname)=> {
-  if(value !== undefined && value !== null) {
+const displayName = (value, fullname) => {
+  if (value !== undefined && value !== null) {
     return value
   } else {
-    return fullname      
+    return fullname
   }
 }
 const createUser = async (data) => {
@@ -29,19 +31,15 @@ const createUser = async (data) => {
     user.id = cred.user.uid
     user.password = user.password.replace(user.salt, "");
     const response = await saveUser(user);
-    return new Auth(user.id, `${user.forename} ${user.surname}`, user.email,false,"");
+    return new Auth(user.id, `${user.forename} ${user.surname}`, user.email, false, "");
   }
-};
-const signInUserWithGoogleAuth = async () => {
-  const provider = new firebase.auth.GoogleAuthProvider();
-    return await firebase.auth().signInWithRedirect();
 };
 const createUserWithEmailAndPassword = async (email, password) => {
   try {
     return await firebase.auth().createUserWithEmailAndPassword(email, password);
   } catch (err) {
     console.log(err);
-    return  { uid: "-1", displayName: null }
+    return { uid: "-1", displayName: null }
   }
 }
 const signInUserWithEmailAndPassword = async (email, password) => {
@@ -54,21 +52,16 @@ const signInUserWithEmailAndPassword = async (email, password) => {
 }
 const signInUser = async (data) => {
   let cred = {};
-  const option = data.option
   try {
-    const user = await loadUser(undefined, data.email); 
-    if(user) {
+    const user = await loadUser(undefined, data.email);
+    if (user) {
       const hash = user.salt + user.password;
       const match = await compare(data.password, hash);
       if (match) {
-        if(option === "firebase") {
+        if (data.option === "firebase") {
           cred = await signInUserWithEmailAndPassword(data.email, hash);
         }
-        if(option === "google") {
-          cred = await signInUserWithGoogleAuth();
-        }
-        console.log(JSON.stringify(cred))
-        return new Auth(user.id, displayName(cred.user.displayName,`${user.forename} ${user.surname}`), user.email, false, "");
+        return new Auth(user.id, displayName(cred.user.displayName, `${user.forename} ${user.surname}`), user.email, false, "");
       }
     } else {
       return new Auth("-1", "", data.email, "false", "")

@@ -2,6 +2,7 @@
 const PORT = 8080;
 const express = require("express");
 const app = express();
+// const env = require("dotenv").config();
 // const router = express.Router();
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");

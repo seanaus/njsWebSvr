@@ -1,16 +1,17 @@
 "use strict";
-const PORT = "8080";
-const HOST = "localhost";
-const HOST_URL = `http://${HOST}:${PORT}`;
+const PORT = process.env.PORT;
+const HOST = process.env.HOST;
+const HOST_URL = `http://${process.env.HOST}:${process.env.PORT}`;
 
-const API_KEY = "AIzaSyA9jD9XeiH6vR25XFVAZzoxpnmEgaaTKGk";
-const AUTH_DOMAIN = "njswebsvr.firebaseapp.com";
-const DATABASE_URL = "https://njswebsvr.firebase.com";
-const PROJECT_ID = "njswebsvr";
-const STORAGE_BUCKET = "njswebsvr.appspot.com";
-const MESSAGING_SENDER_ID = "725238672717";
-const APP_ID = "1:725238672717:web:5ac82f377a8aa8a1a29b04";
-const MEASSUREMENT_ID = "G-L6R2VW0RSD";
+const API_KEY = process.env.API_KEY;
+const AUTH_DOMAIN = process.env.AUTH_DOMAIN;
+const DATABASE_URL = process.env.DATABASE_URL;
+const PROJECT_ID = process.env.PROJECT_ID;
+const STORAGE_BUCKET = process.env.STORAGE_BUCKET;
+const MESSAGING_SENDER_ID = process.env.MESSAGING_SENDER_ID;
+const APP_ID = process.env.APP_ID;
+const MEASSUREMENT_ID = process.env.MEASSUREMENT_ID;
+const PRODUCTION = process.env.production;
 
 module.exports = {
   port: PORT,
@@ -26,5 +27,5 @@ module.exports = {
     appId: APP_ID,
     measurementId: MEASSUREMENT_ID
   },
-  production: false
+  production: PRODUCTION
 };

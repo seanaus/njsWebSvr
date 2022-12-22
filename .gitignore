@@ -1,1 +1,4 @@
+# Folders to Ignore
 node_modules
+# Files to Ignore
+*.env

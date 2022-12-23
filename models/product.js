@@ -4,7 +4,7 @@ class Product {
         name,
         description,
         image,
-        gallery=[],
+        gallery = [],
         unitCost,
     ) {
         this.id = id;

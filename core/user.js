@@ -1,6 +1,5 @@
 "use strict";
 const firebase = require("../db");
-// const bcrypt = require("bcrypt");
 const User = require("../models/user");
 const firestore = firebase.firestore();
 
@@ -27,7 +26,8 @@ const loadUsers = async () => {
                     doc.data().surname,
                     doc.data().email,
                     doc.data().password,
-                    doc.data().salt
+                    doc.data().salt,
+                    doc.data().role
                 );
                 userArray = [...userArray, user]
             });
@@ -53,7 +53,8 @@ const userMeta = (user) => {
         surname: user.surname,
         email: user.email,
         password: user.password,
-        salt: user.salt
+        salt: user.salt,
+        role: user.role
     };
 }
 module.exports = {

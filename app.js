@@ -24,5 +24,5 @@ app.use("/", cartRoutes.routes);
 
 app.listen(config.port, () => {
   console.log(`App listening on ${config.port}.......`);
-  // config.log();
+
 });

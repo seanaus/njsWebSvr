@@ -1,7 +1,7 @@
 "use strict";
 require("dotenv").config();
-const PORT = process.env.PORT;
-const HOST = process.env.HOST;
+const PORT = process.env.PORT || 8080;
+const HOST = process.env.HOST || "localhost";
 const URL = `http://${process.env.HOST}:${process.env.PORT}`;
 const PRODUCTION = process.env.PRODUCTION;
 const FIREBASE_CONFIG = {

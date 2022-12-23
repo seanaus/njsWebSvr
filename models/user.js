@@ -6,6 +6,7 @@ class User {
         email,
         password,
         salt,
+        role
     ) {
         this.id = id;
         this.forename = forename;
@@ -13,6 +14,7 @@ class User {
         this.email = email;
         this.password = password;
         this.salt = salt;
+        this.role = role;
     }
 
 }

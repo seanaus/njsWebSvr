@@ -6,13 +6,13 @@ const Delivery = require("../models/delivery");
 const Payment = require("../models/payment");
 const firestore = firebase.firestore();
 
-const initCart = async (userId) => {
+const initCart = async (appId) => {
     try {
         // const created = new Date().toLocaleString('en-GB', { timeZone: 'UTC' })
         const id = await addDoc();
         const cart = new Cart(
             id,
-            userId,
+            appId,
             undefined,
             undefined,
             undefined,
@@ -62,7 +62,7 @@ const loadCart = async (id) => {
 const cartMeta = (cart) => {
     return {
         id: cart.id,
-        userId: cart.userId,
+        appId: cart.appId,
         items: cart.items.map((obj) => {
             return Object.assign({}, obj);
         }),

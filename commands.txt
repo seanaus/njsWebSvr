@@ -20,8 +20,15 @@ admin password = Aus25031549
 bcrypt - site to encrypt passwords (for testing purposes)
 https://www.browserling.com/tools/bcrypt
 
-POST END POINTS:
+GET END POINTS:
+** Select Users **
+http://localhost:8080/users
+** Select User **
+http://localhost:8080/user/gBsjs6d8SnOJScqU58d5Py5DXwC2
 
+
+POST END POINTS:
+** Register new User **
 http://localhost:8080/register
 {
     "forename" : "Sean",
@@ -29,7 +36,8 @@ http://localhost:8080/register
     "email" : "webaddress2@googlemail.com",
     "password" : "Aus25031549"
 }
-http://localhost:8080/signIn/google
+** Sign In With existing User **
+http://localhost:8080/signIn/option (firebase || google, currenty only the 'firebase' option works, http://localhost:8080/signIn/firebase)
 {
     "email" : "webaddress01@googlemail.com",
     "password" : "Aus25031549"

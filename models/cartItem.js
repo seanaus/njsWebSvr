@@ -9,9 +9,9 @@ class CartItem extends Product {
             product.image,
             product.unitCost
         );
-        this.quantity = "1";
-        this.cost = product.unitCost;
-        this.formattedCost = "";
+        this.quantity = 1;
+        this.cost = Number(product.unitCost);
+        this.shippingOption = "0";
     }
 
 }

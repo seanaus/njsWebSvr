@@ -9,8 +9,8 @@ class Delivery {
         county = "",
         postcode = "",
         email = "",
-        telephone = ""
-
+        telephone = "",
+        shippingOption = "0"
     ) {
         this.forename = forename;
         this.surname = surname;
@@ -22,6 +22,7 @@ class Delivery {
         this.postcode = postcode;
         this.email = email;
         this.telephone = telephone;
+        this.shippingOption = shippingOption;
     }
 
 }

@@ -6,28 +6,31 @@ const Delivery = require("../models/delivery");
 const Payment = require("../models/payment");
 const firestore = firebase.firestore();
 
-const initCart = async (appId) => {
-    try {
-        // const created = new Date().toLocaleString('en-GB', { timeZone: 'UTC' })
-        const id = await addDoc();
-        const cart = new Cart(
-            id,
-            appId,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            new Date().toLocaleString('en-GB', { timeZone: 'UTC' })
-        );
-        if (await saveCart(cart)) {
-            return id 
-        } else {
-            return '-1'
+const initCart = async (uId, appId) => {
+    if (uId !== undefined && appId !== undefined) {
+        try {
+            const id = await addDoc();
+            const cart = new Cart(
+                id,
+                appId,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                new Date().toLocaleString('en-GB', { timeZone: 'UTC' })
+            );
+            if (await saveCart(cart)) {
+                return id
+            } else {
+                return undefined
+            }
+        } catch (error) {
+            console.log(error.message);
+            return undefined
         }
-    } catch (error) {
-        console.log(error.message);
-        return '-1'
+    } else {
+        return undefined
     }
 }
 const saveCart = async (cart) => {
@@ -40,23 +43,32 @@ const saveCart = async (cart) => {
         return false
     }
 }
-const loadCart = async (id) => {
-    try {
-        const doc = await firestore.collection('cart').doc(id).get()
-        const data = new Cart(
-            doc.data().id,
-            doc.data().userId,
-            doc.data().items,
-            doc.data().delivery,
-            doc.data().payment,
-            doc.data().totalCost,
-            doc.data().totalCount,
-            doc.data().created
-        )
-        return data
-    } catch (error) {
-        console.log(error.message);
-        return {}
+const loadCart = async (id = undefined, uId = undefined, appId = undefined) => {
+
+    if (id === undefined) {
+        id = await initCart(uId, appId);
+    }
+
+    if (id !== undefined) {
+        try {
+            const doc = await firestore.collection('cart').doc(id).get()
+            const data = new Cart(
+                doc.data().id,
+                doc.data().appId,
+                doc.data().items,
+                doc.data().delivery,
+                doc.data().payment,
+                doc.data().totalCost,
+                doc.data().totalCount,
+                doc.data().created
+            )
+            return data
+        } catch (error) {
+            console.log(error.message);
+            return {}
+        }
+    } else {
+        return {}     
     }
 }
 const cartMeta = (cart) => {
@@ -100,8 +112,10 @@ const addDoc = async () => {
         return '-1'
     }
 }
+const routeParam = async (id = undefined, uId = undefined, appId = undefined) => { 
+
+}
 module.exports = {
-    initCart,
     loadCart,
     saveCart
 }

@@ -1,8 +1,10 @@
 const Delivery = require("../models/delivery");
 const Payment = require("../models/payment");
+// const { linkUserToCart } = require("../config");
 class Cart {
     constructor(
         id = "",
+        uId = "",
         appId = "",
         items = [],
         delivery = new Delivery(),
@@ -12,6 +14,10 @@ class Cart {
         created = ""
     ) {
         this.id = id;
+        this.uId = uId;
+        // if( uId !== undefined && linkUserToCart ) {
+        //     this.uId = uId; 
+        // }
         this.appId = appId;
         this.items = items;
         this.delivery = delivery;

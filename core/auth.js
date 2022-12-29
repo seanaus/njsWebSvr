@@ -11,7 +11,7 @@ const adminSignIn = async () => {
     const adminUser = new User("", "Admin", "User", "admin01@googlemail.com", "admin01@googlemail.com", "")
     auth = await signInUser({ ...adminUser, option: "firebase" })
   }
-  console.log(`adminSignIn - ${JSON.stringify(auth)}`)
+  // console.log(`adminSignIn - ${JSON.stringify(auth)}`)
 }
 const displayName = (value, fullname) => {
   if (value !== undefined && value !== null) {

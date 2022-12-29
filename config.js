@@ -14,6 +14,7 @@ const FIREBASE_CONFIG = {
   appId: process.env.APP_ID,
   measurementId: process.env.MEASSUREMENT_ID
 };
+const LINK_USER_TO_CART = process.env.LINK_USER_TO_CART
 const log = ()=> {
   console.log(`port: ${PORT}`);
   console.log(`host: ${HOST}`);
@@ -27,6 +28,7 @@ const log = ()=> {
   console.log(`appId: ${FIREBASE_CONFIG.appId}`);
   console.log(`measurementId: ${FIREBASE_CONFIG.measurementId}`);
   console.log(`production: ${PRODUCTION}`);
+  console.log(`linkUserToCart: ${LINK_USER_TO_CART}`);
 }
 module.exports = {
   port: PORT,
@@ -34,59 +36,7 @@ module.exports = {
   url: URL,
   firebaseConfig: FIREBASE_CONFIG,
   production: PRODUCTION,
+  linkUserToCart: LINK_USER_TO_CART,
   log
 }
 
-// module.exports = {
-//   port: process.env.PORT,
-//   host: process.env.HOST,
-//   url: `http://${process.env.HOST}:${process.env.PORT}`,
-//   firebaseConfig: {
-//     apiKey: process.env.API_KEY,
-//     authDomain: process.env.AUTH_DOMAIN,
-//     databaseURL: process.env.DATABASE_URL,
-//     projectId: process.env.PROJECT_ID,
-//     storageBucket: process.env.STORAGE_BUCKET,
-//     messagingSenderId: process.env.MESSAGING_SENDER_ID,
-//     appId: process.env.APP_ID,
-//     measurementId: process.env.MEASSUREMENT_ID
-//   },
-//   production: process.env.PRODUCTION,
-// };
-
-
-
-/* "use strict";
-const env = require("dotenv").config();
-
-const PORT = env.PORT;
-const HOST = env.HOST;
-const HOST_URL = env.HOST_URL;
-
-const API_KEY = env.API_KEY;
-const AUTH_DOMAIN = env.AUTH_DOMAIN;
-const DATABASE_URL = env.DATABASE_URL;
-const PROJECT_ID = env.PROJECT_ID;
-const STORAGE_BUCKET = env.STORAGE_BUCKET;
-const MESSAGING_SENDER_ID = env.MESSAGING_SENDER_ID;
-const APP_ID = env.APP_ID;
-const MEASSUREMENT_ID = env.MEASSUREMENT_ID;
-const PRODUCTION = env.production;
-
-module.exports = {
-  port: PORT,
-  host: HOST,
-  url: HOST_URL,
-  firebaseConfig: {
-    apiKey: API_KEY,
-    authDomain: AUTH_DOMAIN,
-    databaseURL: DATABASE_URL,
-    projectId: PROJECT_ID,
-    storageBucket: STORAGE_BUCKET,
-    messagingSenderId: MESSAGING_SENDER_ID,
-    appId: APP_ID,
-    measurementId: MEASSUREMENT_ID
-  },
-  production: PRODUCTION
-};
- */

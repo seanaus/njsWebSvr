@@ -10,38 +10,28 @@ const firestore = firebase.firestore();
 
 const request = async(qryParams) => {
 
-    let id = qryParams.id !== "" ? qryParams.id: undefined;
+    let id = qryParams.id !== "" ? qryParams.id : undefined;
     const uId = (qryParams.uId !== "" && linkUserToCart) ? qryParams.uId : undefined
     const appId = qryParams.appId !== "" ? qryParams.appId : undefined
 
     let status = requestStatus.BAD_REQUEST
-    console.log(`FFS01!!!!`);
-    if(id !== undefined ) {
+    if (id !== undefined) {
         status = requestStatus.GET_REQUEST
-    }  else {
-        console.log(`FFS02!!!!`);
-        status = requestStatus.NEW_REQUEST; 
-        id = await initCart(qryParams.uId, qryParams.appId);      
+    } else {
+        status = requestStatus.NEW_REQUEST;
+        id = await initCart(qryParams.uId, qryParams.appId);
     }
-    // if(id === undefined && appId !== undefined) {
-    //     status = requestStatus.NEW_REQUEST; 
-    //     id = await initCart(qryParams.uId, qryParams.appId);
-    // }
-    console.log(`FFS04!!!!`);
-
-    return { 
+    return {
         id: id,
-        uId: uId , 
+        uId: uId,
         appId: appId,
-        status: status 
-    }
+        status: status
+    };
 }
 const initCart = async (uId, appId) => {
-    console.log(`initCart`);
     if (appId !== undefined) {
         try {
             const id = await addDoc();
-            console.log(`initCart02`);
             const cart = new Cart(
                 id,
                 uId,
@@ -78,7 +68,9 @@ const saveCart = async (cart) => {
     }
 }
 const loadCart = async (qryParams) => {
-    const params = request(qryParams);
+
+    const params = await request(qryParams);
+
     try {
         const doc = await firestore.collection('cart').doc(params.id).get()
         const data = new Cart(
@@ -128,8 +120,8 @@ const cartMeta = (cart) => {
         totalCost: cart.totalCost === undefined ? 0 : cart.totalCost,
         created: cart.created
     };
-    if(linkUserToCart) {
-        Object.assign(data, {"userId": cart.uId})
+    if (linkUserToCart) {
+        Object.assign(data, { "userId": cart.uId })
     }
     return data
 }

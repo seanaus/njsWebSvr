@@ -14,10 +14,9 @@ class Cart {
         created = ""
     ) {
         this.id = id;
-        this.uId = uId;
-        // if( uId !== undefined && linkUserToCart ) {
-        //     this.uId = uId; 
-        // }
+        if(uId !== "") {
+            this.uId = uId; 
+        }
         this.appId = appId;
         this.items = items;
         this.delivery = delivery;

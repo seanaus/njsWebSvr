@@ -59,7 +59,6 @@ const initCart = async (uId, appId) => {
 const saveCart = async (cart) => {
     const doc = await firestore.collection('cart').doc(cart.id);
     try {
-        console.log(`saveCart01`);
         await doc.set(cartMeta(cart), { merge: true });
         return true
     } catch (error) {
@@ -84,6 +83,7 @@ const loadCart = async (qryParams) => {
             doc.data().totalCount,
             doc.data().created
         )
+        console.log(`LOADCART: ${JSON.stringify(data)}`);
         return data
     } catch (error) {
         console.log(error.message);
@@ -121,7 +121,10 @@ const cartMeta = (cart) => {
         created: cart.created
     };
     if (linkUserToCart) {
+        console.log("linkUserToCart")
+        console.log(`${cart.uId}`)
         Object.assign(data, { "userId": cart.uId })
+        console.log(`CART: ${JSON.stringify(data)}`);
     }
     return data
 }

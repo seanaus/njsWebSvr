@@ -1,0 +1,11 @@
+PORT = 8080
+HOST = localhost
+API_KEY = AIzaSyA9jD9XeiH6vR25XFVAZzoxpnmEgaaTKGk
+AUTH_DOMAIN = njswebsvr.firebaseapp.com
+DATABASE_URL = https://njswebsvr.firebase.com
+PROJECT_ID = njswebsvr
+STORAGE_BUCKET = njswebsvr.appspot.com
+MESSAGING_SENDER_ID = 725238672717
+APP_ID = 1:725238672717:web:5ac82f377a8aa8a1a29b04
+MEASSUREMENT_ID = G-L6R2VW0RSD
+PRODUCTION = false

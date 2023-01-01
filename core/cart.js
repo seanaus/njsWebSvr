@@ -8,7 +8,7 @@ const { requestStatus } = require('../enums/cart');
 const { linkUserToCart } = require("../config");
 const firestore = firebase.firestore();
 
-const request = async(qryParams) => {
+const getRequest = (qryParams) => {
 
     let id = qryParams.id !== "" ? qryParams.id : undefined;
     const uId = (qryParams.uId !== "" && linkUserToCart) ? qryParams.uId : undefined
@@ -19,7 +19,6 @@ const request = async(qryParams) => {
         status = requestStatus.GET_REQUEST
     } else {
         status = requestStatus.NEW_REQUEST;
-        id = await initCart(qryParams.uId, qryParams.appId);
     }
     return {
         id: id,
@@ -28,7 +27,7 @@ const request = async(qryParams) => {
         status: status
     };
 }
-const initCart = async (uId, appId) => {
+const newCart = async (uId, appId) => {
     if (appId !== undefined) {
         try {
             const id = await addDoc();
@@ -68,7 +67,11 @@ const saveCart = async (cart) => {
 }
 const loadCart = async (qryParams) => {
 
-    const params = await request(qryParams);
+    let request = getRequest(qryParams);
+
+    if(request.status === requestStatus.NEW_REQUEST) {
+        request.id = await newCart(qryParams.uId, qryParams.appId);
+    }
 
     try {
         const doc = await firestore.collection('cart').doc(params.id).get()
@@ -83,11 +86,11 @@ const loadCart = async (qryParams) => {
             doc.data().totalCount,
             doc.data().created
         )
-        console.log(`LOADCART: ${JSON.stringify(data)}`);
+        // console.log(`LOADCART: ${JSON.stringify(data)}`);
         return data
     } catch (error) {
         console.log(error.message);
-        return {}
+        return request
     }
 }
 const cartMeta = (cart) => {
@@ -120,12 +123,11 @@ const cartMeta = (cart) => {
         totalCost: cart.totalCost === undefined ? 0 : cart.totalCost,
         created: cart.created
     };
+
     if (linkUserToCart) {
-        console.log("linkUserToCart")
-        console.log(`${cart.uId}`)
         Object.assign(data, { "userId": cart.uId })
-        console.log(`CART: ${JSON.stringify(data)}`);
     }
+    
     return data
 }
 const addDoc = async () => {

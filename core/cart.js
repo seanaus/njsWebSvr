@@ -9,16 +9,29 @@ const { requestStatus } = require('../enums/cart');
 const { linkUserToCart } = require("../config");
 const firestore = firebase.firestore();
 
+const getCart = async (qryParams) => {
+
+    let request = getRequest(qryParams);
+
+    if(request.status === requestStatus.NEW_REQUEST) {
+        request.id = await newCart(qryParams.uId, qryParams.appId);
+        request.status = requestStatus.GET_REQUEST
+    }
+
+    return await loadCart(request.id);
+}
 const getRequest = (qryParams) => {
 
     let id = qryParams.id !== "" ? qryParams.id : undefined;
-    const uId = (qryParams.uId !== "" && linkUserToCart) ? qryParams.uId : undefined
+    // const uId = (qryParams.uId !== "" && linkUserToCart) ? qryParams.uId : undefined
+    const uId = (qryParams.uId !== "") ? qryParams.uId : undefined
     const appId = qryParams.appId !== "" ? qryParams.appId : undefined
 
     let status = requestStatus.BAD_REQUEST
     if (id !== undefined) {
         status = requestStatus.GET_REQUEST
-    } else {
+    } 
+    if (id === undefined && uId !== undefined) {
         status = requestStatus.NEW_REQUEST;
     }
     return {
@@ -66,16 +79,10 @@ const saveCart = async (cart) => {
         return false
     }
 }
-const loadCart = async (qryParams) => {
 
-    let request = getRequest(qryParams);
-
-    if(request.status === requestStatus.NEW_REQUEST) {
-        request.id = await newCart(qryParams.uId, qryParams.appId);
-    }
-
+const loadCart = async(id) => {
     try {
-        const doc = await firestore.collection('cart').doc(request.id).get()
+        const doc = await firestore.collection('cart').doc(id).get()
         const data = new Cart(
             doc.data().id,
             doc.data().userId,
@@ -87,11 +94,10 @@ const loadCart = async (qryParams) => {
             doc.data().totalCount,
             doc.data().created
         )
-        // console.log(`LOADCART: ${JSON.stringify(data)}`);
         return data
     } catch (error) {
         console.log(error.message);
-        return request
+        return {}
     }
 }
 const cartMeta = (cart) => {
@@ -124,9 +130,10 @@ const cartMeta = (cart) => {
         totalCost: cart.totalCost === undefined ? 0 : cart.totalCost,
         created: cart.created
     };
-
+// console.log(linkUserToCart);
+// console.log(cart.uId);
     if (linkUserToCart) {
-        Object.assign(data, { "userId": cart.uId })
+        Object.assign(data, { "userId": cart.userId })
     }
 
     return data
@@ -148,31 +155,8 @@ const findItem = async(items, product) => {
     });
     return idx
 }
-const addItem = async(cartId, productId) => {
-    const qryParams = `{
-        id: ${cartId}, 
-        uId: '', 
-        appId: ""
-    }`
-    cart = await loadCart(qryParams);
-    const item = await loadProduct(productId)
-    const idx = await findItem(cart.items, item);
 
-    if(idx < 0) {
-        add cartItem
-        cart.items = [...cart.items, { ...item, cost: item.unitCost, quantity: 1 }];
-        await this.updateCart();
-
-    } else {
-
-    }
-
-
-}
-const deleteItem = async (cartId, productId)=> {
-
-}
 module.exports = {
-    loadCart,
+    getCart,
     saveCart
 }

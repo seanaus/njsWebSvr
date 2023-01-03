@@ -1,12 +1,12 @@
 "use strict";
-const { loadCart } = require("../core/cart");
+const { getCart } = require("../core/cart");
 
-const getCart = async (req, res, next) => {
+const shoppingCart = async (req, res, next) => {
 
-    res.json(await loadCart(req.query));
+    res.json(await getCart(req.query));
 
     next();
 };
 module.exports = {
-    getCart
+    shoppingCart
 };

@@ -42,13 +42,13 @@ const getRequest = (qryParams) => {
     };
 }
 const newCart = async (uId, appId) => {
-    if (appId !== undefined) {
+    const parentId = linkUserToCart? uId : appId;
+    if (parentId !== undefined) {
         try {
             const id = await addDoc();
             const cart = new Cart(
                 id,
-                uId,
-                appId,
+                linkUserToCart? uId : appId,
                 undefined,
                 undefined,
                 undefined,
@@ -83,18 +83,29 @@ const saveCart = async (cart) => {
 const loadCart = async(id) => {
     try {
         const doc = await firestore.collection('cart').doc(id).get()
-        const data = new Cart(
-            doc.data().id,
-            doc.data().userId,
-            doc.data().appId,
-            doc.data().items,
-            doc.data().delivery,
-            doc.data().payment,
-            doc.data().totalCost,
-            doc.data().totalCount,
-            doc.data().created
-        )
-        return data
+        if(linkUserToCart) {
+            return new Cart(
+                doc.data().id,
+                doc.data().userId,
+                doc.data().items,
+                doc.data().delivery,
+                doc.data().payment,
+                doc.data().totalCost,
+                doc.data().totalCount,
+                doc.data().created
+            )
+        } else {
+            return new Cart(
+                doc.data().id,
+                doc.data().appId,
+                doc.data().items,
+                doc.data().delivery,
+                doc.data().payment,
+                doc.data().totalCost,
+                doc.data().totalCount,
+                doc.data().created
+            )
+        }
     } catch (error) {
         console.log(error.message);
         return {}

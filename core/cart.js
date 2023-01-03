@@ -1,5 +1,6 @@
 "use strict";
 const firebase = require("../db");
+const { loadProduct } = require("../core/product");
 const Cart = require("../models/cart");
 const CartItem = require("../models/cart");
 const Delivery = require("../models/delivery");
@@ -74,7 +75,7 @@ const loadCart = async (qryParams) => {
     }
 
     try {
-        const doc = await firestore.collection('cart').doc(params.id).get()
+        const doc = await firestore.collection('cart').doc(request.id).get()
         const data = new Cart(
             doc.data().id,
             doc.data().userId,
@@ -127,7 +128,7 @@ const cartMeta = (cart) => {
     if (linkUserToCart) {
         Object.assign(data, { "userId": cart.uId })
     }
-    
+
     return data
 }
 const addDoc = async () => {
@@ -139,6 +140,37 @@ const addDoc = async () => {
         console.log(error.message);
         return '-1'
     }
+}
+const findItem = async(items, product) => {
+    
+    const idx = items.findIndex((item)=> {
+        return  item.id === product.id
+    });
+    return idx
+}
+const addItem = async(cartId, productId) => {
+    const qryParams = `{
+        id: ${cartId}, 
+        uId: '', 
+        appId: ""
+    }`
+    cart = await loadCart(qryParams);
+    const item = await loadProduct(productId)
+    const idx = await findItem(cart.items, item);
+
+    if(idx < 0) {
+        add cartItem
+        cart.items = [...cart.items, { ...item, cost: item.unitCost, quantity: 1 }];
+        await this.updateCart();
+
+    } else {
+
+    }
+
+
+}
+const deleteItem = async (cartId, productId)=> {
+
 }
 module.exports = {
     loadCart,

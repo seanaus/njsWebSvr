@@ -5,8 +5,8 @@ class CartItem extends Product {
             product.id,
             product.name,
             product.description,
-            product.imageCard,
             product.image,
+            product.gallery,
             product.unitCost
         );
         this.quantity = 1;

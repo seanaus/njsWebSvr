@@ -8,12 +8,13 @@ const Payment = require("../models/payment");
 const { requestStatus } = require('../enums/cart');
 const { linkUserToCart } = require("../config");
 const firestore = firebase.firestore();
+const querystring = require('querystring')
 
 const getCart = async (qryParams) => {
 
     let request = getRequest(qryParams);
 
-    if(request.status === requestStatus.NEW_REQUEST) {
+    if (request.status === requestStatus.NEW_REQUEST) {
         request.id = await newCart(qryParams.uId, qryParams.appId);
         request.status = requestStatus.GET_REQUEST
     }
@@ -21,7 +22,33 @@ const getCart = async (qryParams) => {
     return await loadCart(request.id);
 }
 const getRequest = (qryParams) => {
+    // qryParams = querystring.stringify(qryParams)
+    let request = querystring.parse(querystring.stringify(qryParams))
+    console.log("getRequest");
+    for (const [key, value] of Object.entries(request)) {
+        console.log(`${key}: ${value}`);
+    }
+    // console.log(`PARAMETER01 ${request.id}`);
+    // console.log(`PARAMETER02 ${request.uId}`);
+    // console.log(`PARAMETER03 ${request.appId}`);
+    // let params = querystring.stringify(qryParams)
+    // let param = querystring.parse(qryParams).split("&");
+    // let param = querystring.stringify(qryParams).split("&");;
+    // Object.assign(request, ...`{ ${param[0]} }`)
+    // Object.assign(request, ...`{ ${param[1]} }`)
+    // Object.assign(request, ...`{ ${param[2]} }`)
+    // qryParams = qryParams.toString().substring(1, qryParams.length - 2);
+    // console.log(request);
+    // params.forEach((param) => {
+    //     Object.assign(request, param)
+    //     // return { ...request, ...param }
+    // },)
 
+
+    // this.cart.items = [...this.cart.items, { ...item, cost: item.unitCost, quantity: 1 }];
+    // console.log(JSON.stringify(param[0]));
+    // console.log(JSON.stringify(param[1]));
+    // console.log(JSON.stringify(param[2]));
     let id = qryParams.id !== "" ? qryParams.id : undefined;
     // const uId = (qryParams.uId !== "" && linkUserToCart) ? qryParams.uId : undefined
     const uId = (qryParams.uId !== "") ? qryParams.uId : undefined
@@ -30,7 +57,7 @@ const getRequest = (qryParams) => {
     let status = requestStatus.BAD_REQUEST
     if (id !== undefined) {
         status = requestStatus.GET_REQUEST
-    } 
+    }
     if (id === undefined && uId !== undefined) {
         status = requestStatus.NEW_REQUEST;
     }
@@ -42,13 +69,13 @@ const getRequest = (qryParams) => {
     };
 }
 const newCart = async (uId, appId) => {
-    const parentId = linkUserToCart? uId : appId;
+    const parentId = linkUserToCart ? uId : appId;
     if (parentId !== undefined) {
         try {
             const id = await addDoc();
             const cart = new Cart(
                 id,
-                linkUserToCart? uId : appId,
+                linkUserToCart ? uId : appId,
                 undefined,
                 undefined,
                 undefined,
@@ -80,10 +107,10 @@ const saveCart = async (cart) => {
     }
 }
 
-const loadCart = async(id) => {
+const loadCart = async (id) => {
     try {
         const doc = await firestore.collection('cart').doc(id).get()
-        if(linkUserToCart) {
+        if (linkUserToCart) {
             return new Cart(
                 doc.data().id,
                 doc.data().userId,
@@ -141,8 +168,8 @@ const cartMeta = (cart) => {
         totalCost: cart.totalCost === undefined ? 0 : cart.totalCost,
         created: cart.created
     };
-// console.log(linkUserToCart);
-// console.log(cart.uId);
+    // console.log(linkUserToCart);
+    // console.log(cart.uId);
     if (linkUserToCart) {
         Object.assign(data, { "userId": cart.userId })
     }
@@ -159,10 +186,10 @@ const addDoc = async () => {
         return '-1'
     }
 }
-const findItem = async(items, product) => {
-    
-    const idx = items.findIndex((item)=> {
-        return  item.id === product.id
+const findItem = async (items, product) => {
+
+    const idx = items.findIndex((item) => {
+        return item.id === product.id
     });
     return idx
 }

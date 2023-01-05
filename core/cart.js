@@ -5,7 +5,7 @@ const Cart = require("../models/cart");
 const CartItem = require("../models/cart");
 const Delivery = require("../models/delivery");
 const Payment = require("../models/payment");
-const { requestStatus } = require('../enums/cart');
+const { reqStatus, reqParaMap } = require('../enums/cart');
 const { linkUserToCart } = require("../config");
 const firestore = firebase.firestore();
 const querystring = require('querystring')
@@ -14,58 +14,63 @@ const getCart = async (qryParams) => {
 
     let request = getRequest(qryParams);
 
-    if (request.status === requestStatus.NEW_REQUEST) {
+    if (request.status === reqStatus.NEW_REQUEST) {
         request.id = await newCart(qryParams.uId, qryParams.appId);
-        request.status = requestStatus.GET_REQUEST
+        request.status = reqStatus.GET_REQUEST
     }
 
     return await loadCart(request.id);
 }
+// const reqParamIdField = async (req) => {
+//     let field = "";
+//     for (const [key] of Object.keys(req)) {
+//         field = key;
+//     }
+//     return field
+// }
 const getRequest = (qryParams) => {
-    // qryParams = querystring.stringify(qryParams)
-    let request = querystring.parse(querystring.stringify(qryParams))
     console.log("getRequest");
-    for (const [key, value] of Object.entries(request)) {
-        console.log(`${key}: ${value}`);
-    }
-    // console.log(`PARAMETER01 ${request.id}`);
-    // console.log(`PARAMETER02 ${request.uId}`);
-    // console.log(`PARAMETER03 ${request.appId}`);
-    // let params = querystring.stringify(qryParams)
-    // let param = querystring.parse(qryParams).split("&");
-    // let param = querystring.stringify(qryParams).split("&");;
-    // Object.assign(request, ...`{ ${param[0]} }`)
-    // Object.assign(request, ...`{ ${param[1]} }`)
-    // Object.assign(request, ...`{ ${param[2]} }`)
-    // qryParams = qryParams.toString().substring(1, qryParams.length - 2);
-    // console.log(request);
-    // params.forEach((param) => {
-    //     Object.assign(request, param)
-    //     // return { ...request, ...param }
-    // },)
 
+    qryParams = querystring.parse(querystring.stringify(qryParams))
+    const params = Object.entries(qryParams);
 
-    // this.cart.items = [...this.cart.items, { ...item, cost: item.unitCost, quantity: 1 }];
-    // console.log(JSON.stringify(param[0]));
-    // console.log(JSON.stringify(param[1]));
-    // console.log(JSON.stringify(param[2]));
-    let id = qryParams.id !== "" ? qryParams.id : undefined;
-    // const uId = (qryParams.uId !== "" && linkUserToCart) ? qryParams.uId : undefined
-    const uId = (qryParams.uId !== "") ? qryParams.uId : undefined
-    const appId = qryParams.appId !== "" ? qryParams.appId : undefined
+    let id = params[reqParaMap.id][reqParaMap.keyValue.value] 
+    const uId = params[reqParaMap.uId][reqParaMap.keyValue.value]
+    // const creatorId = params[reqParaMap.creatorId][reqParaMap.keyValue.value]
 
-    let status = requestStatus.BAD_REQUEST
-    if (id !== undefined) {
-        status = requestStatus.GET_REQUEST
-    }
-    if (id === undefined && uId !== undefined) {
-        status = requestStatus.NEW_REQUEST;
-    }
-    return {
+    let request = {
         id: id,
         uId: uId,
-        appId: appId,
-        status: status
+        status: reqStatus.badRequest
+    }
+
+    // request.status = reqStatus.badRequest
+
+    if (id !== "") {
+        request.status = reqStatus.getRequest
+    }
+    if (id === "" && uId !== "") {
+        request.status = reqStatus.newRequest;
+    }
+
+    
+    const key = params[reqParaMap.creatorId][reqParaMap.keyValue.key] 
+    const value = params[reqParaMap.creatorId][reqParaMap.keyValue.value]
+    request[key] = value;
+
+    console.log(`Key: ${key}`);
+    console.log(`Val: ${value}`);
+    // console.log(params[reqParaMap.creatorId][reqParaMap.keyValue.key]);
+    ///IFFFF
+    console.log(`IS: ${JSON.stringify(request)}`);
+    //request[params[reqParaMap.creatorId][reqParaMap.keyValue.key]] = params[reqParaMap.creatorId][reqParaMap.keyValue.value];
+    
+
+    // console.log("REQUEST02");
+    // console.log(`ID: ${id}`);
+    // console.log(`IS: ${JSON.stringify(request)}`);
+    return {
+        request
     };
 }
 const newCart = async (uId, appId) => {

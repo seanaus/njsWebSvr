@@ -1,6 +1,19 @@
-const requestStatus =  {
-    BAD_REQUEST : 0,
-    GET_REQUEST : 1,
-    NEW_REQUEST : 2
+const reqStatus =  {
+    badRequest : 0,
+    getRequest : 1,
+    newRequest : 2
 }
-module.exports = { requestStatus }
+const reqParaMap =  {
+    id : 0,
+    uId : 1,
+    status : 2,
+    creatorId : 3,
+    keyValue: {
+        key: 0,
+        value: 1
+    }
+}
+module.exports = { 
+    reqStatus, 
+    reqParaMap
+}

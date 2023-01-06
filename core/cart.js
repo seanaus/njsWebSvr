@@ -9,10 +9,14 @@ const { reqStatus, reqParaMap } = require('../enums/cart');
 const { linkUserToCart } = require("../config");
 const firestore = firebase.firestore();
 const querystring = require('querystring')
-
+let request = {
+    id: "",
+    uId: "",
+    status: 0
+}
 const getCart = async (qryParams) => {
 
-    let request = getRequest(qryParams);
+    request = getRequest(qryParams);
 
     // const values = Object.values(request);
 
@@ -31,11 +35,10 @@ const getRequest = (qryParams) => {
     const params = Object.entries(qryParams);
 
     // REQUEST OBJECT TO BE RETURNED
-    let request = {
-        id: params[reqParaMap.id][reqParaMap.keyValue.value],
-        uId: params[reqParaMap.uId][reqParaMap.keyValue.value],
-        status: reqStatus.badRequest
-    }
+    request.id = params[reqParaMap.id][reqParaMap.keyValue.value];
+    request.uId = params[reqParaMap.uId][reqParaMap.keyValue.value];
+    request.status = reqStatus.badRequest;
+    
     const cartFKField = ((params.length - 1) === reqParaMap.cartFKField)
         ? params[reqParaMap.cartFKField][reqParaMap.keyValue.key]
         : "userId";

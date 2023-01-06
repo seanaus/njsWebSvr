@@ -6,8 +6,7 @@ const reqStatus =  {
 const reqParaMap =  {
     id : 0,
     uId : 1,
-    status : 2,
-    creatorId : 3,
+    cartFKField : 2,
     keyValue: {
         key: 0,
         value: 1

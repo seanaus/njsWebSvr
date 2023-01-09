@@ -15,7 +15,7 @@ const FIREBASE_CONFIG = {
   measurementId: process.env.MEASSUREMENT_ID
 };
 const LINK_USER_TO_CART = process.env.LINK_USER_TO_CART;
-const log = ()=> {
+const log = () => {
   console.log(`port: ${PORT}`);
   console.log(`host: ${HOST}`);
   console.log(`url: ${URL}`);

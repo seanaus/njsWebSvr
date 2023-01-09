@@ -5,88 +5,104 @@ const Cart = require("../models/cart");
 const CartItem = require("../models/cart");
 const Delivery = require("../models/delivery");
 const Payment = require("../models/payment");
+const Request = require("../models/request");
 const { reqStatus, reqParaMap } = require('../enums/cart');
 const { linkUserToCart } = require("../config");
 const firestore = firebase.firestore();
-const querystring = require('querystring')
-let request = {
-    id: "",
-    uId: "",
-    status: 0
-}
-const getCart = async (qryParams) => {
+let request = new Request("", "", {});
 
-    request = getRequest(qryParams);
+// const querystring = require('querystring')
+// let request = {
+//     id: "",
+//     uId: "",
+//     status: 0
+// }
+const getCart = async (req) => {
+
+    // request = getRequest(qryParams);
+    let request = handleRequest(req);
 
     // const values = Object.values(request);
 
-    if (request.status === reqStatus.newRequest) {
-        request.id = await newCart(request);
-        request.status = reqStatus.getRequest
-    }
+    // if (request.status === reqStatus.newRequest) {
+    //     request.id = await newCart(request);
+    //     request.status = reqStatus.getRequest
+    // }
 
-    return await loadCart(request.id);
+    // return await loadCart(request.id);
 }
-const getRequest = (qryParams) => {
+const handleRequest = async (req) => {
+    request.id = req.query.id
+    request.uId = req.query.uId
 
-    // CREATE OBJECT FROM qryParams, THEN CREATE ARRAY
-    // OF KEY/VALUE PAIRS
-    qryParams = querystring.parse(querystring.stringify(qryParams));
-    const params = Object.entries(qryParams);
+    const lastParam = Object.entries(req.query)[Object.entries(req.query).length - 1]
+    const linkField = Object.fromEntries([lastParam]);
+    console.log(`${JSON.stringify(linkField)}`);
 
-    // REQUEST OBJECT TO BE RETURNED
-    request.id = params[reqParaMap.id][reqParaMap.keyValue.value];
-    request.uId = params[reqParaMap.uId][reqParaMap.keyValue.value];
-    request.status = reqStatus.badRequest;
-    
-    const cartFKField = ((params.length - 1) === reqParaMap.cartFKField)
-        ? params[reqParaMap.cartFKField][reqParaMap.keyValue.key]
-        : "userId";
-    const cartFKValue = ((params.length - 1) === reqParaMap.cartFKField)
-        ? params[reqParaMap.cartFKField][reqParaMap.keyValue.value]
-        : params[reqParaMap.uId][reqParaMap.keyValue.value];
-
-    // APPEND FOREIGN KEY FIELD AND VALUE TO REQUEST OBJECT
-    // IF THIRD ROUTE PARAMETER SUPPLIED THIS WILL BE USED (FIELD AND VALUE)
-    // OTHERWISE 'userId' and 'uId' VALUES ARE USED
-    request[cartFKField] = cartFKValue;
-
-    if (request.id !== "") {
-        request.status = reqStatus.getRequest
-    }
-    if (request.id === "" && request.uId !== "") {
-        request.status = reqStatus.newRequest;
-    }
-    // console.log(`${JSON.stringify(request)}`);
-    return request
-
+    // let request = new Request(id, uId, linkField);
+    console.log(`${JSON.stringify(request)}`);
 }
+// ROLLBACK
+// const getRequest = (qryParams) => {
+
+//     // CREATE OBJECT FROM qryParams, THEN CREATE ARRAY
+//     // OF KEY/VALUE PAIRS
+//     qryParams = querystring.parse(querystring.stringify(qryParams));
+//     const params = Object.entries(qryParams);
+
+//     // REQUEST OBJECT TO BE RETURNED
+//     request.id = params[reqParaMap.id][reqParaMap.keyValue.value];
+//     request.uId = params[reqParaMap.uId][reqParaMap.keyValue.value];
+//     request.status = reqStatus.badRequest;
+
+//     const cartFKField = ((params.length - 1) === reqParaMap.cartFKField)
+//         ? params[reqParaMap.cartFKField][reqParaMap.keyValue.key]
+//         : "userId";
+//     const cartFKValue = ((params.length - 1) === reqParaMap.cartFKField)
+//         ? params[reqParaMap.cartFKField][reqParaMap.keyValue.value]
+//         : params[reqParaMap.uId][reqParaMap.keyValue.value];
+
+//     // APPEND FOREIGN KEY FIELD AND VALUE TO REQUEST OBJECT
+//     // IF THIRD ROUTE PARAMETER SUPPLIED THIS WILL BE USED (FIELD AND VALUE)
+//     // OTHERWISE 'userId' and 'uId' VALUES ARE USED
+//     request[cartFKField] = cartFKValue;
+
+//     if (request.id !== "") {
+//         request.status = reqStatus.getRequest
+//     }
+//     if (request.id === "" && request.uId !== "") {
+//         request.status = reqStatus.newRequest;
+//     }
+//     // console.log(`${JSON.stringify(request)}`);
+//     return request
+
+// }
 const newCart = async (request) => {
     // console.log(`LINK_ID ${linkId}`)
     // const parentId = linkUserToCart ? uId : appId;
     // if (linkId !== "") {
-        try {
-            request.id = await addDoc();
-            // console.log(`NEW_ID ${id}`)
-            const cart = new Cart(
-                request.id,
-                request.linkId,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                new Date().toLocaleString('en-GB', { timeZone: 'UTC' })
-            );
-            if (await saveCart(cart)) {
-                return id
-            } else {
-                return {}
-            }
-        } catch (error) {
-            console.log(error.message);
+    try {
+        request.id = await addDoc();
+        // console.log(`NEW_ID ${id}`)
+        const cart = new Cart(
+            request.id,
+            request.linkId,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            new Date().toLocaleString('en-GB', { timeZone: 'UTC' })
+        );
+        if (await saveCart(cart)) {
+            return id
+        } else {
             return {}
         }
+    } catch (error) {
+        console.log(error.message);
+        return {}
+    }
     // } else {
     //     return {}
 }
@@ -163,7 +179,7 @@ const cartMeta = (cart) => {
     };
 
     const entry = {}
-    Object.assign(data, { label : cart.linkId })
+    Object.assign(data, { label: cart.linkId })
 
     return data
 }

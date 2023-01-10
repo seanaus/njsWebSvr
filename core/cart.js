@@ -6,10 +6,10 @@ const CartItem = require("../models/cart");
 const Delivery = require("../models/delivery");
 const Payment = require("../models/payment");
 const Request = require("../models/request");
-const { reqStatus, reqParaMap } = require('../enums/cart');
+// const { reqStatus, reqParaMap } = require('../enums/cart');
 const { linkUserToCart } = require("../config");
 const firestore = firebase.firestore();
-let request = new Request("", "", {});
+// let request = new Request({});
 
 // const querystring = require('querystring')
 // let request = {
@@ -20,7 +20,7 @@ let request = new Request("", "", {});
 const getCart = async (req) => {
 
     // request = getRequest(qryParams);
-    let request = handleRequest(req);
+    handleRequest(req);
 
     // const values = Object.values(request);
 
@@ -32,15 +32,42 @@ const getCart = async (req) => {
     // return await loadCart(request.id);
 }
 const handleRequest = async (req) => {
-    request.id = req.query.id
-    request.uId = req.query.uId
 
-    const lastParam = Object.entries(req.query)[Object.entries(req.query).length - 1]
-    const linkField = Object.fromEntries([lastParam]);
-    console.log(`${JSON.stringify(linkField)}`);
+    let request = new Request(req.query);
+    let id = request.id();
+    let uId = request.uId();
+    let userIdOveride = request.userIdOveride();
+    // console.log(`${JSON.stringify(userIdOveride)}`);
+    console.log(`${id}`);
+    console.log(`${uId}`);
+    console.log(`${userIdOveride.key}`);
+    console.log(`${userIdOveride.value}`);
+    // console.log(`${JSON.stringify(userIdOveride)}`);
+    // console.log(`${JSON.stringify(request.userIdOveride())}`);
+    // console.log(`${JSON.stringify(request)}`);
+    // const params = Object.entries(req.query);
 
-    // let request = new Request(id, uId, linkField);
-    console.log(`${JSON.stringify(request)}`);
+    
+    // request.id = req.query.id
+    // request.uId = req.query.uId
+
+    // const lastParam = Object.entries(req.query)[Object.entries(req.query).length - 1]
+    // const linkField = Object.fromEntries([lastParam]);
+
+    // request.addItem(linkField);
+    // console.log(`${JSON.stringify(linkField)}`);
+
+    // request = new Request(id, uId, linkField);
+    // console.log(`${JSON.stringify(request)}`);
+    // console.log(`${JSON.stringify(getEntry(request,0))}`);
+}
+const getEntry = (obj, idx) => {
+    if(idx <= entries(obj)) {
+        return Object.entries(obj)[idx];
+    }
+}
+const entries = (obj) => {
+    return Object.keys(obj).length;
 }
 // ROLLBACK
 // const getRequest = (qryParams) => {

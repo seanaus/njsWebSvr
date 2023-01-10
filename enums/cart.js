@@ -6,11 +6,7 @@ const reqStatus =  {
 const reqParaMap =  {
     id : 0,
     uId : 1,
-    cartFKField : 2,
-    keyValue: {
-        key: 0,
-        value: 1
-    }
+    userIdOveride : 2,
 }
 module.exports = { 
     reqStatus, 

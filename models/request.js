@@ -1,11 +1,11 @@
-const { reqParaMap } = require('../enums/cart');
+const { reqParaMap, reqStatus } = require('../enums/cart');
 class Request {
     constructor(
         params = {}
     ) 
     {
         this.params = params
-        this.paramCount = this.entriesCount();
+        this.status = this.entriesCount();
     }
     id = () => {
         return Object.values(this.params)[reqParaMap.id];
@@ -21,10 +21,11 @@ class Request {
     }
     entriesCount = () => {
         try {
-            return Object.entries(this.params).length
+            return Object.entries(this.params).length-1
         } catch {
-            return -1
+            return reqStatus.badRequest
         }
     }
+
 }
 module.exports = Request

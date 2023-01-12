@@ -1,9 +1,9 @@
 "use strict";
 const express = require("express");
 const router = express.Router();
-const { shoppingCart } = require("../controllers/cart");
+const { getCart } = require("../controllers/cart");
 
-router.get("/cart", shoppingCart);
+router.get("/cart", getCart);
 
 module.exports = {
     routes: router,

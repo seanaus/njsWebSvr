@@ -3,7 +3,7 @@ const Payment = require("../models/payment");
 class Cart {
     constructor(
         id = "",
-        linkId = "",
+        userId = {},
         items = [],
         delivery = new Delivery(),
         payment = new Payment(),
@@ -12,7 +12,7 @@ class Cart {
         created = ""
     ) {
         this.id = id;
-        this.linkId = linkId;
+        this.userId = userId;
         this.items = items;
         this.delivery = delivery;
         this.payment = payment;

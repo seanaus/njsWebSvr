@@ -6,30 +6,36 @@ const Cart = require("../models/cart");
 const CartItem = require("../models/cart");
 const Delivery = require("../models/delivery");
 const Payment = require("../models/payment");
-const { reqParaMap, reqStatus } = require('../enums/cart');
+const { reqStatus } = require('../enums/cart');
 
 const firestore = firebase.firestore();
 
 const main = async (req) => {
-
+    console.log("main");
     let request = getRequest(req, "CART");
-    switch(request.status) {
+    console.log("WTF");
+    console.log(`STATUS: ${request.status}`);
+    switch (request.status) {
         case reqStatus.getRequest:
+            console.log("getRequest");
             return await loadCart(request.id);
         case reqStatus.newRequest:
+            console.log("newRequest");
             request.id = await newCart(request);
             return await loadCart(request.id);
         default:
+            console.log("badRequest");
             return reqStatus.badRequest;
     }
 }
 
 const newCart = async (request) => {
     try {
+        console.log(`${JSON.stringify(request)}`)
         request.id = await addDoc();
         const cart = new Cart(
             request.id,
-            request.userIdOveride(),
+            request.metaData(),
             undefined,
             undefined,
             undefined,
@@ -50,6 +56,7 @@ const newCart = async (request) => {
 const saveCart = async (cart) => {
     const doc = await firestore.collection('cart').doc(cart.id);
     try {
+        console.log(`${JSON.stringify(cart)}`)
         await doc.set(cartMeta(cart), { merge: true });
         return true
     } catch (error) {
@@ -57,13 +64,12 @@ const saveCart = async (cart) => {
         return false
     }
 }
-
 const loadCart = async (id) => {
 
     const doc = await firestore.collection('cart').doc(id).get()
     return new Cart(
         doc.data().id,
-        doc.data().userId,
+        doc.data().metaData,
         doc.data().items,
         doc.data().delivery,
         doc.data().payment,
@@ -75,7 +81,7 @@ const loadCart = async (id) => {
 const cartMeta = (cart) => {
     let data = {
         id: cart.id,
-        userId: cart.userId,
+        metaData: cart.metaData,
         items: cart.items.map((obj) => {
             return Object.assign({}, obj);
         }),
@@ -102,9 +108,6 @@ const cartMeta = (cart) => {
         totalCost: cart.totalCost === undefined ? 0 : cart.totalCost,
         created: cart.created
     };
-
-    // const entry = {}
-    // Object.assign(data, { label: cart.linkId })
 
     return data
 }

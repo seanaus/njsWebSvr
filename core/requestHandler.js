@@ -14,19 +14,27 @@ const cartRequest = (req) => {
     const values = Object.values(req.query);
     let request = {};
 
-    switch(keys.length-1) {
+    console.log(`KEYS: ${keys.length - 1}`)
+
+    switch (keys.length - 1) {
         case reqParaMap.id:
+            console.log(`0`);
             request = new Request(values[reqParaMap.id]);
-            req.status = reqStatus.getRequest;
+            request.status = reqStatus.getRequest;
+            break;
         case reqParaMap.uId:
-            request = new Request("", values[reqParaMap.uId], { "key":"userId", "value": values[reqParaMap.uId] });
-            req.status = reqStatus.newRequest;
+            console.log(`1`);
+            request = new Request("", values[reqParaMap.uId], { "key": "userId", "value": values[reqParaMap.uId] });
+            request.status = reqStatus.newRequest;
+            break;
         case reqParaMap.metaData:
-            request = new Request("", values[reqParaMap.uId], { "key":keys[reqParaMap.metaData], "value": values[reqParaMap.metaData] });
-            req.status = reqStatus.newRequest;
+            console.log(`2`);
+            request = new Request("", values[reqParaMap.uId], { "key": keys[reqParaMap.metaData], "value": values[reqParaMap.metaData] });
+            request.status = reqStatus.newRequest;
+            break;
         default:
-            request = new Request("-1","-1",{});
-            req.status = reqStatus.badRequest;
+            request = new Request("-1", "-1", {});
+            request.status = reqStatus.badRequest;
     }
 
     return request

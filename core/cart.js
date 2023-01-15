@@ -12,9 +12,9 @@ const firestore = firebase.firestore();
 
 const main = async (req) => {
     console.log("main");
-    // const request = getRequest(req, "CART");
+    const request = getRequest(req, "CART");
 
-    // console.log(`REQUEST: ${JSON.stringify(request)}`)
+    console.log(`REQUEST: ${JSON.stringify(request)}`)
     // console.log("WTF");
     // console.log(`STATUS: ${request.status}`);
     // switch (request.status) {

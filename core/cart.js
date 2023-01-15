@@ -11,7 +11,6 @@ const { reqStatus } = require('../enums/cart');
 const firestore = firebase.firestore();
 
 const main = async (req) => {
-    console.log("main");
     const request = getRequest(req, "CART");
 
     console.log(`REQUEST: ${JSON.stringify(request)}`)

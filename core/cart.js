@@ -12,21 +12,23 @@ const firestore = firebase.firestore();
 
 const main = async (req) => {
     console.log("main");
-    let request = getRequest(req, "CART");
-    console.log("WTF");
-    console.log(`STATUS: ${request.status}`);
-    switch (request.status) {
-        case reqStatus.getRequest:
-            console.log("getRequest");
-            return await loadCart(request.id);
-        case reqStatus.newRequest:
-            console.log("newRequest");
-            request.id = await newCart(request);
-            return await loadCart(request.id);
-        default:
-            console.log("badRequest");
-            return reqStatus.badRequest;
-    }
+    // const request = getRequest(req, "CART");
+
+    // console.log(`REQUEST: ${JSON.stringify(request)}`)
+    // console.log("WTF");
+    // console.log(`STATUS: ${request.status}`);
+    // switch (request.status) {
+    //     case reqStatus.getRequest:
+    //         console.log("getRequest");
+    //         return await loadCart(request.id);
+    //     case reqStatus.newRequest:
+    //         console.log("newRequest");
+    //         request.id = await newCart(request);
+    //         return await loadCart(request.id);
+    //     default:
+    //         console.log("badRequest");
+    //         return reqStatus.badRequest;
+    // }
 }
 
 const newCart = async (request) => {

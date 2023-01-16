@@ -37,7 +37,7 @@ const loadUsers = async () => {
     }
     return userArray;
 }
-const saveUser = async (user) => {
+const saveUser = async(user) => {
     try {
         // console.log(user);
         return await firestore.collection("users").doc(user.id).set(userMeta(user));

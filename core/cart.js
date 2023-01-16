@@ -1,7 +1,7 @@
 "use strict";
 const firebase = require("../db");
 const { loadProduct } = require("../core/product");
-const { getRequest } = require("../core/requestHandler")
+const { getRequest } = require("./request")
 const Cart = require("../models/cart");
 const CartItem = require("../models/cart");
 const Delivery = require("../models/delivery");
@@ -11,32 +11,25 @@ const { reqStatus } = require('../enums/cart');
 const firestore = firebase.firestore();
 
 const main = async (req) => {
+
     const request = getRequest(req, "CART");
 
-    console.log(`REQUEST: ${JSON.stringify(request)}`)
-    // console.log("WTF");
-    // console.log(`STATUS: ${request.status}`);
-    // switch (request.status) {
-    //     case reqStatus.getRequest:
-    //         console.log("getRequest");
-    //         return await loadCart(request.id);
-    //     case reqStatus.newRequest:
-    //         console.log("newRequest");
-    //         request.id = await newCart(request);
-    //         return await loadCart(request.id);
-    //     default:
-    //         console.log("badRequest");
-    //         return reqStatus.badRequest;
-    // }
+    switch (request.status) {
+        case reqStatus.getRequest:
+            return await load(request.id);
+        case reqStatus.newRequest:
+            request.id = await create(request);
+            return await load(request.id);
+        default:
+            return reqStatus.badRequest;
+    }
 }
-
-const newCart = async (request) => {
+const create = async (request) => {
     try {
-        console.log(`${JSON.stringify(request)}`)
         request.id = await addDoc();
         const cart = new Cart(
             request.id,
-            request.metaData(),
+            request.metaData,
             undefined,
             undefined,
             undefined,
@@ -44,7 +37,7 @@ const newCart = async (request) => {
             undefined,
             new Date().toLocaleString('en-GB', { timeZone: 'UTC' })
         );
-        if (await saveCart(cart)) {
+        if (await save(cart)) {
             return request.id
         } else {
             return {}
@@ -54,18 +47,49 @@ const newCart = async (request) => {
         return {}
     }
 }
-const saveCart = async (cart) => {
+const save = async (cart) => {
+
     const doc = await firestore.collection('cart').doc(cart.id);
     try {
-        console.log(`${JSON.stringify(cart)}`)
-        await doc.set(cartMeta(cart), { merge: true });
+        await doc.set(
+            {
+                id: cart.id,
+                metaData: cart.metaData,
+                items: cart.items.map((obj) => {
+                    return Object.assign({}, obj);
+                }),
+                delivery: Object.assign({}, new Delivery(
+                    cart.delivery.forename,
+                    cart.delivery.surname,
+                    cart.delivery.address01,
+                    cart.delivery.address02,
+                    cart.delivery.town,
+                    cart.delivery.city,
+                    cart.delivery.county,
+                    cart.delivery.postcode,
+                    cart.delivery.email,
+                    cart.delivery.telephone
+                )),
+                payment: Object.assign({}, new Payment(
+                    cart.payment.cardNo,
+                    cart.payment.nameOnCard,
+                    cart.payment.csv,
+                    cart.payment.expiryDate,
+                    cart.delivery.completed
+                )),
+                totalCount: cart.totalCount === undefined ? 0 : cart.totalCount,
+                totalCost: cart.totalCost === undefined ? 0 : cart.totalCost,
+                created: cart.created
+            },
+            { merge: true }
+        );
         return true
     } catch (error) {
         console.log(error.message);
         return false
     }
 }
-const loadCart = async (id) => {
+const load = async (id) => {
 
     const doc = await firestore.collection('cart').doc(id).get()
     return new Cart(
@@ -79,39 +103,6 @@ const loadCart = async (id) => {
         doc.data().created
     )
 }
-const cartMeta = (cart) => {
-    let data = {
-        id: cart.id,
-        metaData: cart.metaData,
-        items: cart.items.map((obj) => {
-            return Object.assign({}, obj);
-        }),
-        delivery: Object.assign({}, new Delivery(
-            cart.delivery.forename,
-            cart.delivery.surname,
-            cart.delivery.address01,
-            cart.delivery.address02,
-            cart.delivery.town,
-            cart.delivery.city,
-            cart.delivery.county,
-            cart.delivery.postcode,
-            cart.delivery.email,
-            cart.delivery.telephone
-        )),
-        payment: Object.assign({}, new Payment(
-            cart.payment.cardNo,
-            cart.payment.nameOnCard,
-            cart.payment.csv,
-            cart.payment.expiryDate,
-            cart.delivery.completed
-        )),
-        totalCount: cart.totalCount === undefined ? 0 : cart.totalCount,
-        totalCost: cart.totalCost === undefined ? 0 : cart.totalCost,
-        created: cart.created
-    };
-
-    return data
-}
 const addDoc = async () => {
     try {
         const doc = await firestore.collection('cart').doc();
@@ -122,15 +113,37 @@ const addDoc = async () => {
         return '-1'
     }
 }
-const findItem = async (items, product) => {
+// const addItem = async (cartId, productId) => {
 
-    const idx = items.findIndex((item) => {
-        return item.id === product.id
-    });
-    return idx
+//     const product = loadProduct(productId);
+//     let cart = getCart(cartId);
+//     const idx = findProduct(cart.items, productId)
+//     if (idx === undefined) {
+//         const item = new CartItem(product);
+//         cart.items = [...cart.items, item];
+//     } else {
+//         cart.items[idx] = editQuantity(cart.items[idx], "+")
+//     }
+
+// }
+// const editQuantity = (item, option) => {
+//     if (option === "+") {
+//         item.quantity = item.quantity + 1
+//         item.cost = item.cost + item.unitCost
+//         return item
+//     }
+//     if (option === "-") {
+//         if (item.quantity > 1) {
+//             item.quantity = item.quantity + 1
+//             item.cost = item.cost + item.unitCost
+//         } else {
+//         }
+//         return item
+//     }
+// }
+const removeItem = (item, option) => {
 }
-
 module.exports = {
     cartMain: main,
-    saveCart
+    saveCart: save
 }

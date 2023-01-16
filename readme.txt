@@ -43,9 +43,14 @@ http://localhost:8080/signIn/option (firebase || google, currenty only the 'fire
     "password" : "Aus25031549"
 }
 
+**************
 ** get cart **
+**************
 http://localhost:8080/cart?id=
-Example (http://localhost:8080/cart?id=w5bSSt6ZTvAqyRtyAiFc)
+Example (http://localhost:8080/cart?id=WamM8j32VjvS4w9GM0KV)
+
+http://localhost:8080/cart?id=&uId=
+Example (http://localhost:8080/cart?id=&uId=Jtz6S5EpgZfjdSQaTaWdOs5ELXE2)
 
 http://localhost:8080/cart?id=&uId=&appId=
 Example (http://localhost:8080/cart?id=&uId=Jtz6S5EpgZfjdSQaTaWdOs5ELXE2&appId=APPID01)

@@ -1,5 +1,5 @@
 "use strict";
-const { cartMain } = require("../core/cart");
+const { cartMain, addCartItem, delCartItem } = require("../core/cart");
 
 const getCart = async (req, res, next) => {
 
@@ -7,6 +7,28 @@ const getCart = async (req, res, next) => {
 
     next();
 };
+const addToCart = async (req, res, next) => {
+
+    const cartId = req.params.cartId;
+    const productId = req.params.productId;
+
+    res.json(await addCartItem(cartId, productId));
+
+    next();
+
+};
+const delFromCart = async (req, res, next) => {
+
+    const cartId = req.params.cartId;
+    const productId = req.params.productId;
+
+    res.json(await delCartItem(cartId, productId));
+
+    next();
+
+};
 module.exports = {
-    getCart
+    getCart,
+    addToCart,
+    delFromCart
 };

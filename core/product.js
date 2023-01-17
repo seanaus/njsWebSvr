@@ -6,10 +6,10 @@ const firestore = firebase.firestore();
 const loadProduct = async (id) => {
   const products = await loadProducts();
   const idx = findProduct(products, id);
-  if (idx !== undefined) {
+  if (idx !== -1) {
     return products[idx];
   } else {
-    return undefined
+    return -1
   }
 }
 const loadProducts = async () => { 
@@ -39,7 +39,7 @@ const loadProducts = async () => {
   }
   return productArray;
 }
-const findProduct = async (products, id) => {
+const findProduct = (products, id) => {
   const idx = products.findIndex((product) => {
     return product.id === id
   });

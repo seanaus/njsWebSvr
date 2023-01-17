@@ -1,9 +1,9 @@
 "use strict";
 const firebase = require("../db");
-const { loadProduct } = require("../core/product");
+const { loadProduct, findProduct } = require("../core/product");
 const { getRequest } = require("./request")
 const Cart = require("../models/cart");
-const CartItem = require("../models/cart");
+const CartItem = require("../models/cartItem");
 const Delivery = require("../models/delivery");
 const Payment = require("../models/payment");
 const { reqStatus } = require('../enums/cart');
@@ -113,37 +113,60 @@ const addDoc = async () => {
         return '-1'
     }
 }
-// const addItem = async (cartId, productId) => {
+const addItem = async (cartId, productId) => {
 
-//     const product = loadProduct(productId);
-//     let cart = getCart(cartId);
-//     const idx = findProduct(cart.items, productId)
-//     if (idx === undefined) {
-//         const item = new CartItem(product);
-//         cart.items = [...cart.items, item];
-//     } else {
-//         cart.items[idx] = editQuantity(cart.items[idx], "+")
-//     }
+    let cart = await load(cartId);
+    const product = await loadProduct(productId);
+    const idx = await findProduct(cart.items, productId);
 
-// }
-// const editQuantity = (item, option) => {
-//     if (option === "+") {
-//         item.quantity = item.quantity + 1
-//         item.cost = item.cost + item.unitCost
-//         return item
-//     }
-//     if (option === "-") {
-//         if (item.quantity > 1) {
-//             item.quantity = item.quantity + 1
-//             item.cost = item.cost + item.unitCost
-//         } else {
-//         }
-//         return item
-//     }
-// }
-const removeItem = (item, option) => {
+    if (idx === -1) {
+        const item = new CartItem(product);
+        cart.items = [...cart.items, item];
+    } else {
+        cart.items[idx] = editQuantity(cart.items,idx,"+");
+    }
+    if (await save(cart)) {
+        return cart
+    } else {
+        return {}
+    }
+}
+const removeItem = async (cartId, productId) => {
+
+    let cart = await load(cartId);
+    const idx = await findProduct(cart.items, productId);
+
+    if (idx !== -1) {
+        if (cart.items[idx].quantity > 1) {
+            cart.items[idx] = editQuantity(cart.items, idx, "-");
+        } else {
+            deleteItem(cart.items, idx);
+        }
+    }
+    if (await save(cart)) {
+        return cart
+    } else {
+        return {}
+    }
+}
+const editQuantity = (items, idx, option) => {
+    if (option === "+") {
+        items[idx].quantity = items[idx].quantity + 1;
+        items[idx].cost = items[idx].cost + items[idx].unitCost;
+        return items[idx]
+    }
+    if (option === "-") {
+        items[idx].quantity = items[idx].quantity - 1;
+        items[idx].cost = items[idx].cost - items[idx].unitCost;
+        return items[idx]
+    }
+}
+const deleteItem = (items, idx) => {
+    items.splice(idx, 1);
 }
 module.exports = {
     cartMain: main,
-    saveCart: save
+    saveCart: save,
+    addCartItem: addItem,
+    delCartItem: removeItem
 }

@@ -55,7 +55,28 @@ Example (http://localhost:8080/cart?id=&uId=Jtz6S5EpgZfjdSQaTaWdOs5ELXE2)
 http://localhost:8080/cart?id=&uId=&appId=
 Example (http://localhost:8080/cart?id=&uId=Jtz6S5EpgZfjdSQaTaWdOs5ELXE2&appId=APPID01)
 
+*****************
+** add to cart **
+*****************
+http://localhost:8080/cart-add/:cartId/:productId
+Examples
+    ** Add Item01 **
+    http://localhost:8080/cart-add/WamM8j32VjvS4w9GM0KV/57eY6zpRLJIrRYir1h33
 
+    ** Add Item02 **
+    http://localhost:8080/cart-add/WamM8j32VjvS4w9GM0KV/99JiazVXiPqn6GOBdZRh
+
+*******************
+** del from cart **
+*******************
+http://localhost:8080/cart-remove/WamM8j32VjvS4w9GM0KV/:productId
+Example[fxShow]="
+    ** Remove Item01 **
+    http://localhost:8080/cart-remove/WamM8j32VjvS4w9GM0KV/57eY6zpRLJIrRYir1h33
+
+    ** Remove Item02 **
+    http://localhost:8080/cart-remove/WamM8j32VjvS4w9GM0KV/99JiazVXiPqn6GOBdZRh
+"
 
 
 

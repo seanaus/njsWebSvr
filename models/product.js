@@ -12,7 +12,7 @@ class Product {
         this.description = description;
         this.image = image;
         this.gallery = gallery;
-        this.unitCost = unitCost.toString();
+        this.unitCost = Number(unitCost);
     }
 
 }

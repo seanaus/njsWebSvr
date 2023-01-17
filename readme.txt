@@ -69,8 +69,8 @@ Examples
 *******************
 ** del from cart **
 *******************
-http://localhost:8080/cart-remove/WamM8j32VjvS4w9GM0KV/:productId
-Example[fxShow]="
+http://localhost:8080/cart-remove/:cartId/:productId
+Example
     ** Remove Item01 **
     http://localhost:8080/cart-remove/WamM8j32VjvS4w9GM0KV/57eY6zpRLJIrRYir1h33
 

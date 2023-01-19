@@ -1,4 +1,5 @@
 "use strict";
+const config = require("../config");
 const firebase = require("../db");
 const { loadProduct, findProduct } = require("../core/product");
 const { getRequest } = require("./request")
@@ -48,6 +49,8 @@ const create = async (request) => {
     }
 }
 const save = async (cart) => {
+
+    calculateTotals(cart);
 
     const doc = await firestore.collection('cart').doc(cart.id);
     try {
@@ -163,6 +166,30 @@ const editQuantity = (items, idx, option) => {
 }
 const deleteItem = (items, idx) => {
     items.splice(idx, 1);
+}
+const calculateTotals = (cart) => {
+    console.log(`VAT: ${JSON.stringify(config.vatMetric())}`);
+
+    cart.totalCount = calculateTotal(cart.items, "quantity");
+    cart.totalCost = calculateTotal(cart.items, "cost");
+}
+
+const calculateTotal = (items, option) => {
+
+    const aggregate = (total, value) => { 
+        return total + value 
+    } 
+
+    if (items.length > 0) {
+        return items.map((item) => { 
+            return item[option] 
+        }).reduce((total, value) => {
+            return total + value 
+        });
+    } else {
+        return 0
+    }
+
 }
 module.exports = {
     cartMain: main,

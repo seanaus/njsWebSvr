@@ -4,6 +4,7 @@ const PORT = process.env.PORT || 8080;
 const HOST = process.env.HOST || "localhost";
 const URL = `http://${process.env.HOST}:${process.env.PORT}`;
 const PRODUCTION = process.env.PRODUCTION;
+const VATMETRIC = process.env.VATMETRIC;
 const FIREBASE_CONFIG = {
   apiKey: process.env.API_KEY,
   authDomain: process.env.AUTH_DOMAIN,
@@ -14,6 +15,16 @@ const FIREBASE_CONFIG = {
   appId: process.env.APP_ID,
   measurementId: process.env.MEASSUREMENT_ID
 };
+const vatMetric = () => {
+
+  if(VATMETRIC.includes(".")) {
+      return Number(VATMETRIC)
+  } else {
+    return Number(VATMETRIC.replace("%","")) / 100
+  }
+  
+}
+
 const log = () => {
   console.log(`port: ${PORT}`);
   console.log(`host: ${HOST}`);
@@ -27,6 +38,7 @@ const log = () => {
   console.log(`appId: ${FIREBASE_CONFIG.appId}`);
   console.log(`measurementId: ${FIREBASE_CONFIG.measurementId}`);
   console.log(`production: ${PRODUCTION}`);
+  console.log(`Vat Metric: ${vatMetric()}`);
 }
 module.exports = {
   port: PORT,
@@ -34,6 +46,7 @@ module.exports = {
   url: URL,
   firebaseConfig: FIREBASE_CONFIG,
   production: PRODUCTION,
+  vatMetric,
   log
 }
 

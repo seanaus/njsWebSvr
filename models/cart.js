@@ -4,6 +4,7 @@ const Totals = require("../models/totals");
 class Cart {
     constructor(
         id = "",
+        uId = "",
         metaData = {},
         items = [],
         delivery = new Delivery(),
@@ -12,6 +13,7 @@ class Cart {
         created = ""
     ) {
         this.id = id;
+        this.uId = uId;
         this.metaData = metaData;
         this.items = items;
         this.delivery = delivery;

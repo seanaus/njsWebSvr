@@ -31,6 +31,7 @@ const create = async (request) => {
         request.id = await addDoc();
         const cart = new Cart(
             request.id,
+            request.uId,
             request.metaData,
             undefined,
             undefined,
@@ -57,6 +58,7 @@ const save = async (cart) => {
         await doc.set(
             {
                 id: cart.id,
+                uId: cart.uId,
                 metaData: cart.metaData,
                 items: cart.items.map((obj) => {
                     return Object.assign({}, obj);
@@ -86,8 +88,6 @@ const save = async (cart) => {
                     cart.totals.incVat
 
                 )),
-                // totalCount: cart.totalCount === undefined ? 0 : cart.totalCount,
-                // totalCost: cart.totalCost === undefined ? 0 : cart.totalCost,
                 created: cart.created
             },
             { merge: true }
@@ -103,6 +103,7 @@ const load = async (id) => {
     const doc = await firestore.collection('cart').doc(id).get()
     return new Cart(
         doc.data().id,
+        doc.data().uId,
         doc.data().metaData,
         doc.data().items,
         doc.data().delivery,

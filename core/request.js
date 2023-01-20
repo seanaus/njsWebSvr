@@ -28,20 +28,20 @@ const cartRequest = (req) => {
                 "",
                 values[reqParaMap.uId],
                 {
-                    "key": "userId",
-                    "value": values[reqParaMap.uId]
+                    "key": "",
+                    "value": ""
                 }
             );
             request.status = reqStatus.newRequest;
             break;
 
-        case reqParaMap.metaData:
+        case reqParaMap.customData:
             request = new Request(
                 "",
                 values[reqParaMap.uId],
                 {
-                    "key": keys[reqParaMap.metaData],
-                    "value": values[reqParaMap.metaData]
+                    "key": keys[reqParaMap.customData],
+                    "value": values[reqParaMap.customData]
                 }
             );
             request.status = reqStatus.newRequest;

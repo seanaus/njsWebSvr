@@ -2,11 +2,11 @@ class Request {
     constructor(
         id = "",
         uId = "",
-        metaData = {}
+        customData = {}
     ) {
         this.id = id;
         this.uId = uId;
-        this.metaData = metaData;
+        this.customData = customData;
         this.status = -1;
     }
 }

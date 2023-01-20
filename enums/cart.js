@@ -6,7 +6,7 @@ const reqStatus = {
 const reqParaMap = {
     id: 0,
     uId: 1,
-    metaData: 2,
+    customData: 2,
 }
 module.exports = {
     reqStatus,

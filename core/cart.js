@@ -32,7 +32,7 @@ const create = async (request) => {
         const cart = new Cart(
             request.id,
             request.uId,
-            request.metaData,
+            request.customData,
             undefined,
             undefined,
             undefined,
@@ -59,7 +59,7 @@ const save = async (cart) => {
             {
                 id: cart.id,
                 uId: cart.uId,
-                metaData: cart.metaData,
+                customData: cart.customData,
                 items: cart.items.map((obj) => {
                     return Object.assign({}, obj);
                 }),
@@ -104,7 +104,7 @@ const load = async (id) => {
     return new Cart(
         doc.data().id,
         doc.data().uId,
-        doc.data().metaData,
+        doc.data().customData,
         doc.data().items,
         doc.data().delivery,
         doc.data().payment,

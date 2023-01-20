@@ -5,7 +5,7 @@ class Cart {
     constructor(
         id = "",
         uId = "",
-        metaData = {},
+        customData = {},
         items = [],
         delivery = new Delivery(),
         payment = new Payment(),
@@ -14,7 +14,7 @@ class Cart {
     ) {
         this.id = id;
         this.uId = uId;
-        this.metaData = metaData;
+        this.customData = customData;
         this.items = items;
         this.delivery = delivery;
         this.payment = payment;

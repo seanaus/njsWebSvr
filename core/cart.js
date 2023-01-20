@@ -7,6 +7,7 @@ const Cart = require("../models/cart");
 const CartItem = require("../models/cartItem");
 const Delivery = require("../models/delivery");
 const Payment = require("../models/payment");
+const Totals = require("../models/totals");
 const { reqStatus } = require('../enums/cart');
 
 const firestore = firebase.firestore();
@@ -35,7 +36,6 @@ const create = async (request) => {
             undefined,
             undefined,
             undefined,
-            undefined,
             new Date().toLocaleString('en-GB', { timeZone: 'UTC' })
         );
         if (await save(cart)) {
@@ -50,7 +50,7 @@ const create = async (request) => {
 }
 const save = async (cart) => {
 
-    calculateTotals(cart);
+    calcTotals(cart);
 
     const doc = await firestore.collection('cart').doc(cart.id);
     try {
@@ -80,8 +80,14 @@ const save = async (cart) => {
                     cart.payment.expiryDate,
                     cart.delivery.completed
                 )),
-                totalCount: cart.totalCount === undefined ? 0 : cart.totalCount,
-                totalCost: cart.totalCost === undefined ? 0 : cart.totalCost,
+                totals: Object.assign({}, new Totals(
+                    cart.totals.vatMetric,
+                    cart.totals.exVat,
+                    cart.totals.incVat
+
+                )),
+                // totalCount: cart.totalCount === undefined ? 0 : cart.totalCount,
+                // totalCost: cart.totalCost === undefined ? 0 : cart.totalCost,
                 created: cart.created
             },
             { merge: true }
@@ -101,8 +107,7 @@ const load = async (id) => {
         doc.data().items,
         doc.data().delivery,
         doc.data().payment,
-        doc.data().totalCost,
-        doc.data().totalCount,
+        doc.data().totals,
         doc.data().created
     )
 }
@@ -126,7 +131,7 @@ const addItem = async (cartId, productId) => {
         const item = new CartItem(product);
         cart.items = [...cart.items, item];
     } else {
-        cart.items[idx] = editQuantity(cart.items,idx,"+");
+        cart.items[idx] = editQuantity(cart.items, idx, "+");
     }
     if (await save(cart)) {
         return cart
@@ -167,29 +172,22 @@ const editQuantity = (items, idx, option) => {
 const deleteItem = (items, idx) => {
     items.splice(idx, 1);
 }
-const calculateTotals = (cart) => {
-    console.log(`VAT: ${JSON.stringify(config.vatMetric())}`);
-
-    cart.totalCount = calculateTotal(cart.items, "quantity");
-    cart.totalCost = calculateTotal(cart.items, "cost");
+const calcTotals = (cart) => {
+    cart.totals.count = Number(calcItemTotal(cart.items, "quantity"));
+    cart.totals.exVat = Number(calcItemTotal(cart.items, "cost"));
+    cart.totals.vatMetric = Number(config.vatMetric());
+    cart.totals.incVat = cart.totals.exVat + (cart.totals.exVat * cart.totals.vatMetric);
 }
-
-const calculateTotal = (items, option) => {
-
-    const aggregate = (total, value) => { 
-        return total + value 
-    } 
-
+const calcItemTotal = (items, option) => {
     if (items.length > 0) {
-        return items.map((item) => { 
-            return item[option] 
+        return items.map((item) => {
+            return item[option]
         }).reduce((total, value) => {
-            return total + value 
+            return total + value
         });
     } else {
         return 0
     }
-
 }
 module.exports = {
     cartMain: main,

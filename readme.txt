@@ -28,6 +28,18 @@ http://localhost:8080/user/gBsjs6d8SnOJScqU58d5Py5DXwC2
 
 
 POST END POINTS:
+****************************************************
+**             IN POSTMAN FOR FORMS               **
+****************************************************
+**                  SELECT POST                   **
+**                     BODY                       **
+**                     RAW                        **
+**                     JSON   (IMPORTANT!!)       **
+****************************************************
+* JSON STRING MUST START WITH '{' AND END WITH '}' *
+****************************************************
+
+
 ** Register new User **
 http://localhost:8080/register
 {
@@ -54,6 +66,42 @@ Example (http://localhost:8080/cart?id=&uId=Jtz6S5EpgZfjdSQaTaWdOs5ELXE2)
 
 http://localhost:8080/cart?id=&uId=&appId=
 Example (http://localhost:8080/cart?id=&uId=Jtz6S5EpgZfjdSQaTaWdOs5ELXE2&appId=APPID01)
+
+************************************
+** Update cart with delivery Info **
+************************************
+http://localhost:8080/cart-update/delivery-details/
+Example (http://localhost:8080/cart-update/delivery-details/CQmv2poW1GE9Pw15NKOm)
+{
+    "deliveryInfo" : {
+        "forename" : "Sean",
+        "surname" : "Austin",
+        "address1" : "17 Dawn Ave",
+        "address2" : "High Lane",
+        "town" : "Burslem",
+        "city" : "Stoke On Trent",
+        "county" : "Staffordshire",
+        "postcode" : "ST67JS",
+        "email" : "webaddress01@googlemail.com",
+        "telephone" : "01782660675",
+        "shippingOption" : "0"
+    }
+}
+
+************************************
+** Update cart with payment Info **
+************************************
+http://localhost:8080/cart-update/payment-details/
+Example (http://localhost:8080/cart-update/payment-details/CQmv2poW1GE9Pw15NKOm)
+{
+	"paymentInfo" :  {
+		"cardNo" : "1234123412341234",
+		"nameOnCard" : "Mr S Austin",
+		"csv" : "349",
+		"expiryDate" : "05/11/2029",
+		"completed" : "21/01/2023"
+	}
+}
 
 *****************
 ** add to cart **

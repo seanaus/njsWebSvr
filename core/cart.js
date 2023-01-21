@@ -9,6 +9,7 @@ const Delivery = require("../models/delivery");
 const Payment = require("../models/payment");
 const Totals = require("../models/totals");
 const { reqStatus } = require('../enums/cart');
+// const { getCart } = require("../controllers/cart");
 
 const firestore = firebase.firestore();
 
@@ -66,8 +67,8 @@ const save = async (cart) => {
                 delivery: Object.assign({}, new Delivery(
                     cart.delivery.forename,
                     cart.delivery.surname,
-                    cart.delivery.address01,
-                    cart.delivery.address02,
+                    cart.delivery.address1,
+                    cart.delivery.address2,
                     cart.delivery.town,
                     cart.delivery.city,
                     cart.delivery.county,
@@ -80,7 +81,7 @@ const save = async (cart) => {
                     cart.payment.nameOnCard,
                     cart.payment.csv,
                     cart.payment.expiryDate,
-                    cart.delivery.completed
+                    cart.payment.completed
                 )),
                 totals: Object.assign({}, new Totals(
                     cart.totals.vatMetric,
@@ -190,9 +191,60 @@ const calcItemTotal = (items, option) => {
         return 0
     }
 }
+const addCustomerInfo = async(id,data) => {
+    console.log("addCustomerInfo");
+    console.log(`REQ: ${JSON.stringify(data)}`);
+    const deliveryInfo = req.body.deliveryInfo;
+    const paymentInfo = req.body.paymentInfo;
+    return {}
+
+}
+const addDeliveryInfo = async(id, data) => {
+
+    let cart = await load(id);
+
+    cart.delivery.forename = data.deliveryInfo.forename;
+    cart.delivery.surname = data.deliveryInfo.surname;
+    cart.delivery.address1 = data.deliveryInfo.address1;
+    cart.delivery.address2 = data.deliveryInfo.address2;
+    cart.delivery.town = data.deliveryInfo.town;
+    cart.delivery.city = data.deliveryInfo.city;
+    cart.delivery.county = data.deliveryInfo.county;
+    cart.delivery.postcode = data.deliveryInfo.postcode;
+    cart.delivery.email = data.deliveryInfo.email;
+    cart.delivery.telephone = data.deliveryInfo.telephone;
+    cart.delivery.shippingOption = data.deliveryInfo.shippingOption;
+
+    if (await save(cart)) {
+        return cart
+    } else {
+        return {}
+    }
+
+}
+const addPaymentInfo = async(id, data) => {
+
+    let cart = await load(id);
+
+    cart.payment.cardNo = data.paymentInfo.cardNo;
+    cart.payment.nameOnCard = data.paymentInfo.nameOnCard;
+    cart.payment.csv = data.paymentInfo.csv;
+    cart.payment.expiryDate = data.paymentInfo.expiryDate;
+    cart.payment.completed = data.paymentInfo.completed;
+
+    if (await save(cart)) {
+        return cart
+    } else {
+        return {}
+    }
+
+}
 module.exports = {
     cartMain: main,
     saveCart: save,
     addCartItem: addItem,
-    delCartItem: removeItem
+    delCartItem: removeItem,
+    addCustomerInfo,
+    addDeliveryInfo,
+    addPaymentInfo
 }

@@ -9,8 +9,11 @@ const register = async (req, res, next) => {
         req.body.surname,
         req.body.email,
         req.body.password,
-        ""
+        "",
+        "",
     )
+    
+    console.log(`register: ${JSON.stringify(req.body)}`)
     const cred = await createUser(user);
     res.json(cred);
     next();

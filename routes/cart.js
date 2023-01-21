@@ -11,16 +11,13 @@ const {
 } = require("../controllers/cart");
 
 router.get("/cart", getCart);
-router.post("/cart-update/customer-details/:cartId", updateCustomerInfo);
-router.post("/cart-update/delivery-details/:cartId", updateDeliveryInfo);
-router.post("/cart-update/payment-details/:cartId", updatePaymentInfo );
+router.post("/editCart/customerDetails/:cartId", updateCustomerInfo);
+router.post("/editCart/deliveryDetails/:cartId", updateDeliveryInfo);
+router.post("/editCart/paymentDetails/:cartId", updatePaymentInfo );
 
-router.get("/cart/add-item/:cartId/:productId", addToCart);
-router.get("/cart/remove-item/:cartId/:productId", delFromCart);
-
-// router.post("/signIn/:option", signIn);
-// router.get("/product/:id", getProduct);
+router.get("/addCartItem/:cartId/:productId", addToCart);
+router.get("/delCartItem/:cartId/:productId", delFromCart);
 
 module.exports = {
-    routes: router,
+    routes: router
 }

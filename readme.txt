@@ -70,8 +70,8 @@ Example (http://localhost:8080/cart?id=&uId=Jtz6S5EpgZfjdSQaTaWdOs5ELXE2&appId=A
 ************************************
 ** Update cart with delivery Info **
 ************************************
-http://localhost:8080/cart-update/delivery-details/
-Example (http://localhost:8080/cart-update/delivery-details/CQmv2poW1GE9Pw15NKOm)
+http://localhost:8080/editCart/deliveryDetails/
+Example (http://localhost:8080/editCart/deliveryDetails/CQmv2poW1GE9Pw15NKOm)
 {
     "deliveryInfo" : {
         "forename" : "Sean",
@@ -91,8 +91,8 @@ Example (http://localhost:8080/cart-update/delivery-details/CQmv2poW1GE9Pw15NKOm
 ************************************
 ** Update cart with payment Info **
 ************************************
-http://localhost:8080/cart-update/payment-details/
-Example (http://localhost:8080/cart-update/payment-details/CQmv2poW1GE9Pw15NKOm)
+http://localhost:8080/editCart/paymentDetails/
+Example (http://localhost:8080/editCart/paymentDetails/CQmv2poW1GE9Pw15NKOm)
 {
 	"paymentInfo" :  {
 		"cardNo" : "1234123412341234",
@@ -106,24 +106,24 @@ Example (http://localhost:8080/cart-update/payment-details/CQmv2poW1GE9Pw15NKOm)
 *****************
 ** add to cart **
 *****************
-http://localhost:8080/cart-add/:cartId/:productId
+http://localhost:8080/addCartItem/:cartId/:productId
 Examples
     ** Add Item01 **
-    http://localhost:8080/cart-add/WamM8j32VjvS4w9GM0KV/57eY6zpRLJIrRYir1h33
+    http://localhost:8080/addCartItem/WamM8j32VjvS4w9GM0KV/57eY6zpRLJIrRYir1h33
 
     ** Add Item02 **
-    http://localhost:8080/cart-add/WamM8j32VjvS4w9GM0KV/99JiazVXiPqn6GOBdZRh
+    http://localhost:8080/addCartItem/WamM8j32VjvS4w9GM0KV/99JiazVXiPqn6GOBdZRh
 
 *******************
 ** del from cart **
 *******************
-http://localhost:8080/cart-remove/:cartId/:productId
+http://localhost:8080/delCartItem/:cartId/:productId
 Example
     ** Remove Item01 **
-    http://localhost:8080/cart-remove/WamM8j32VjvS4w9GM0KV/57eY6zpRLJIrRYir1h33
+    http://localhost:8080/delCartItem/WamM8j32VjvS4w9GM0KV/57eY6zpRLJIrRYir1h33
 
     ** Remove Item02 **
-    http://localhost:8080/cart-remove/WamM8j32VjvS4w9GM0KV/99JiazVXiPqn6GOBdZRh
+    http://localhost:8080/delCartItem/WamM8j32VjvS4w9GM0KV/99JiazVXiPqn6GOBdZRh
 
 
 

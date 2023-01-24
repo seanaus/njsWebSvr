@@ -3,16 +3,18 @@ class User {
         id,
         forename,
         surname,
+        displayName,
         email,
-        password,
+        verified,
         salt,
         role
     ) {
         this.id = id;
         this.forename = forename;
         this.surname = surname;
+        this.displayName = displayName;
         this.email = email;
-        this.password = password;
+        this.verified = verified;
         this.salt = salt;
         this.role = role;
     }

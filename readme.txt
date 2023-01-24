@@ -43,16 +43,17 @@ POST END POINTS:
 ** Register new User **
 http://localhost:8080/register
 {
-    "forename" : "Sean",
-    "surname" : "Austin",
-    "email" : "webaddress2@googlemail.com",
-    "password" : "Aus25031549"
+    "forename" : "Dave",
+    "surname" : "Jones",
+    "email" : "webaddress02@googlemail.com",
+    "password" : "p9nMuuwHFAwk23B8dsOPeDfDDaIuYQK",
+    "salt" : "$2a$10$.w2JLSmTZNQFMPykVvqeIe"
 }
 ** Sign In With existing User **
-http://localhost:8080/signIn/option (firebase || google, currenty only the 'firebase' option works, http://localhost:8080/signIn/firebase)
+http://localhost:8080/signIn
 {
-    "email" : "webaddress01@googlemail.com",
-    "password" : "Aus25031549"
+    "email" : "webaddress02@googlemail.com",
+    "password" : "$2a$10$.w2JLSmTZNQFMPykVvqeIep9nMuuwHFAwk23B8dsOPeDfDDaIuYQK"
 }
 
 **************

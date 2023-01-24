@@ -17,66 +17,37 @@ const createNew = async(req)=> {
     );
 
     const hashPass = req.body.password;
-    const userExists = await loadUser(undefined, user.email);
-    console.log(`USEREx: ${userExists}`);
-    if(userExists === undefined) {
-        const cred = await createUserWithEmailAndPassword(user.email, hashPass)
+    const usr = await loadUser(undefined, user.email);
+
+    if(usr === undefined) {
+        const cred = await createUserWithEmailAndPassword(user.email, hashPass);
         if(cred !== null && cred !== undefined && Object.keys(cred).length !== 0) {
             user.id = cred.user.uid;
-            // console.log(`USER02: ${JSON.stringify(user)}`);
-            const response = await saveUser(user); 
-            if(response)
-                console.log("response");
-                console.log(response);
+            const response = await saveUser(user)
+            if(response === false){
+                user.id = -1;
+            } 
         }
-
-        // if(!await response) 
-        //     user.id = undefined
-    }
+    } 
     return user
 }
 const signIn = async(req)=> {
-    const user = await loadUser(undefined, req.email);
+    const user = await loadUser(undefined, req.body.email);
     if(user) {
-        if(await signInUserWithEmailAndPassword(req.email, req.hashPass)) {
+        if(await signInUserWithEmailAndPassword(req.body.email, req.body.password)) {
             return user
         } else {
-            return new User(undefined,undefined,undefined,undefined,req.email,undefined,undefined,undefined)
+            return new User("-1","","","",req.body.email,false,"","standard")
         }
     } else {
-        return new User(undefined,undefined,undefined,undefined,req.email,undefined,undefined,undefined)
+        return new User("-1","","","",req.body.email,false,"","standard")
     }
 }
-// const userExists = async(id, email)=> {
-//     if(await loadUser(id, email) === undefined) {
-//         return true
-//     } else {
-//         return false
-//     }
-// }
 const loadUser = async (id = undefined, email = undefined) => { 
-    // const users = await loadUsers();
-    // return users.findIndex(usr => {
-    //     return id === undefined ? usr.email === email : usr.id === id;
-    // });
-    let idx = -1;
     const users = await loadUsers();
-
-    if(id !== undefined && email === undefined) {
-        idx = users.findIndex(usr => {
-            return usr.id == id
-        })
-    }
-    if(id === undefined && email !== undefined) {
-        idx = users.findIndex(usr => {
-            return usr.email == email
-        })
-    }
-    if(idx > -1) {
-        return users[idx]
-    } else {
-        return undefined
-    }
+    return users.find(usr => {
+        return id === undefined ? usr.email === email : usr.id === id;
+    });
 }
 const loadUsers = async () => {
     let userArray = [];
@@ -93,6 +64,7 @@ const loadUsers = async () => {
                     doc.id,
                     doc.data().forename,
                     doc.data().surname,
+                    doc.data().displayName,
                     doc.data().email,
                     doc.data().verified,
                     doc.data().salt,
@@ -108,27 +80,22 @@ const loadUsers = async () => {
 }
 const saveUser = async(user) => {
     try {
-        if(await firestore.collection("users").doc(user.id).set(userMeta(user))) {
-            return true
-        } else {
-            return false
-        }
-        // return await firestore.collection("users").doc(user.id).set(userMeta(user));
+        const doc = await firestore.collection("users").doc(user.id);
+        await doc.set({
+            id: user.id,
+            forename: user.forename,
+            surname: user.surname,
+            displayName: user.displayName,
+            email: user.email,
+            verified: user.verified,
+            salt: user.salt,
+            role: user.role
+        });
+        return true
     } catch (error) {
         console.log(error.message);
         return false
     }
-}
-const userMeta = (user) => {
-    return {
-        id: user.id,
-        forename: user.forename,
-        surname: user.surname,
-        email: user.email,
-        verified: user.verified,
-        salt: user.salt,
-        role: user.role
-    };
 }
 module.exports = {
     loadUser,

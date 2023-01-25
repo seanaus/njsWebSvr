@@ -5,6 +5,8 @@ const HOST = process.env.HOST || "localhost";
 const URL = `http://${process.env.HOST}:${process.env.PORT}`;
 const PRODUCTION = process.env.PRODUCTION;
 const VATMETRIC = process.env.VATMETRIC;
+const ADMIN_MAIL = process.env.ADMIN_EMAIL || "admin01@googlemail.com";
+const ADMIN_HASH = process.env.ADMIN_HASH || "$2a$10$4SbIkdVXU0x.85H6PQ2qZuC7LijIgOGPBl1wZFno4sW.gcEkQ6mWW";
 const FIREBASE_CONFIG = {
   apiKey: process.env.API_KEY,
   authDomain: process.env.AUTH_DOMAIN,
@@ -24,7 +26,6 @@ const vatMetric = () => {
   }
   
 }
-
 const log = () => {
   console.log(`port: ${PORT}`);
   console.log(`host: ${HOST}`);
@@ -39,6 +40,8 @@ const log = () => {
   console.log(`measurementId: ${FIREBASE_CONFIG.measurementId}`);
   console.log(`production: ${PRODUCTION}`);
   console.log(`Vat Metric: ${vatMetric()}`);
+  console.log(`Admin Mail: ${ADMIN_MAIL}`);
+  console.log(`Admin Hash: ${ADMIN_HASH}`);
 }
 module.exports = {
   port: PORT,
@@ -46,6 +49,8 @@ module.exports = {
   url: URL,
   firebaseConfig: FIREBASE_CONFIG,
   production: PRODUCTION,
+  adminMail: ADMIN_MAIL,
+  adminHash: ADMIN_HASH,
   vatMetric,
   log
 }

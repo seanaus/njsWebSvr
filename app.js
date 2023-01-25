@@ -16,7 +16,7 @@ app.use(methodOverride("_method"));
 app.set('view engine', 'ejs');
 
 // Custom Middleware
-// app.use(connect);
+app.use(connect);
 // app.use("/", authRoutes.routes);
 app.use("/", userRoutes.routes);
 app.use("/", productRoutes.routes);

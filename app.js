@@ -8,6 +8,7 @@ const productRoutes = require("./routes/product");
 const cartRoutes = require("./routes/cart");
 const methodOverride = require("method-override");
 const { connect } = require("./middleware/auth");
+let authUser = {};
 
 // Middleware
 app.use(express.json());
@@ -16,7 +17,10 @@ app.use(methodOverride("_method"));
 app.set('view engine', 'ejs');
 
 // Custom Middleware
-app.use(connect);
+app.use(connect, (req,res,next)=> {
+  authUser = req.body.auth;
+  next();
+});
 // app.use("/", authRoutes.routes);
 app.use("/", userRoutes.routes);
 app.use("/", productRoutes.routes);
@@ -24,5 +28,4 @@ app.use("/", cartRoutes.routes);
 
 app.listen(config.port, () => {
   console.log(`App listening on ${config.port}.......`);
-
 });

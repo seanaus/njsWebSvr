@@ -5,6 +5,7 @@ const path = require("path");
 const favicon = require("serve-favicon");
 const handlebars = require('express-handlebars');
 const config = require("./config");
+const routes = require("./routes/routes");
 const userRoutes = require("./routes/user");
 const productRoutes = require("./routes/product");
 const cartRoutes = require("./routes/cart");
@@ -46,11 +47,20 @@ app.use(connect, (req, res, next) => {
   next();
 });
 
-app.get('/', (req, res) => {
-  res.render('home');
-});
+// app.get('/', (req, res) => {
+//   res.redirect('/home');
+// });
+// app.get('/home', (req, res) => {
+//   res.render('home');
+// });
+// app.get('/register', (req, res) => {
+//   res.render('register');
+// });
+// app.get('/signIn', (req, res) => {
+//   res.render('signIn');
+// });
 
-
+app.use("/", routes.routes);
 app.use("/", userRoutes.routes);
 app.use("/", productRoutes.routes);
 app.use("/", cartRoutes.routes);

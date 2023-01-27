@@ -1,6 +1,9 @@
 INSTALL
 npm install express
-npm install ejs 
+npm install serve-favicon
+npm install material-icons@latest
+npm install @fontsource/material-icons
+npm install express-handlebars --save
 npm install dotenv
 npm install -g nodemon
 npm install bcrypt

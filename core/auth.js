@@ -1,11 +1,9 @@
 "use strict";
 const firebase = require("../db");
-// let User = require("../models/user");
-
 const createUserWithEmailAndPassword = async (email, password) => {
   let cred = {};
   try {
-    cred =  await firebase.auth().createUserWithEmailAndPassword(email, password);
+    cred = await firebase.auth().createUserWithEmailAndPassword(email, password);
   } catch (err) {
     console.log(err);
   }

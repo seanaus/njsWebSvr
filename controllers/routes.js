@@ -4,7 +4,7 @@
 //     next();
 // });
 const renderHome = ((req, res, next) => {
-    res.redirect('/home');
+    res.render('home');
     next();
 });
 const renderRegister = ((req, res, next) => {

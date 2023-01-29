@@ -42,25 +42,31 @@ app.use(
 );
 
 // Custom Middleware
-app.use(connect, (req, res, next) => {
-  authUser = req.body.auth;
+app.use(async(req, res, next) => {
+  if (Object.keys(authUser).length === 0) {
+    await connect(req, res);
+    authUser = req.body.auth;
+    console.log(`!!!!${JSON.stringify(authUser)}`)
+  } else {
+    console.log("CONNECTED")
+  }
   next();
 });
 
-// app.get('/', (req, res) => {
-//   res.redirect('/home');
-// });
-// app.get('/home', (req, res) => {
-//   res.render('home');
-// });
-// app.get('/register', (req, res) => {
-//   res.render('register');
-// });
-// app.get('/signIn', (req, res) => {
-//   res.render('signIn');
-// });
+app.get('/', (req, res) => {
+  res.redirect('/home');
+});
+app.get('/home', (req, res) => {
+  res.render('home');
+});
+app.get('/register', (req, res) => {
+  res.render('register');
+});
+app.get('/signIn', (req, res) => {
+  res.render('signIn');
+});
 
-app.use("/", routes.routes);
+// app.use("/", routes.routes);
 app.use("/", userRoutes.routes);
 app.use("/", productRoutes.routes);
 app.use("/", cartRoutes.routes);

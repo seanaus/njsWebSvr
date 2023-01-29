@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 const { renderHome, renderRegister, renderSignIn } = require("../controllers/routes");
 
-router.get("/", renderHome);
+// router.get("/", renderHome);
 router.get("/home", renderHome);
 router.get("/register", renderRegister);
 router.get("/signIn", renderSignIn);

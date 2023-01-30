@@ -8,11 +8,6 @@ const connect = async (req, res) => {
             password: config.adminHash
         }
     });
-    //const auth = {
-    //    key1 : "value1",
-    //    key2: "value2"
-    //}
-    // console.log(auth);
     req.body.auth = auth
 }
 

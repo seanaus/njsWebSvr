@@ -1,3 +1,53 @@
+* {
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    box-sizing: border-box;
+    font-family: Arial, Verdana, Helvetica, Tahoma, Trebuchet MS, Times New Roman,
+      Georgia, Garamond, Courier New, Brush Script MT;
+    --themeBgColorLight: #333;
+    --themeBgColorDark: #111;
+    --themeFColor: #fff;
+    --themeBtnMskColor: #454a50;
+}
+html {
+      height: 100%;
+}
+body {
+    height: 100%;
+    background-color: var(--themeBgColorLight);
+    color: var(--themeFColor);
+}
+input[type = text] {
+    width: 100%;
+    color: var(--themeFColor);
+    border: none;
+    background: transparent;
+    margin: 5px 0px 0px 0px;
+    padding: 5px;
+    border-bottom: 1px solid var(--themeBgColorDark);
+}
+input[type = text]:focus {
+    outline: none;
+    /* background-color: rgb(255,255,255,0.6); */
+}
+input[type = submit] {
+    background-color: var(--themeBtnMskColor);
+    color: var(--themeFColor);
+    border: none;
+    padding: 8px 12px;
+}
+input[type = submit]:hover {
+    cursor: pointer;
+}
+.heading {
+    text-align: center;
+    background-color: var(--themeBgColorDark);
+    padding: 10px 0px;
+}
+
+
+
 li {
     font-size: 2rem;
     width: 300px;
@@ -13,3 +63,4 @@ li {
 .toplaner {
     background-color: #ffea00
 }
+

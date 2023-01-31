@@ -5,10 +5,14 @@ const renderHome = (req, res) => {
     });
 }
 const renderRegister = (req, res) => {
-    res.render('register');
+    res.render('register', {
+        title: "Potteries Jaguar Spares"
+    });
 };
 const renderSignIn = (req, res) => {
-    res.render('signIn');
+    res.render('signIn', {
+        title: "Potteries Jaguar Spares"
+    });
 };
 module.exports = {
     renderHome,

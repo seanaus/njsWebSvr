@@ -13,6 +13,7 @@ const compare = async (raw, encrypted) => {
     }
 };
 const hash = async (password, salt = undefined) => {
+    
     try {
         if (salt === undefined) {
             salt = await genSalt();  

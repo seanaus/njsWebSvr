@@ -1,10 +1,14 @@
 "use strict";
 const firebase = require("../db");
+const { genSalt, hash } = require("../core/encrypt");
 const { createUserWithEmailAndPassword, signInUserWithEmailAndPassword } = require("../core/auth");
 const User = require("../models/user");
 const firestore = firebase.firestore();
 
-const createNew = async(req)=> {
+const createNew = async (req) => {
+
+    const salt = req.body.salt = undefined ? await genSalt(10) : req.body.salt
+
     let user = new User(
         "-1", 
         req.body.forename,
@@ -12,11 +16,11 @@ const createNew = async(req)=> {
         `${ req.body.forename} ${req.body.surname}`,
         req.body.email, 
         false, 
-        req.body.salt, 
+        salt, 
         "standard"
     );
 
-    const hashPass = req.body.password;
+    const hashPass = await hash(req.body.password, salt);
     const usr = await loadUser(undefined, user.email);
 
     if(usr === undefined) {

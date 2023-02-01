@@ -1,5 +1,5 @@
 "use strict";
-const { genSalt } = require("bcrypt");
+// const { genSalt, hash } = require("../core/encrypt");
 // const { loadUser, loadUsers, saveUser } = require("../core/user");
 const { createNew, signIn } = require("../core/user");
 
@@ -22,27 +22,15 @@ const getUsers = async (req, res, next) => {
     next();
 };
 
-const register = async (req, res, next) => {
+const register = async (req, res) => {
     try {
-        // const password = await encrypt(req.body.password);
-        const salt = await genSalt(10);
-        // req.body = {req.body,...{"salt": salt}}
-        const data = {
-            body : {
-                forename : req.body.forename,
-                surname : req.body.surname,
-                email : req.body.email, 
-                password : req.body.password, 
-                salt : salt
-            }
-        }
-        const user = await createNew(data);
-        // console.log(`CONTROLLER-REGISTER: ${JSON.stringify(user)}`);
-
-      } catch (error) {
+        const user = await createNew(req);
+        console.log(`CONTROLLER-REGISTER: ${JSON.stringify(user)}`);
+        return true
+    } catch (error) {
         console.log(error);
-      }
-      next();
+        return false
+    }
 }
 
 module.exports = {

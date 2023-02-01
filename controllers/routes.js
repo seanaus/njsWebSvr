@@ -4,7 +4,7 @@ const renderHome = (req, res) => {
         title: "Potteries Jaguar Spares"
     });
 }
-const renderRegister = (req, res) => {
+const renderRegister = async (req, res) => {
     res.render('register', {
         title: "Potteries Jaguar Spares"
     });

@@ -6,7 +6,7 @@ const URL = `http://${process.env.HOST}:${process.env.PORT}`;
 const PRODUCTION = process.env.PRODUCTION;
 const VATMETRIC = process.env.VATMETRIC;
 const ADMIN_MAIL = process.env.ADMIN_EMAIL || "admin01@googlemail.com";
-const ADMIN_HASH = process.env.ADMIN_HASH || "$2a$10$4SbIkdVXU0x.85H6PQ2qZuC7LijIgOGPBl1wZFno4sW.gcEkQ6mWW";
+const ADMIN_HASH = process.env.ADMIN_HASH || "$2a$10$4SbIkdVXU0x.85H6PQ2qZudHljCZEi42.aAgnReTopjCstHK4GUa.";
 const FIREBASE_CONFIG = {
   apiKey: process.env.API_KEY,
   authDomain: process.env.AUTH_DOMAIN,

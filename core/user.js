@@ -3,12 +3,13 @@ const firebase = require("../db");
 const { genSalt, hash } = require("../core/encrypt");
 const { createUserWithEmailAndPassword, signInUserWithEmailAndPassword } = require("../core/auth");
 const User = require("../models/user");
+const config = require("../config");
 const firestore = firebase.firestore();
 
 const createNew = async (req) => {
 
-    const salt = req.body.salt = undefined ? await genSalt(10) : req.body.salt
-
+    const salt = req.body.salt === undefined ? await genSalt(10) : req.body.salt
+    
     let user = new User(
         "-1", 
         req.body.forename,
@@ -36,9 +37,12 @@ const createNew = async (req) => {
     return user
 }
 const signIn = async(req)=> {
+
     const user = await loadUser(undefined, req.body.email);
+    const password = await getPassword(user,req.body.password);
+
     if(user) {
-        if(await signInUserWithEmailAndPassword(req.body.email, req.body.password)) {
+        if(await signInUserWithEmailAndPassword(user.email, password)) {
             return user
         } else {
             return new User("-1","","","",req.body.email,false,"","standard")
@@ -101,10 +105,15 @@ const saveUser = async(user) => {
         return false
     }
 }
+const getPassword = async (user,password) => {
+    return user.email !== config.adminMail
+        ? await hash(password,user.salt) 
+        : config.adminHash;
+}
 module.exports = {
     loadUser,
     loadUsers,
     saveUser,
-    createNew,
-    signIn
+    createUser: createNew,
+    signInUser: signIn
 }

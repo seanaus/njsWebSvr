@@ -1,16 +1,5 @@
 "use strict";
-// const { genSalt, hash } = require("../core/encrypt");
-// const { loadUser, loadUsers, saveUser } = require("../core/user");
-const { createNew, signIn } = require("../core/user");
-
-// const register = async (req, res, next) => {
-//     res.json(await createNew(req));
-//     next();
-// }
-// const logIn = async (req, res, next) => {
-//     res.json(await signIn(req));
-//     next();
-// }
+const { createUser, signInUser } = require("../core/user");
 const getUser = async (req, res, next) => {
     const user = await loadUser(req.params.id);
     res.json(user);
@@ -21,20 +10,23 @@ const getUsers = async (req, res, next) => {
     res.json(users);
     next();
 };
-
 const register = async (req, res) => {
-    try {
-        const user = await createNew(req);
-        console.log(`CONTROLLER-REGISTER: ${JSON.stringify(user)}`);
-        return true
-    } catch (error) {
-        console.log(error);
-        return false
+        const user = await createUser(req);
+        if(user.id === "-1") {
+            res.redirect("signIn");
+        } else {
+            res.redirect("home");
+        }
+}
+const signIn = async (req, res) => {
+    const user = await signInUser(req);
+    if(user.id !== "-1") {
+        res.redirect("home");
     }
 }
-
 module.exports = {
     getUsers,
     getUser,
-    register
+    register,
+    signIn
 };

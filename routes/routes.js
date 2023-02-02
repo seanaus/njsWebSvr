@@ -6,9 +6,8 @@ const { register, signIn } = require("../controllers/user");
 
 router.get(["/","/home"], renderHome);
 router.get("/register", renderRegister);
-router.get("/signIn", renderSignIn);
-
 router.post("/register", register);
+router.get("/signIn", renderSignIn);
 router.post("/signIn", signIn);
 
 module.exports = {

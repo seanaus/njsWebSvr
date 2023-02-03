@@ -20,13 +20,8 @@ const register = async (req, res) => {
 }
 const signIn = async (req, res) => {
     const user = await signInUser(req);
-    const auth = {
-        id: user.id,
-        displayName: user.displayName,
-        email:user.email,
-        role: user.role
-    }
-    res.redirect(`/home?auth=${JSON.stringify(auth)}`);
+
+    res.redirect(`/home?id=${user.id}&displayName=${user.displayName}&email=${user.email}&role=${user.role}`);
 }
 module.exports = {
     getUsers,

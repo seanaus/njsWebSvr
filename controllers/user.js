@@ -11,18 +11,22 @@ const getUsers = async (req, res, next) => {
     next();
 };
 const register = async (req, res) => {
-        const user = await createUser(req);
-        if(user.id === "-1") {
-            res.redirect("signIn");
-        } else {
-            res.redirect("home");
-        }
+    const user = await createUser(req);
+    if (user.id === "-1") {
+        res.redirect("signIn");
+    } else {
+        res.redirect(`/home?auth=${JSON.stringify(user)}`);
+    }
 }
 const signIn = async (req, res) => {
     const user = await signInUser(req);
-    if(user.id !== "-1") {
-        res.redirect("home");
+    const auth = {
+        id: user.id,
+        displayName: user.displayName,
+        email:user.email,
+        role: user.role
     }
+    res.redirect(`/home?auth=${JSON.stringify(auth)}`);
 }
 module.exports = {
     getUsers,

@@ -1,16 +1,18 @@
 "use strict";
-const renderHome = (req, res) => {
-    res.render('home', {
-        title: "Potteries Jaguar Spares"
+const { loadComponent } = require("../core/component");
+
+const renderHome = async(req, res) => {
+    res.render('pages/home', {
+        navbar: await loadComponent("navbar")
     });
 }
 const renderRegister = async (req, res) => {
-    res.render('register', {
+    res.render('pages/register', {
         title: "Potteries Jaguar Spares"
     });
 };
 const renderSignIn = (req, res) => {
-    res.render('signIn', {
+    res.render('pages/signIn', {
         title: "Potteries Jaguar Spares"
     });
 };

@@ -7,7 +7,8 @@ class User {
         email,
         verified,
         salt,
-        role
+        role,
+        auth
     ) {
         this.id = id;
         this.forename = forename;
@@ -17,6 +18,7 @@ class User {
         this.verified = verified;
         this.salt = salt;
         this.role = role;
+        this.auth = auth;
     }
 
 }

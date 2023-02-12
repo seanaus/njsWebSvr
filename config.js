@@ -3,10 +3,13 @@ require("dotenv").config();
 const PORT = process.env.PORT || 8080;
 const HOST = process.env.HOST || "localhost";
 const URL = `http://${process.env.HOST}:${process.env.PORT}`;
-const PRODUCTION = process.env.PRODUCTION;
-const VATMETRIC = process.env.VATMETRIC;
+const PRODUCTION = process.env.PRODUCTION  || true;
+const VATMETRIC = process.env.VATMETRIC || 0.2;
 const ADMIN_MAIL = process.env.ADMIN_EMAIL || "admin01@googlemail.com";
 const ADMIN_HASH = process.env.ADMIN_HASH || "$2a$10$4SbIkdVXU0x.85H6PQ2qZudHljCZEi42.aAgnReTopjCstHK4GUa.";
+const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
+const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
+const TOKEN_LIFE_SPAN = process.env.TOKEN_LIFE_SPAN || "5m";
 const FIREBASE_CONFIG = {
   apiKey: process.env.API_KEY,
   authDomain: process.env.AUTH_DOMAIN,
@@ -42,6 +45,9 @@ const log = () => {
   console.log(`Vat Metric: ${vatMetric()}`);
   console.log(`Admin Mail: ${ADMIN_MAIL}`);
   console.log(`Admin Hash: ${ADMIN_HASH}`);
+  console.log(`Access Token Secret: ${ACCESS_TOKEN_SECRET}`);
+  console.log(`Refresh Token Secret:: ${REFRESH_TOKEN_SECRET}`);
+  console.log(`Token Life Span: ${TOKEN_LIFE_SPAN}`);
 }
 module.exports = {
   port: PORT,
@@ -51,6 +57,9 @@ module.exports = {
   production: PRODUCTION,
   adminMail: ADMIN_MAIL,
   adminHash: ADMIN_HASH,
+  accessTokenSecret: ACCESS_TOKEN_SECRET,
+  refreshTokenSecret: REFRESH_TOKEN_SECRET,
+  tokenLifeSpan: TOKEN_LIFE_SPAN,
   vatMetric,
   log
 }

@@ -9,10 +9,21 @@ npm install -g nodemon
 npm install bcrypt
 npm init (Creates Package.json) add in "start": "nodemon app.js" 
 npm install method-override (ensure post etc work)
+npm i jsonwebtoken
 
-TO RUN
+***************************************************************************************************************************************
+** TO CREATE JSON WEB TOKEN SECRET KEYS **
+***************************************************************************************************************************************
+** Type 'node' in terminal to get the $node terminal and execute the below code twice to generate the 2 secret keys. **
+>> require('crypto').randomBytes(64).toString('hex')
+>> Add resulting keys to .env cofig file.
+********************************************************* EXAMPLE *********************************************************************
+ACCESS_TOKEN_SECRET = d603e5c17377687c8d12fb130258c14df301fffbd466140c0e165ec994e4b9f343202bc68a922f815df27876b542d8b4578dfd2c55b3e8fed405dab1984041b5
+REFRESH_TOKEN_SECRET = 41f990fa73c74624cab1299f6ebf915d69b52f5c039a244d29f74327c11bbe2d82b4fbcf8bf5d637cdc9f7ec44683afaabf4550756ee9d1142db1fa9cecb5af6
+***************************************************************************************************************************************
+
+** TO RUN **
 node app.js || npm start if added to package.json for scripts - "start": "nodemon app.js" (npm install nodemon)
-
 
 ***************************************************************************************************************************************
 *                                                                                                                                     *

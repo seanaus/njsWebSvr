@@ -5,6 +5,8 @@ const { createUserWithEmailAndPassword, signInUserWithEmailAndPassword } = requi
 const User = require("../models/user");
 const config = require("../config");
 const firestore = firebase.firestore();
+const { tokenType } = require("../enums/jwt");
+const { getToken, verifyToken } = require("../core/jwt")
 
 const createNew = async (req) => {
 
@@ -18,7 +20,8 @@ const createNew = async (req) => {
         req.body.email, 
         false, 
         salt, 
-        "standard"
+        "standard",
+        ""
     );
 
     const hashPass = await hash(req.body.password, salt);
@@ -28,6 +31,7 @@ const createNew = async (req) => {
         const cred = await createUserWithEmailAndPassword(user.email, hashPass);
         if(cred !== null && cred !== undefined && Object.keys(cred).length !== 0) {
             user.id = cred.user.uid;
+            user.auth = getToken(user,tokenType.refresh);
             const response = await saveUser(user)
             if(response === false){
                 user.id = -1;
@@ -76,7 +80,8 @@ const loadUsers = async () => {
                     doc.data().email,
                     doc.data().verified,
                     doc.data().salt,
-                    doc.data().role
+                    doc.data().role,
+                    doc.data().auth
                 );
                 userArray = [...userArray, user]
             });
@@ -97,7 +102,8 @@ const saveUser = async(user) => {
             email: user.email,
             verified: user.verified,
             salt: user.salt,
-            role: user.role
+            role: user.role,
+            auth: user.auth
         });
         return true
     } catch (error) {

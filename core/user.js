@@ -1,12 +1,14 @@
 "use strict";
 const firebase = require("../db");
-const { genSalt, hash } = require("../core/encrypt");
-const { createUserWithEmailAndPassword, signInUserWithEmailAndPassword } = require("../core/auth");
+const { genSalt, hash } = require("./encrypt");
+const { createUserWithEmailAndPassword, signInUserWithEmailAndPassword } = require("./auth");
 const User = require("../models/user");
 const config = require("../config");
+const Cache = require("../models/cache");
+const { loadCache, saveCache} = require("../core/cache");
 const firestore = firebase.firestore();
 const { tokenType } = require("../enums/jwt");
-const { getToken, verifyToken } = require("../core/jwt")
+const { getToken, verifyToken } = require("./jwt")
 
 const createNew = async (req) => {
 
@@ -30,7 +32,13 @@ const createNew = async (req) => {
         const cred = await createUserWithEmailAndPassword(user.email, hashPass);
         if(cred !== null && cred !== undefined && Object.keys(cred).length !== 0) {
             user.id = cred.user.uid;
-            user.auth = getToken(user,tokenType.refresh);
+            // user.auth = getToken(user,tokenType.refresh);
+            const authCache = new Cache("auth");
+            const refreshToken = getToken(user.id,tokenType.refresh);
+            console.log(`REFRESH TOKEN: ${refreshToken}`);
+            authCache.add(refreshToken)
+            console.log(`AUTH CACHE: ${JSON.stringify(authCache)}`);
+            await saveCache(authCache)
             const response = await saveUser(user)
             if(response === false){
                 user.id = -1;

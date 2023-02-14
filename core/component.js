@@ -1,5 +1,5 @@
 "use strict";
-const config = require("../config");
+// const config = require("../config");
 const firebase = require("../db");
 const Component = require("../models/component");
 const firestore = firebase.firestore();

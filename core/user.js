@@ -20,8 +20,7 @@ const createNew = async (req) => {
         req.body.email, 
         false, 
         salt, 
-        "standard",
-        ""
+        "standard"
     );
 
     const hashPass = await hash(req.body.password, salt);
@@ -80,8 +79,7 @@ const loadUsers = async () => {
                     doc.data().email,
                     doc.data().verified,
                     doc.data().salt,
-                    doc.data().role,
-                    doc.data().auth
+                    doc.data().role
                 );
                 userArray = [...userArray, user]
             });
@@ -102,8 +100,7 @@ const saveUser = async(user) => {
             email: user.email,
             verified: user.verified,
             salt: user.salt,
-            role: user.role,
-            auth: user.auth
+            role: user.role
         });
         return true
     } catch (error) {

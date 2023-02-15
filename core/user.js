@@ -5,64 +5,66 @@ const { createUserWithEmailAndPassword, signInUserWithEmailAndPassword } = requi
 const User = require("../models/user");
 const config = require("../config");
 const Cache = require("../models/cache");
-const { loadCache, saveCache} = require("../core/cache");
+const { loadCache, saveCache } = require("../core/cache");
 const firestore = firebase.firestore();
 const { tokenType } = require("../enums/jwt");
-const { getToken, verifyToken } = require("./jwt")
+const { getToken, verifyToken, cacheToken } = require("./jwt")
 
 const createNew = async (req) => {
 
     const salt = req.body.salt === undefined ? await genSalt(10) : req.body.salt
-    
+
     let user = new User(
-        "-1", 
+        "-1",
         req.body.forename,
         req.body.surname,
-        `${ req.body.forename} ${req.body.surname}`,
-        req.body.email, 
-        false, 
-        salt, 
+        `${req.body.forename} ${req.body.surname}`,
+        req.body.email,
+        false,
+        salt,
         "standard"
     );
 
     const hashPass = await hash(req.body.password, salt);
     const usr = await loadUser(undefined, user.email);
 
-    if(usr === undefined) {
+    if (usr === undefined) {
         const cred = await createUserWithEmailAndPassword(user.email, hashPass);
-        if(cred !== null && cred !== undefined && Object.keys(cred).length !== 0) {
+        if (cred !== null && cred !== undefined && Object.keys(cred).length !== 0) {
             user.id = cred.user.uid;
             // user.auth = getToken(user,tokenType.refresh);
-            const authCache = new Cache("auth");
-            const refreshToken = getToken(user.id,tokenType.refresh);
-            console.log(`REFRESH TOKEN: ${refreshToken}`);
-            authCache.add(refreshToken)
-            console.log(`AUTH CACHE: ${JSON.stringify(authCache)}`);
-            await saveCache(authCache)
+            // const authCache = new Cache("auth");
+            const data = getToken(user.id, tokenType.refresh);
+            console.log(`REFRESH TOKEN: ${data}`);
+            await cacheToken(data);
+            // console.log(`REFRESH TOKEN: ${refreshToken}`);
+            // authCache.add(refreshToken)
+            // console.log(`AUTH CACHE: ${JSON.stringify(authCache)}`);
+            // await saveCache(authCache)
             const response = await saveUser(user)
-            if(response === false){
+            if (response === false) {
                 user.id = -1;
-            } 
+            }
         }
-    } 
+    }
     return user
 }
-const signIn = async(req)=> {
+const signIn = async (req) => {
 
     const user = await loadUser(undefined, req.body.email);
-    const password = await getPassword(user,req.body.password);
+    const password = await getPassword(user, req.body.password);
 
-    if(user) {
-        if(await signInUserWithEmailAndPassword(user.email, password)) {
+    if (user) {
+        if (await signInUserWithEmailAndPassword(user.email, password)) {
             return user
         } else {
-            return new User("-1","","","",req.body.email,false,"","standard")
+            return new User("-1", "", "", "", req.body.email, false, "", "standard")
         }
     } else {
-        return new User("-1","","","",req.body.email,false,"","standard")
+        return new User("-1", "", "", "", req.body.email, false, "", "standard")
     }
 }
-const loadUser = async (id = undefined, email = undefined) => { 
+const loadUser = async (id = undefined, email = undefined) => {
     const users = await loadUsers();
     return users.find(usr => {
         return id === undefined ? usr.email === email : usr.id === id;
@@ -97,7 +99,7 @@ const loadUsers = async () => {
     }
     return userArray;
 }
-const saveUser = async(user) => {
+const saveUser = async (user) => {
     try {
         const doc = await firestore.collection("users").doc(user.id);
         await doc.set({
@@ -116,9 +118,9 @@ const saveUser = async(user) => {
         return false
     }
 }
-const getPassword = async (user,password) => {
+const getPassword = async (user, password) => {
     return user.email !== config.adminMail
-        ? await hash(password,user.salt) 
+        ? await hash(password, user.salt)
         : config.adminHash;
 }
 module.exports = {

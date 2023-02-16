@@ -4,7 +4,7 @@ const firebase = require("../db");
 const Cache = require("../models/cache");
 const firestore = firebase.firestore();
 const addItem = async (id, item) => {
-    let cache = await load(id);
+    let cache = await get(id);
     if (cache.items !== undefined) {
         if (!cache.items.includes(item)) {
             cache.items = [...cache.items, item];
@@ -25,19 +25,20 @@ const removeItem = async (id, item) => {
     }
     return cache
 }
-const load = async (id) => {
+const get = async (id) => {
     try {
-        console.log(`load: id: ${id}`);
-
-        const doc = await firestore.collection('caches').doc(id).get()
-        if (doc === undefined) {
-            console.log("No cache data found");
+        const docRef = firestore.collection('cache').doc(id);
+        const doc = await docRef.get();
+        if (!doc.exists) {
             return new Cache(id)
         } else {
-            const cache = new Cache(id)
-            doc.data().items.forEach((item) => {
-                cache.items = [...cache.items, item];
-            })
+            const cache = new Cache(id);
+            const docData = doc.data() ?? {};
+            if(docData?.items?.length) {
+                docData?.items.forEach((item) => {
+                    cache.items = [...cache.items, item];
+                })
+            }
             return cache;
         }
     } catch (error) {
@@ -45,10 +46,10 @@ const load = async (id) => {
         return {}
     }
 }
-const save = async (cache) => {
+const save = async (data) => {
     try {
-        const doc = await firestore.collection("caches").doc(cache.id);
-        await doc.set({ items: cache.items }, { merge: true });
+        const doc = await firestore.collection("cache").doc(data.id);
+        await doc.set({ items: data.items }, { merge: true });
         return true
     } catch (error) {
         console.log(error.message);
@@ -56,7 +57,8 @@ const save = async (cache) => {
     }
 }
 module.exports = {
-    loadCache: load,
-    saveCache: save,
-    addToCache: addItem
+    get,
+    save,
+    addItem,
+    removeItem
 }

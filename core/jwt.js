@@ -1,18 +1,17 @@
 const config = require("../config");
-const { tokenType } = require("../enums/jwt");
-const { loadCache, saveCache, addToCache } = require("../core/cache");
+const { token } = require("../enums/jwt");
+const cache = require("../core/cache");
 const jwt = require("jsonwebtoken");
 
-const getToken = (data, option) => {
+const get = (data, option) => {
     switch (option) {
-        case tokenType.access:
-            console.log(JSON.stringify(data))
+        case token.access:
             return jwt.sign(data, config.accessTokenSecret, `{ expiresIn: ${config.tokenLifeSpan} }`)
-        case tokenType.refresh:
+        case token.refresh:
             return jwt.sign(data, config.refreshTokenSecret)
     }
 }
-const verifyToken = (token) => {
+const verify = (token) => {
     return jwt.verify(token, config.accessTokenSecret, (err, data) => {
         if (err) {
             return { success: false }
@@ -21,16 +20,17 @@ const verifyToken = (token) => {
         }
     })
 }
-const cacheToken = async (token) => {
-    console.log("cacheToken")
-    const cache = await addToCache("auth", token);
-    console.log("WTF01")
-    console.log(`CACHE: ${JSON.stringify(cache)}`)
-    return await saveCache(cache)
-    
+const save = async (token) => {
+    try {
+        const data = await cache.addItem("auth", token);
+        return await cache.save(data);
+    } catch(error) {
+        console.log(error.message);
+        return false
+    }
 }
 module.exports = {
-    getToken,
-    verifyToken,
-    cacheToken
+    get,
+    verify,
+    save
 }

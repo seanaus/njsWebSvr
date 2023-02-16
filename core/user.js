@@ -4,11 +4,12 @@ const { genSalt, hash } = require("./encrypt");
 const { createUserWithEmailAndPassword, signInUserWithEmailAndPassword } = require("./auth");
 const User = require("../models/user");
 const config = require("../config");
-const Cache = require("../models/cache");
-const { loadCache, saveCache } = require("../core/cache");
+// const Cache = require("../models/cache");
+// const { loadCache, saveCache } = require("../core/cache");
 const firestore = firebase.firestore();
-const { tokenType } = require("../enums/jwt");
-const { getToken, verifyToken, cacheToken } = require("./jwt")
+// const eToken = require("../enums/jwt");
+const { token } = require("../enums/jwt");
+const jwtHelper = require("./jwt")
 
 const createNew = async (req) => {
 
@@ -32,15 +33,9 @@ const createNew = async (req) => {
         const cred = await createUserWithEmailAndPassword(user.email, hashPass);
         if (cred !== null && cred !== undefined && Object.keys(cred).length !== 0) {
             user.id = cred.user.uid;
-            // user.auth = getToken(user,tokenType.refresh);
-            // const authCache = new Cache("auth");
-            const data = getToken(user.id, tokenType.refresh);
-            console.log(`REFRESH TOKEN: ${data}`);
-            await cacheToken(data);
-            // console.log(`REFRESH TOKEN: ${refreshToken}`);
-            // authCache.add(refreshToken)
-            // console.log(`AUTH CACHE: ${JSON.stringify(authCache)}`);
-            // await saveCache(authCache)
+            // const accessToken = jwtHelper.get(user.id, token.access);
+            const refreshToken = jwtHelper.get(user.id, token.refresh);
+            await jwtHelper.save(refreshToken);
             const response = await saveUser(user)
             if (response === false) {
                 user.id = -1;

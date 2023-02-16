@@ -4,12 +4,9 @@ const { genSalt, hash } = require("./encrypt");
 const { createUserWithEmailAndPassword, signInUserWithEmailAndPassword } = require("./auth");
 const User = require("../models/user");
 const config = require("../config");
-// const Cache = require("../models/cache");
-// const { loadCache, saveCache } = require("../core/cache");
 const firestore = firebase.firestore();
-// const eToken = require("../enums/jwt");
 const { token } = require("../enums/jwt");
-const jwtHelper = require("./jwt")
+const jwt = require("./jwt")
 
 const createNew = async (req) => {
 
@@ -34,8 +31,8 @@ const createNew = async (req) => {
         if (cred !== null && cred !== undefined && Object.keys(cred).length !== 0) {
             user.id = cred.user.uid;
             // const accessToken = jwtHelper.get(user.id, token.access);
-            const refreshToken = jwtHelper.get(user.id, token.refresh);
-            await jwtHelper.save(refreshToken);
+            const refreshToken = jwt.get(user.id, token.refresh);
+            await jwt.save(refreshToken);
             const response = await saveUser(user)
             if (response === false) {
                 user.id = -1;

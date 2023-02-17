@@ -4,7 +4,7 @@ const firebase = require("../db");
 const Cache = require("../models/cache");
 const firestore = firebase.firestore();
 const addItem = async (id, item) => {
-    let cache = await getAll(id);
+    let cache = await get(id);
     if (cache.items !== undefined) {
         if (!cache.items.includes(item)) {
             cache.items = [...cache.items, item];
@@ -15,7 +15,7 @@ const addItem = async (id, item) => {
     return cache
 }
 const removeItem = async (id, item) => {
-    let cache = await getAll(id);
+    let cache = await get(id);
     if (cache.items !== undefined) {
         if (!cache.items.includes(item)) {
             cache.items = [...cache.items, item];
@@ -25,7 +25,7 @@ const removeItem = async (id, item) => {
     }
     return cache
 }
-const getAll = async (id) => {
+const get = async (id) => {
     try {
         const docRef = firestore.collection('cache').doc(id);
         const doc = await docRef.get();
@@ -34,11 +34,13 @@ const getAll = async (id) => {
         } else {
             const cache = new Cache(id);
             const docData = doc.data() ?? {};
-            if(docData?.items?.length) {
+            // if (docData && docData.items && docData.length) {
+            if (docData?.items?.length) {
                 docData?.items.forEach((item) => {
                     cache.items = [...cache.items, item];
                 })
             }
+            // }
             return cache;
         }
     } catch (error) {
@@ -57,7 +59,7 @@ const save = async (data) => {
     }
 }
 module.exports = {
-    getAll,
+    get,
     save,
     addItem,
     removeItem

@@ -30,7 +30,7 @@ const createNew = async (req) => {
         const cred = await createUserWithEmailAndPassword(user.email, hashPass);
         if (cred !== null && cred !== undefined && Object.keys(cred).length !== 0) {
             user.id = cred.user.uid;
-            // const accessToken = jwtHelper.get(user.id, token.access);
+            const accessToken = jwt.get(user.id, token.access);
             const refreshToken = jwt.get(user.id, token.refresh);
             await jwt.save(refreshToken);
             const response = await saveUser(user)

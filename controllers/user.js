@@ -12,11 +12,11 @@ const getUsers = async (req, res, next) => {
 };
 const register = async (req, res) => {
     const user = await createUser(req);
-    if (user.id === "-1") {
-        res.redirect("signIn");
-    } else {
-        res.redirect(`/home?auth=${JSON.stringify(user)}`);
-    }
+    // if (user.id === "-1") {
+    //     res.redirect("signIn");
+    // } else {
+    //     res.redirect(`/home?auth=${JSON.stringify(user)}`);
+    // }
 }
 const signIn = async (req, res) => {
     const user = await signInUser(req);

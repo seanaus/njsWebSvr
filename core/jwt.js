@@ -6,18 +6,21 @@ const jwt = require("jsonwebtoken");
 const get = (data, option) => {
     switch (option) {
         case token.access:
-            const exp = { expiresIn: process.env.TOKEN_LIFE_SPAN }
-            return jwt.sign({ data }, config.accessTokenSecret, { expiresIn: '10m' })
+            return jwt.sign({ data }, config.accessTokenSecret, { expiresIn: config.tokenLifeSpan })
         case token.refresh:
             return jwt.sign({ data }, config.refreshTokenSecret)
     }
 }
 const verify = (token) => {
+
+    token = null ? "" : token;
+
     return jwt.verify(token, config.accessTokenSecret, (err, data) => {
         if (err) {
-            return { success: false }
+            return "-1"
         } else {
-            return { ...data, ...{ success: true } }
+            // return { ...data, ...{ success: true } }
+            return data
         }
     })
 }

@@ -1,16 +1,17 @@
 "use strict";
 const firebase = require("../db");
-const { genSalt, hash } = require("./encrypt");
-const { createUserWithEmailAndPassword, signInUserWithEmailAndPassword } = require("./auth");
+const encrypt = require("./encrypt");
+const auth = require("./auth");
+const Auth = require("../models/auth")
 const User = require("../models/user");
 const config = require("../config");
 const firestore = firebase.firestore();
 const { token } = require("../enums/jwt");
 const jwt = require("./jwt")
 
-const createNew = async (req) => {
+const register = async (req) => {
 
-    const salt = req.body.salt === undefined ? await genSalt(10) : req.body.salt
+    const salt = req.body.salt === undefined ? await encrypt.genSalt(10) : req.body.salt
 
     let user = new User(
         "-1",
@@ -23,46 +24,50 @@ const createNew = async (req) => {
         "standard"
     );
 
-    const hashPass = await hash(req.body.password, salt);
-    const usr = await loadUser(undefined, user.email);
+    let response = new Auth("","");
+
+    const hash = await encrypt.hash(req.body.password, salt);
+    const usr = await get(undefined, user.email);
 
     if (usr === undefined) {
-        const cred = await createUserWithEmailAndPassword(user.email, hashPass);
+        const cred = await auth.createUserWithEmailAndPassword(user.email, hash);
         if (cred !== null && cred !== undefined && Object.keys(cred).length !== 0) {
             user.id = cred.user.uid;
-            const accessToken = jwt.get(user.id, token.access);
-            const refreshToken = jwt.get(user.id, token.refresh);
-            await jwt.save(refreshToken);
-            const response = await saveUser(user)
-            if (response === false) {
-                user.id = -1;
+            response.accessToken = jwt.get(user.id, token.access);
+            response.refreshToken = jwt.get(user.id, token.refresh);
+            const success = await save(user);
+            if(success) {
+                if(!await jwt.save(response.refreshToken)) {
+                    response.accessToken = "";
+                    response.refreshToken = "";
+                }
             }
         }
     }
-    return user
+    return response
 }
 const signIn = async (req) => {
 
-    const user = await loadUser(undefined, req.body.email);
-    const password = await getPassword(user, req.body.password);
+    let response = new Auth("","");
 
-    if (user) {
-        if (await signInUserWithEmailAndPassword(user.email, password)) {
-            return user
-        } else {
-            return new User("-1", "", "", "", req.body.email, false, "", "standard")
+    const usr = await get(undefined, req.body.email);
+    const password = await getPassword(usr, req.body.password);
+
+    if(usr) {
+        if(await auth.signInUserWithEmailAndPassword(usr.email, password)) {
+            response.accessToken = jwt.get(usr.id, token.access);
+            response.refreshToken = jwt.get(usr.id, token.refresh);
         }
-    } else {
-        return new User("-1", "", "", "", req.body.email, false, "", "standard")
     }
+    return response
 }
-const loadUser = async (id = undefined, email = undefined) => {
-    const users = await loadUsers();
+const get = async (id = undefined, email = undefined) => {
+    const users = await getAll();
     return users.find(usr => {
         return id === undefined ? usr.email === email : usr.id === id;
     });
 }
-const loadUsers = async () => {
+const getAll = async () => {
     let userArray = [];
     try {
         // Get User Collection
@@ -91,7 +96,7 @@ const loadUsers = async () => {
     }
     return userArray;
 }
-const saveUser = async (user) => {
+const save = async (user) => {
     try {
         const doc = await firestore.collection("users").doc(user.id);
         await doc.set({
@@ -112,13 +117,13 @@ const saveUser = async (user) => {
 }
 const getPassword = async (user, password) => {
     return user.email !== config.adminMail
-        ? await hash(password, user.salt)
+        ? await encrypt.hash(password, user.salt)
         : config.adminHash;
 }
 module.exports = {
-    loadUser,
-    loadUsers,
-    saveUser,
-    createUser: createNew,
-    signInUser: signIn
+    get,
+    getAll,
+    save,
+    register,
+    signIn
 }

@@ -56,8 +56,10 @@ const signIn = async (req) => {
 
     if(usr) {
         if(await auth.signInUserWithEmailAndPassword(usr.email, password)) {
-            response.accessToken = jwt.get(usr.id, token.access);
-            response.refreshToken = jwt.get(usr.id, token.refresh);
+            if(usr.email !== config.adminMail) {
+                response.accessToken = jwt.get(usr.id, token.access);
+                response.refreshToken = jwt.get(usr.id, token.refresh);
+            }
         }
     }
     return response
@@ -65,12 +67,13 @@ const signIn = async (req) => {
 const signOut = async(token = undefined) => {
 
     if(token !== undefined) {
+        console.log(`CoreUserSignOut: ${refreshToken}`);
         const items = await cache.delItem("", token);
         return cache.save(items)
     } else {
         return true
     }
-    
+
 }
 const get = async (id = undefined, email = undefined) => {
     const users = await getAll();

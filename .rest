@@ -1,7 +1,7 @@
-
+###
 POST http://localhost:8080/signOut
-Content-Type: application/json
 
+Content-Type: application/json
 {
     "token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiRjQxZzdoYVU0RVhTZ0h6MUd4cWQwd0JDUXBwMiIsImlhdCI6MTY3NjgzMzc0NH0.ztJyYqDY7euEjzycNV7V5SFEzYFRqQ_S637mgiXUDyk"
 }

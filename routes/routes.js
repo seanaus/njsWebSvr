@@ -1,14 +1,11 @@
 "use strict";
 const express = require("express");
 const router = express.Router();
-const { renderHome, renderRegister, renderSignIn } = require("../controllers/routes");
-const { register, signIn } = require("../controllers/user");
+const page = require("../controllers/routes");
 
-router.get(["/","/home"], renderHome);
-router.get("/register", renderRegister);
-router.post("/register", register);
-router.get("/signIn", renderSignIn);
-router.post("/signIn", signIn);
+router.get(["/","/home"], page.renderHome);
+router.get("/register", page.renderRegister);
+router.get("/signIn", page.renderSignIn);
 
 module.exports = {
     routes: router,

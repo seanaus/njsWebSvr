@@ -66,7 +66,7 @@ app.use(async (req, res, next) => {
 
 // app.use("/api/", genRoutes.routes);
 app.use("/", routes.routes);
-// app.use("/", userRoutes.routes);
+app.use("/", userRoutes.routes);
 // app.use("/", productRoutes.routes);
 // app.use("/", cartRoutes.routes);
 

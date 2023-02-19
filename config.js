@@ -9,7 +9,7 @@ const ADMIN_MAIL = process.env.ADMIN_EMAIL || "admin01@googlemail.com";
 const ADMIN_HASH = process.env.ADMIN_HASH || "$2a$10$4SbIkdVXU0x.85H6PQ2qZudHljCZEi42.aAgnReTopjCstHK4GUa.";
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
-const TOKEN_LIFE_SPAN = process.env.TOKEN_LIFE_SPAN || "5m";
+const TOKEN_LIFE_SPAN = process.env.TOKEN_LIFE_SPAN || "10m";
 const FIREBASE_CONFIG = {
   apiKey: process.env.API_KEY,
   authDomain: process.env.AUTH_DOMAIN,

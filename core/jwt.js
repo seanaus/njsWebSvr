@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const get = (data, option) => {
     switch (option) {
         case token.access:
-            return jwt.sign({ data }, config.accessTokenSecret, { expiresIn: config.tokenLifeSpan })
+            return jwt.sign({ data }, config.accessTokenSecret, { "expiresIn": config.tokenLifeSpan })
         case token.refresh:
             return jwt.sign({ data }, config.refreshTokenSecret)
     }

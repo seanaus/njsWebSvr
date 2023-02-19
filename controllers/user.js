@@ -26,9 +26,17 @@ const signIn = async (req, res) => {
         res.redirect("signIn"); 
     }
 }
+const signOut = async(req, res, next) => {
+    const refreshToken = req.body.token;
+    if(await user.signOut(refreshToken)) {
+        res.redirect("/home");
+    }
+    next();
+}
 module.exports = {
     getAll,
     get,
     register,
-    signIn
+    signIn,
+    signOut
 };

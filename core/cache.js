@@ -3,27 +3,19 @@
 const firebase = require("../db");
 const Cache = require("../models/cache");
 const firestore = firebase.firestore();
+
 const addItem = async (id, item) => {
     let cache = await get(id);
-    if (cache.items !== undefined) {
-        if (!cache.items.includes(item)) {
-            cache.items = [...cache.items, item];
-        }
-    } else {
-        cache.items = [item];   
+    if (!cache.items.includes(item)) {
+        cache.items = [...cache.items, item];
     }
     return cache
 }
-const removeItem = async (id, item) => {
+const delItem = async (id, item) => {
     let cache = await get(id);
-    if (cache.items !== undefined) {
-        if (!cache.items.includes(item)) {
-            cache.items = [...cache.items, item];
-        }
-    } else {
-        cache.items = [item];
-    }
-    return cache
+    return cache.items = cache.items.filter(itm => {
+        return itm !== item
+    })
 }
 const get = async (id) => {
     try {
@@ -62,5 +54,5 @@ module.exports = {
     get,
     save,
     addItem,
-    removeItem
+    delItem
 }

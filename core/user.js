@@ -8,6 +8,7 @@ const config = require("../config");
 const firestore = firebase.firestore();
 const { token } = require("../enums/jwt");
 const jwt = require("./jwt")
+const cache = require("./cache")
 
 const register = async (req) => {
 
@@ -60,6 +61,16 @@ const signIn = async (req) => {
         }
     }
     return response
+}
+const signOut = async(token = undefined) => {
+
+    if(token !== undefined) {
+        const items = await cache.delItem("", token);
+        return cache.save(items)
+    } else {
+        return true
+    }
+    
 }
 const get = async (id = undefined, email = undefined) => {
     const users = await getAll();
@@ -125,5 +136,6 @@ module.exports = {
     getAll,
     save,
     register,
-    signIn
+    signIn,
+    signOut
 }

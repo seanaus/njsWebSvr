@@ -11,18 +11,21 @@ const connect = async (req, res) => {
     });
     req.body.auth = auth
 }
-const authToken = (req, res, next)=> {
+const authToken = (req, res)=> {
 
-	const authHeader = req.headers[authorization]
+	const authHeader = req.headers[Authorization]
 	const token = authHeader && authHeader.split(' ')[1]
 	const data = jwt.verify(token);
 
-    if(data === "-1") {
-        res.sendStatus(403);
-    }
+    console.log(`authToken-DATA: ${data}`);
 
-    next();
+    if(data !== "-1") {
+        return true
+    } else {
+        return false
+    }
 }
 module.exports = {
-    connect
+    connect,
+    authToken
 }

@@ -10,7 +10,7 @@ const userRoutes = require("./routes/user");
 const productRoutes = require("./routes/product");
 const cartRoutes = require("./routes/cart");
 const methodOverride = require("method-override");
-const { connect } = require("./middleware/auth");
+const { connect, authToken } = require("./middleware/auth");
 let authUser = {};
 
 // Middleware
@@ -51,6 +51,11 @@ app.use(async (req, res, next) => {
   next();
 });
 
+app.use((req, res, next) => {
+  const allowed = authToken(req, res);
+  console.log(`ALLOWED: ${allowed}`);
+  next();
+})
 // app.get('/', (req, res) => {
 //   res.redirect('/home');
 // });

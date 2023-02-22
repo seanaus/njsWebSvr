@@ -13,9 +13,10 @@ const addItem = async (id, item) => {
 }
 const delItem = async (id, item) => {
     let cache = await get(id);
-    return cache.items = cache.items.filter(itm => {
+    cache.items = cache.items.filter(itm => {
         return itm !== item
     })
+    return cache
 }
 const get = async (id) => {
     try {
@@ -40,10 +41,10 @@ const get = async (id) => {
         return {}
     }
 }
-const save = async (id,data) => {
+const save = async (data) => {
     try {
-        const doc = await firestore.collection("cache").doc(id);
-        await doc.set({ items: data }, { merge: true });
+        const doc = await firestore.collection("cache").doc(data.id);
+        await doc.set({ items: data.items }, { merge: true });
         return true
     } catch (error) {
         console.log(error.message);

@@ -68,8 +68,8 @@ const signOut = async(token = undefined) => {
 
     if(token !== undefined) {
         console.log(`CoreUserSignOut01: ${token}`);
-        const items = await cache.delItem("auth", token);
-        return cache.save("auth",items)
+        const data = await cache.delItem("auth", token);
+        return cache.save(data)
     } else {
         return true
     }

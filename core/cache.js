@@ -40,10 +40,10 @@ const get = async (id) => {
         return {}
     }
 }
-const save = async (data) => {
+const save = async (id,data) => {
     try {
-        const doc = await firestore.collection("cache").doc(data.id);
-        await doc.set({ items: data.items }, { merge: true });
+        const doc = await firestore.collection("cache").doc(id);
+        await doc.set({ items: data }, { merge: true });
         return true
     } catch (error) {
         console.log(error.message);

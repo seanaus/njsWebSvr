@@ -67,9 +67,9 @@ const signIn = async (req) => {
 const signOut = async(token = undefined) => {
 
     if(token !== undefined) {
-        console.log(`CoreUserSignOut: ${refreshToken}`);
-        const items = await cache.delItem("", token);
-        return cache.save(items)
+        console.log(`CoreUserSignOut01: ${token}`);
+        const items = await cache.delItem("auth", token);
+        return cache.save("auth",items)
     } else {
         return true
     }

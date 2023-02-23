@@ -13,11 +13,9 @@ const connect = async (req, res) => {
 }
 const authToken = (req, res)=> {
 
-	const authHeader = req.headers[Authorization]
+	const authHeader = req.headers.authorization
 	const token = authHeader && authHeader.split(' ')[1]
 	const data = jwt.verify(token);
-
-    console.log(`authToken-DATA: ${data}`);
 
     if(data !== "-1") {
         return true

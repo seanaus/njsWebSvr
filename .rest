@@ -9,11 +9,11 @@ Content-Type: application/json
 
 POST http://localhost:8080/signOut
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiMlN4VGhJV1BqeGdzOWl0ckJTbFBlcTlWbjFUMiIsImlhdCI6MTY3NzEwNjk4MSwiZXhwIjoxNjc3MTA3NDYxfQ.5xt3mbYKqDZ_OvFObBLUAKg2N7VOHLwtoFqKTSyycMo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoibE00YU1rTjg5cVJyajM5a2U1b0RSNHlrM1Q3MyIsImlhdCI6MTY3NzE1MjEyNywiZXhwIjoxNjc3MTUyNjA3fQ.qd0lhLkIN6rgZjqj1da_v00uUdg6kPcQRMYg-mTTvCs
 
 {
     "auth" : {
-        "refreshToken" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiU1RLY2F6YzgzNWJweUNoYjNmS0FjZmVBMnRrMiIsImlhdCI6MTY3NzEwNjM5M30.9yRH5xoE3ziK3AjKm4XY8lEh4TdulMiOsKkOfbCzHO8"
+        "refreshToken" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoibE00YU1rTjg5cVJyajM5a2U1b0RSNHlrM1Q3MyIsImlhdCI6MTY3NzE1MjEyN30.3ViQrHPDnN4WiTjHdYIRaR_9C8V3xH_MiTYqrcaLad0"
 
     }
 }

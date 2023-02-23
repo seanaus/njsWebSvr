@@ -11,19 +11,20 @@ const connect = async (req, res) => {
     });
     req.body.auth = auth
 }
-const authToken = (req, res)=> {
+const authGuard = (req, res, next)=> {
 
 	const authHeader = req.headers.authorization
 	const token = authHeader && authHeader.split(' ')[1]
 	const data = jwt.verify(token);
-
-    if(data !== "-1") {
-        return true
-    } else {
-        return false
+    if(data === "-1") {
+        // try for new token using refresh token
+        // if fail redirect to sign in page
+        return res.redirect("signIn");
     }
+    next();
+    
 }
 module.exports = {
     connect,
-    authToken
+    authGuard
 }

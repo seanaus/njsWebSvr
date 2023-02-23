@@ -17,7 +17,6 @@ const signInUserWithEmailAndPassword = async (email, password) => {
     return {}
   }
 }
-
 module.exports = {
   createUserWithEmailAndPassword,
   signInUserWithEmailAndPassword

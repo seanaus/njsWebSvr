@@ -51,11 +51,11 @@ app.use(async (req, res, next) => {
   next();
 });
 
-app.use((req, res, next) => {
-  const allowed = authToken(req, res);
-  console.log(`ALLOWED: ${allowed}`);
-  next();
-})
+// app.use((req, res, next) => {
+//   const allowed = authToken(req, res);
+//   console.log(`ALLOWED: ${allowed}`);
+//   next();
+// })
 // app.get('/', (req, res) => {
 //   res.redirect('/home');
 // });
@@ -72,8 +72,8 @@ app.use((req, res, next) => {
 // app.use("/api/", genRoutes.routes);
 app.use("/", routes.routes);
 app.use("/", userRoutes.routes);
-// app.use("/", productRoutes.routes);
-// app.use("/", cartRoutes.routes);
+app.use("/", productRoutes.routes);
+app.use("/", cartRoutes.routes);
 
 app.listen(config.port, () => {
   console.log(`App listening on ${config.port}.......`);

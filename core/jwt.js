@@ -1,8 +1,6 @@
 const jwt = require("jsonwebtoken");
 const config = require("../config");
-// const cache = require("../core/cache");
 const { token } = require("../enums/jwt");
-const { cacheId } = require("../enums/cache");
 
 const get = (data, option) => {
     switch (option) {
@@ -24,17 +22,7 @@ const verify = (token) => {
         }
     })
 }
-// const save = async (token) => {
-//     try {
-//         return await cache.add(cacheId.auth, token);
-//         // return await cache.save(data);
-//     } catch (error) {
-//         console.log(error.message);
-//         return false
-//     }
-// }
 module.exports = {
     get,
-    verify,
-    // save
+    verify
 }

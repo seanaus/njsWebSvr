@@ -6,9 +6,6 @@ const firebase = require("../db");
 const User = require("../models/user");
 const config = require("../config");
 const firestore = firebase.firestore();
-// const { token } = require("../enums/jwt");
-// const jwt = require("./jwt")
-// const cache = require("./cache")
 
 const get = async (id = undefined, email = undefined) => {
     const users = await getAll();

@@ -18,8 +18,7 @@ const signIn = async (req, res) => {
 }
 const signOut = async (req, res, next) => {
     const refreshToken = req.body.auth.refreshToken;
-    console.log(`ControllerUserSignOut01: ${refreshToken}`);
-    // // console.log(`ControllerUserSignOut: ${JSON.stringify(req.nbody.auth)}`);
+    console.log(`Auth-Controller-SignOut: ${refreshToken}`);
     if (await auth.signOut(refreshToken)) {
         res.redirect("/home");
     }

@@ -1,4 +1,4 @@
-const admin = require("../core/user");
+const admin = require("../core/auth");
 const config = require("../config");
 const jwt = require("../core/jwt");
 

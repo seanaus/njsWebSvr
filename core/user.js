@@ -1,80 +1,15 @@
 "use strict";
 const firebase = require("../db");
-const encrypt = require("./encrypt");
-const auth = require("./auth");
-const Auth = require("../models/auth")
+// const encrypt = require("./encrypt");
+// const auth = require("./auth");
+// const Auth = require("../models/auth")
 const User = require("../models/user");
 const config = require("../config");
 const firestore = firebase.firestore();
-const { token } = require("../enums/jwt");
-const jwt = require("./jwt")
-const cache = require("./cache")
+// const { token } = require("../enums/jwt");
+// const jwt = require("./jwt")
+// const cache = require("./cache")
 
-const register = async (req) => {
-
-    const salt = req.body.salt === undefined ? await encrypt.genSalt(10) : req.body.salt
-
-    let user = new User(
-        "-1",
-        req.body.forename,
-        req.body.surname,
-        `${req.body.forename} ${req.body.surname}`,
-        req.body.email,
-        false,
-        salt,
-        "standard"
-    );
-
-    let response = new Auth("","");
-
-    const hash = await encrypt.hash(req.body.password, salt);
-    const usr = await get(undefined, user.email);
-
-    if (usr === undefined) {
-        const cred = await auth.createUserWithEmailAndPassword(user.email, hash);
-        if (cred !== null && cred !== undefined && Object.keys(cred).length !== 0) {
-            user.id = cred.user.uid;
-            response.accessToken = jwt.get(user.id, token.access);
-            response.refreshToken = jwt.get(user.id, token.refresh);
-            const success = await save(user);
-            if(success) {
-                if(!await jwt.save(response.refreshToken)) {
-                    response.accessToken = "";
-                    response.refreshToken = "";
-                }
-            }
-        }
-    }
-    return response
-}
-const signIn = async (req) => {
-
-    let response = new Auth("","");
-
-    const usr = await get(undefined, req.body.email);
-    const password = await getPassword(usr, req.body.password);
-
-    if(usr) {
-        if(await auth.signInUserWithEmailAndPassword(usr.email, password)) {
-            if(usr.email !== config.adminMail) {
-                response.accessToken = jwt.get(usr.id, token.access);
-                response.refreshToken = jwt.get(usr.id, token.refresh);
-            }
-        }
-    }
-    return response
-}
-const signOut = async(token = undefined) => {
-
-    if(token !== undefined) {
-        console.log(`CoreUserSignOut01: ${token}`);
-        const data = await cache.delItem("auth", token);
-        return cache.save(data)
-    } else {
-        return true
-    }
-
-}
 const get = async (id = undefined, email = undefined) => {
     const users = await getAll();
     return users.find(usr => {
@@ -129,16 +64,8 @@ const save = async (user) => {
         return false
     }
 }
-const getPassword = async (user, password) => {
-    return user.email !== config.adminMail
-        ? await encrypt.hash(password, user.salt)
-        : config.adminHash;
-}
 module.exports = {
     get,
     getAll,
-    save,
-    register,
-    signIn,
-    signOut
+    save
 }

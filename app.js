@@ -6,6 +6,7 @@ const favicon = require("serve-favicon");
 const handlebars = require('express-handlebars');
 const config = require("./config");
 const routes = require("./routes/routes");
+const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
 const productRoutes = require("./routes/product");
 const cartRoutes = require("./routes/cart");
@@ -71,7 +72,8 @@ app.use(async (req, res, next) => {
 
 // app.use("/api/", genRoutes.routes);
 app.use("/", routes.routes);
-app.use("/", userRoutes.routes);
+app.use("/", authRoutes.routes);
+app.use("/", userRoutes.routes); 
 app.use("/", productRoutes.routes);
 app.use("/", cartRoutes.routes);
 

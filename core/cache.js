@@ -4,6 +4,14 @@ const firebase = require("../db");
 const Cache = require("../models/cache");
 const firestore = firebase.firestore();
 
+const add = async (id, item) => {
+    const cache = await addItem(id, item);
+    return await save(cache);
+}
+const remove = async (id, item) => {
+    const cache = await delItem(id, item);
+    return await save(cache);
+}
 const addItem = async (id, item) => {
     let cache = await get(id);
     if (!cache.items.includes(item)) {
@@ -53,7 +61,6 @@ const save = async (data) => {
 }
 module.exports = {
     get,
-    save,
-    addItem,
-    delItem
+    add,
+    remove
 }

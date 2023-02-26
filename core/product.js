@@ -3,16 +3,18 @@ const firebase = require("../db");
 const Product = require("../models/product");
 const firestore = firebase.firestore();
 
-const loadProduct = async (id) => {
-  const products = await loadProducts();
-  const idx = findProduct(products, id);
-  if (idx !== -1) {
-    return products[idx];
+const get = async (id) => {
+  const products = await getAll();
+  const product = products.find(prod => {
+    return prod.id === id
+  });
+  if (product !== undefined) {
+    return product;
   } else {
     return -1
   }
 }
-const loadProducts = async () => { 
+const getAll = async () => { 
   let productArray = [];
   try {
     // Get Product Collection
@@ -39,14 +41,13 @@ const loadProducts = async () => {
   }
   return productArray;
 }
-const findProduct = (products, id) => {
-  const idx = products.findIndex((product) => {
-    return product.id === id
-  });
-  return idx
-}
+// const findProduct = (products, id) => {
+//   const idx = products.findIndex((product) => {
+//     return product.id === id
+//   });
+//   return idx
+// }
 module.exports = {
-  loadProduct,
-  loadProducts,
-  findProduct
+  get,
+  getAll
 }

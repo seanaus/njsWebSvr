@@ -1,11 +1,11 @@
 "use strict";
 const express = require("express");
 const router = express.Router();
-const page = require("../controllers/routes");
+const ContRoutes = require("../controllers/routes");
 
-router.get(["/","/home"], page.renderHome);
-router.get("/register", page.renderRegister);
-router.get("/signIn", page.renderSignIn);
+router.get(["/","/home"], ContRoutes.renderHome);
+router.get("/register", ContRoutes.renderRegister);
+router.get("/signIn", ContRoutes.renderSignIn);
 
 module.exports = {
     routes: router,

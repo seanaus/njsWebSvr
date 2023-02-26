@@ -1,13 +1,13 @@
 "use strict";
-const { loadProduct, loadProducts } = require("../core/product");
+const coreProduct = require("../core/product");
 
 const getProduct = async (req, res, next) => {
-    const product = await loadProduct(req.params.id);
+    const product = await coreProduct.get(req.params.id);
     res.json(product);
     next();
 };
 const getProducts = async (req, res, next) => {
-    const products = await loadProducts();
+    const products = await coreProduct.getAll();
     res.json(products);
     next();
 };

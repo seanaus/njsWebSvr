@@ -5,11 +5,11 @@ const path = require("path");
 const favicon = require("serve-favicon");
 const handlebars = require('express-handlebars');
 const config = require("./config");
-const routes = require("./routes/routes");
-const authRoutes = require("./routes/auth");
-const userRoutes = require("./routes/user");
-const productRoutes = require("./routes/product");
-const cartRoutes = require("./routes/cart");
+const routesRoute = require("./routes/routesRoute");
+const authRoute = require("./routes/authRoute");
+const userRoute = require("./routes/userRoute");
+const productRoute = require("./routes/productRoute");
+const cartRoute = require("./routes/cartRoute");
 const methodOverride = require("method-override");
 const { connect, authToken } = require("./middleware/auth");
 let authUser = {};
@@ -71,11 +71,11 @@ app.use(async (req, res, next) => {
 // });
 
 // app.use("/api/", genRoutes.routes);
-app.use("/", routes.routes);
-app.use("/", authRoutes.routes);
-app.use("/", userRoutes.routes); 
-app.use("/", productRoutes.routes);
-app.use("/", cartRoutes.routes);
+app.use("/", routesRoute.routes);
+app.use("/", authRoute.routes);
+app.use("/", userRoute.routes); 
+app.use("/", productRoute.routes);
+app.use("/", cartRoute.routes);
 
 app.listen(config.port, () => {
   console.log(`App listening on ${config.port}.......`);

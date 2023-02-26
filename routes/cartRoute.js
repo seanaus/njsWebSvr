@@ -8,7 +8,7 @@ const {
     updateCustomerInfo, 
     updateDeliveryInfo, 
     updatePaymentInfo 
-} = require("../controllers/cart");
+} = require("../controllers/cartController");
 
 router.get("/cart", getCart);
 router.post("/editCart/customerDetails/:cartId", updateCustomerInfo);

@@ -1,9 +1,9 @@
 "use strict";
-const { loadComponent } = require("../core/component");
+const componentService = require("../services/componentService");
 
 const renderHome = async(req, res) => {
     res.render('pages/home', {
-        navbar: await loadComponent("navbar")
+        navbar: await componentService.loadComponent("navbar")
     });
 }
 const renderRegister = async (req, res) => {

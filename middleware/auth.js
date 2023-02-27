@@ -1,9 +1,9 @@
-const admin = require("../core/auth");
+const adminService = require("../services/authService");
 const config = require("../config");
-const jwt = require("../core/jwt");
+const jwtService = require("../services/jwtService");
 
 const connect = async (req, res) => {
-    const auth = await admin.signIn({
+    const auth = await adminService.signIn({
         body: {
             email: config.adminMail,
             password: config.adminHash
@@ -15,7 +15,7 @@ const authGuard = (req, res, next)=> {
 
 	const authHeader = req.headers.authorization
 	const token = authHeader && authHeader.split(' ')[1]
-	const data = jwt.verify(token);
+	const data = jwtService.verify(token);
     if(data === "-1") {
         // try for new token using refresh token
         // if fail redirect to sign in page

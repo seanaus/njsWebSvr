@@ -1,8 +1,5 @@
 "use strict";
 const firebase = require("../db");
-// const encrypt = require("./encrypt");
-// const auth = require("./auth");
-// const Auth = require("../models/auth")
 const User = require("../models/user");
 const config = require("../config");
 const firestore = firebase.firestore();

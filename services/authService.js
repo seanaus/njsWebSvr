@@ -1,12 +1,12 @@
 "use strict";
-const encrypt = require("./encrypt");
+const bcryptService = require("./bcryptService");
 const Auth = require("../models/auth")
 const User = require("../models/user");
 const config = require("../config");
 const firebase = require("../db");
-const user = require("./user");
-const jwt = require("./jwt");
-const cache = require("./cache");
+const userService = require("./userService");
+const jwtService = require("./jwtService");
+const cacheService = require("./cacheService");
 const { token } = require("../enums/jwt");
 const { cacheId } = require("../enums/cache");
 
@@ -29,7 +29,7 @@ const signInFirebaseUser = async (email, password) => {
 }
 const register = async (req) => {
 
-  const salt = req.body.salt === undefined ? await encrypt.genSalt(10) : req.body.salt
+  const salt = req.body.salt === undefined ? await bcryptService.genSalt(10) : req.body.salt
 
   let newUser = new User(
     "-1",
@@ -44,18 +44,18 @@ const register = async (req) => {
 
   let response = new Auth("", "");
 
-  const hash = await encrypt.hash(req.body.password, salt);
-  const usr = await user.get(undefined, newUser.email);
+  const hash = await bcryptService.hash(req.body.password, salt);
+  const usr = await userService.get(undefined, newUser.email);
 
   if (usr === undefined) {
     const cred = await createFirebaseUser(newUser.email, hash);
     if (cred !== null && cred !== undefined && Object.keys(cred).length !== 0) {
       newUser.id = cred.user.uid;
-      response.accessToken = jwt.get(newUser.id, token.access);
-      response.refreshToken = jwt.get(newUser.id, token.refresh);
-      const success = await user.save(newUser);
+      response.accessToken = jwtService.get(newUser.id, token.access);
+      response.refreshToken = jwtService.get(newUser.id, token.refresh);
+      const success = await userService.save(newUser);
       if (success) {
-        if (!await cache.add(cacheId.auth,response.refreshToken)) {
+        if (!await cacheService.add(cacheId.auth,response.refreshToken)) {
           response.accessToken = "";
           response.refreshToken = "";
         }
@@ -68,14 +68,14 @@ const signIn = async (req) => {
 
   let response = new Auth("", "");
 
-  const usr = await user.get(undefined, req.body.email);
+  const usr = await userService.get(undefined, req.body.email);
   const password = await getPassword(usr, req.body.password);
 
   if (usr) {
     if (await signInFirebaseUser(usr.email, password)) {
       if (usr.email !== config.adminMail) {
-        response.accessToken = jwt.get(usr.id, token.access);
-        response.refreshToken = jwt.get(usr.id, token.refresh);
+        response.accessToken = jwtService.get(usr.id, token.access);
+        response.refreshToken = jwtService.get(usr.id, token.refresh);
       }
     }
   }
@@ -85,7 +85,7 @@ const signOut = async (token = undefined) => {
 
   if (token !== undefined) {
     console.log(`Auth-Core-SignOut: ${token}`);
-    return await cache.remove(cacheId.auth, token);
+    return await cacheService.remove(cacheId.auth, token);
   } else {
     return true
   }
@@ -93,7 +93,7 @@ const signOut = async (token = undefined) => {
 }
 const getPassword = async (user, password) => {
   return user.email !== config.adminMail
-    ? await encrypt.hash(password, user.salt)
+    ? await bcryptService.hash(password, user.salt)
     : config.adminHash;
 }
 

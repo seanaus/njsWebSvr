@@ -1,8 +1,8 @@
 "use strict";
 const config = require("../config");
 const firebase = require("../db");
-const { loadProduct, findProduct } = require("../core/product");
-const { getRequest } = require("./request")
+const productService = require("../services/productService");
+const requestService = require("./requestService")
 const Cart = require("../models/cart");
 const CartItem = require("../models/cartItem");
 const Delivery = require("../models/delivery");
@@ -15,7 +15,7 @@ const firestore = firebase.firestore();
 
 const main = async (req) => {
 
-    const request = getRequest(req, "CART");
+    const request = requestService.getRequest(req, "CART");
 
     switch (request.status) {
         case reqStatus.getRequest:
@@ -126,8 +126,8 @@ const addDoc = async () => {
 const addItem = async (cartId, productId) => {
 
     let cart = await load(cartId);
-    const product = await loadProduct(productId);
-    const idx = await findProduct(cart.items, productId);
+    const product = await productService.get(productId);
+    const idx = await productService.exists(cart.items, productId);
 
     if (idx === -1) {
         const item = new CartItem(product);
@@ -144,7 +144,7 @@ const addItem = async (cartId, productId) => {
 const removeItem = async (cartId, productId) => {
 
     let cart = await load(cartId);
-    const idx = await findProduct(cart.items, productId);
+    const idx = await productService.exists(cart.items, productId);
 
     if (idx !== -1) {
         if (cart.items[idx].quantity > 1) {

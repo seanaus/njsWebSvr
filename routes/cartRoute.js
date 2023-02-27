@@ -1,22 +1,15 @@
 "use strict";
 const express = require("express");
 const router = express.Router();
-const { 
-    getCart, 
-    addToCart, 
-    delFromCart, 
-    updateCustomerInfo, 
-    updateDeliveryInfo, 
-    updatePaymentInfo 
-} = require("../controllers/cartController");
+const cartController = require("../controllers/cartController");
 
-router.get("/cart", getCart);
-router.post("/editCart/customerDetails/:cartId", updateCustomerInfo);
-router.post("/editCart/deliveryDetails/:cartId", updateDeliveryInfo);
-router.post("/editCart/paymentDetails/:cartId", updatePaymentInfo );
+router.get("/cart", cartController.getCart);
+router.post("/editCart/customerDetails/:cartId", cartController.updateCustomerInfo);
+router.post("/editCart/deliveryDetails/:cartId", cartController.updateDeliveryInfo);
+router.post("/editCart/paymentDetails/:cartId", cartController.updatePaymentInfo );
 
-router.get("/addCartItem/:cartId/:productId", addToCart);
-router.get("/delCartItem/:cartId/:productId", delFromCart);
+router.get("/addCartItem/:cartId/:productId", cartController.addToCart);
+router.get("/delCartItem/:cartId/:productId", cartController.delFromCart);
 
 module.exports = {
     routes: router

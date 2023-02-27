@@ -41,13 +41,14 @@ const getAll = async () => {
   }
   return productArray;
 }
-// const findProduct = (products, id) => {
-//   const idx = products.findIndex((product) => {
-//     return product.id === id
-//   });
-//   return idx
-// }
+const exists = (products, id) => {
+  const idx = products.findIndex((product) => {
+    return product.id === id
+  });
+  return idx
+}
 module.exports = {
   get,
-  getAll
+  getAll,
+  exists
 }

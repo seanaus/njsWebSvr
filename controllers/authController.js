@@ -1,7 +1,7 @@
 "use strict";
-const coreAuth = require("../core/auth");
+const authService = require("../services/authService");
 const register = async (req, res) => {
-    const user = await coreAuth.register(req);
+    const user = await authService.register(req);
     if (user.accessToken === "") {
         res.redirect("signIn");
     } else {
@@ -9,7 +9,7 @@ const register = async (req, res) => {
     }
 }
 const signIn = async (req, res) => {
-    const user = await coreAuth.signIn(req);
+    const user = await authService.signIn(req);
     if (user.accessToken !== "") {
         res.redirect(`/home?auth=${JSON.stringify(user)}`);
     } else {
@@ -19,7 +19,7 @@ const signIn = async (req, res) => {
 const signOut = async (req, res, next) => {
     const refreshToken = req.body.auth.refreshToken;
     console.log(`Auth-Controller-SignOut: ${refreshToken}`);
-    if (await coreAuth.signOut(refreshToken)) {
+    if (await authService.signOut(refreshToken)) {
         res.redirect("/home");
     }
     next();

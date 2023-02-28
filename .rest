@@ -1,17 +1,34 @@
+### Register new User ###
+POST http://localhost:8080/register
+Content-Type: application/json
 
+{
+    "forename" : "Web",
+    "surname" : "Address02",
+    "email" : "webaddress02@googlemail.com",
+    "password" : "sea25aus"
+}
+### Sign In With existing User ###
+POST http://localhost:8080/signIn
+Content-Type: application/json
+
+{
+    "email" : "webaddress02@googlemail.com",
+    "password" : "$2a$10$.w2JLSmTZNQFMPykVvqeIep9nMuuwHFAwk23B8dsOPeDfDDaIuYQK"
+}
+### SIGN OUT ###
 POST http://localhost:8080/signOut
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiSjVON3pxM3A4T080eXlDZ0lLT3B4R0Z1aFdmMSIsImlhdCI6MTY3NzI1OTMxNCwiZXhwIjoxNjc3MjYwMjE0fQ.60PZEF-nYqOaqNdl0Y_SdLsShTps-oFHz0iveMN5hwE
 
 {
     "auth" : {
-        "refreshToken" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiSjVON3pxM3A4T080eXlDZ0lLT3B4R0Z1aFdmMSIsImlhdCI6MTY3NzI1OTMxNH0.MboEpKrVV6_jpA4hP-FFIp0HOIAzwblBLTjDmdj9960"
+        "refreshToken" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiRzRjMUx4Q0JvQ1kwS3NRdmhpdXlUSEdYWUVzMiIsImlhdCI6MTY3NzUwOTIzMH0.rCJ-vDuybKaCAc88dwsFhzVdmnXz6wOYmBbpTvKWjFg"
 
     }
 }
 
-###
-
+### GET PRODUCT ###
 GET http://localhost:8080/product/57eY6zpRLJIrRYir1h33
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiMGRvUUNWbzJSU2IzMkFVaXZCdGN2RzloVXAzMiIsImlhdCI6MTY3NzE2NzA5MCwiZXhwIjoxNjc3MTY3OTkwfQ.FFG-YK0zRS24S3GTPGLzIdyVWIc30_UgzNYLYIkyRTo
@@ -23,8 +40,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiMGRvUUNWb
     }
 }
 
-###
-
+### GET ALL PRODUCTS
 GET http://localhost:8080/products
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiMGRvUUNWbzJSU2IzMkFVaXZCdGN2RzloVXAzMiIsImlhdCI6MTY3NzE2NzA5MCwiZXhwIjoxNjc3MTY3OTkwfQ.FFG-YK0zRS24S3GTPGLzIdyVWIc30_UgzNYLYIkyRTo

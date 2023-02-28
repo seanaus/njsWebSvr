@@ -144,6 +144,13 @@ Authorization: Bearer ey........
 
 }
 
-###
+### ADD TO CART ( params = cartId, productId ) ###
+GET http://localhost:8080/api/cart/addItem/QEgQCA5oBy7EzJZrAzBR/57eY6zpRLJIrRYir1h33
+Content-Type: application/json
+Authorization: Bearer ey........
 
+{
+
+}
+###
 

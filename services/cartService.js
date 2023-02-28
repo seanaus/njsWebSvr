@@ -85,8 +85,8 @@ const save = async (cart) => {
                 totals: Object.assign({}, new Totals(
                     cart.totals.vatMetric,
                     cart.totals.exVat,
-                    cart.totals.incVat
-
+                    cart.totals.incVat,
+                    cart.totals.count
                 )),
                 created: cart.created
             },

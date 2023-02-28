@@ -1,4 +1,4 @@
-### Register new User ###
+### REGISTER NEW USER ###
 POST http://localhost:8080/register
 Content-Type: application/json
 
@@ -8,7 +8,7 @@ Content-Type: application/json
     "email" : "webaddress02@googlemail.com",
     "password" : "sea25aus"
 }
-### Sign In With existing User ###
+### SIGN IN WITH EXISTING USER ###
 POST http://localhost:8080/signIn
 Content-Type: application/json
 
@@ -29,7 +29,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiSjVON3pxM
 }
 
 ### GET PRODUCT ###
-GET http://localhost:8080/product/57eY6zpRLJIrRYir1h33
+GET http://localhost:8080/api/product/57eY6zpRLJIrRYir1h33
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiMGRvUUNWbzJSU2IzMkFVaXZCdGN2RzloVXAzMiIsImlhdCI6MTY3NzE2NzA5MCwiZXhwIjoxNjc3MTY3OTkwfQ.FFG-YK0zRS24S3GTPGLzIdyVWIc30_UgzNYLYIkyRTo
 
@@ -41,7 +41,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiMGRvUUNWb
 }
 
 ### GET ALL PRODUCTS
-GET http://localhost:8080/products
+GET http://localhost:8080/api/product/
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiMGRvUUNWbzJSU2IzMkFVaXZCdGN2RzloVXAzMiIsImlhdCI6MTY3NzE2NzA5MCwiZXhwIjoxNjc3MTY3OTkwfQ.FFG-YK0zRS24S3GTPGLzIdyVWIc30_UgzNYLYIkyRTo
 
@@ -52,4 +52,98 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiMGRvUUNWb
     }
 }
 
+### GET EXISTING CART ( Supply id ) ###
+GET http://localhost:8080/api/cart?id=CQmv2poW1GE9Pw15NKOm
+Content-Type: application/json
+Authorization: Bearer ey........
+
+{
+
+}
+
+### GET NEW CART LINK TO UID ( Not supplying 'id' param, returns New Cart ) ###
+GET http://localhost:8080/api/cart?id=&uId=6wxHe7tiTSZxeedZavZUwVLhOcq2
+Content-Type: application/json
+Authorization: Bearer ey........
+
+{
+
+}
+
+### GET NEW CART LINK TO CUSTOM FIELD ###
+GET http://localhost:8080/api/cart?id=&uId=&appId=uiu3u2u1o23123oii1p1k41
+Content-Type: application/json
+Authorization: Bearer ey........
+
+{
+
+}
+
+### UPDATE CUSOMER INFO ( both delivery and payment) ###
+POST http://localhost:8080/api/cart/customerDetails/QEgQCA5oBy7EzJZrAzBR
+Content-Type: application/json
+Authorization: Bearer ey........
+
+{
+    "delivery" : {
+        "forename" : "UPDATED FORENAME",
+        "surname" : "UPDATED SURNAME",
+        "address1" : "UPDATED ADDRESS1",
+        "address2" : "UPDATED ADDRESS2",
+        "town" : "UPDATED TOWN",
+        "city" : "UPDATED CITY",
+        "county" : "UPDATED COUNTY",
+        "postcode" : "UPDATED POSTCODE",
+        "email" : "UPDATED EMAIL",
+        "telephone" : "UPDATED TELEPHONE"
+    },
+    "payment" : {
+        "cardNo" : "UPDATED CARD NO",
+        "nameOnCard" : "UPDATED NAME ON CARD",
+        "csv" : "UPDATED CSV",
+        "expiryDate" : "UPDATED EXPIRY DATE",
+        "completed" : "UPDATED COMPLETED DATE"
+    }
+
+}
+
+### UPDATE DELIVERY INFO  ###
+POST http://localhost:8080/api/cart/deliveryDetails/QEgQCA5oBy7EzJZrAzBR
+Content-Type: application/json
+Authorization: Bearer ey........
+
+{
+    "delivery" : {
+        "forename" : "UPDATED FORENAME_",
+        "surname" : "UPDATED SURNAME_",
+        "address1" : "UPDATED ADDRESS1_",
+        "address2" : "UPDATED ADDRESS2_",
+        "town" : "UPDATED TOWN_",
+        "city" : "UPDATED CITY_",
+        "county" : "UPDATED COUNTY_",
+        "postcode" : "UPDATED POSTCODE_",
+        "email" : "UPDATED EMAIL_",
+        "telephone" : "UPDATED TELEPHONE_"
+    }
+}
+
+### UPDATE PAYMENT INFO  ###
+POST http://localhost:8080/api/cart/paymentDetails/QEgQCA5oBy7EzJZrAzBR
+Content-Type: application/json
+Authorization: Bearer ey........
+
+{
+
+    "payment" : {
+        "cardNo" : "UPDATED CARD NO_",
+        "nameOnCard" : "UPDATED NAME ON CARD_",
+        "csv" : "UPDATED CSV_",
+        "expiryDate" : "UPDATED EXPIRY DATE_",
+        "completed" : "UPDATED COMPLETED DATE_"
+    }
+
+}
+
 ###
+
+

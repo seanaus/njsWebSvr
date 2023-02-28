@@ -52,30 +52,11 @@ app.use(async (req, res, next) => {
   next();
 });
 
-// app.use((req, res, next) => {
-//   const allowed = authToken(req, res);
-//   console.log(`ALLOWED: ${allowed}`);
-//   next();
-// })
-// app.get('/', (req, res) => {
-//   res.redirect('/home');
-// });
-// app.get('/home', (req, res) => {
-//   res.render('home');
-// });
-// app.get('/register', (req, res) => {
-//   res.render('register');
-// });
-// app.get('/signIn', (req, res) => {
-//   res.render('signIn');
-// });
-
-// app.use("/api/", genRoutes.routes);
 app.use("/", routesRoute.routes);
 app.use("/", authRoute.routes);
 app.use("/", userRoute.routes); 
-app.use("/", productRoute.routes);
-app.use("/", cartRoute.routes);
+app.use("/api/product", productRoute.routes);
+app.use("/api/cart", cartRoute.routes);
 
 app.listen(config.port, () => {
   console.log(`App listening on ${config.port}.......`);

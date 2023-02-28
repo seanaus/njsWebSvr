@@ -1,7 +1,7 @@
 "use strict";
 const config = require("../config");
 const firebase = require("../db");
-const productService = require("../services/productService");
+const productService = require("./productService");
 const requestService = require("./requestService")
 const Cart = require("../models/cart");
 const CartItem = require("../models/cartItem");
@@ -9,20 +9,19 @@ const Delivery = require("../models/delivery");
 const Payment = require("../models/payment");
 const Totals = require("../models/totals");
 const { reqStatus } = require('../enums/cart');
-// const { getCart } = require("../controllers/cart");
 
 const firestore = firebase.firestore();
 
 const main = async (req) => {
 
-    const request = requestService.getRequest(req, "CART");
+    const request = requestService.get(req, "CART");
 
     switch (request.status) {
         case reqStatus.getRequest:
-            return await load(request.id);
+            return await get(request.id);
         case reqStatus.newRequest:
             request.id = await create(request);
-            return await load(request.id);
+            return await get(request.id);
         default:
             return reqStatus.badRequest;
     }
@@ -99,7 +98,7 @@ const save = async (cart) => {
         return false
     }
 }
-const load = async (id) => {
+const get = async (id) => {
 
     const doc = await firestore.collection('cart').doc(id).get()
     return new Cart(
@@ -125,10 +124,10 @@ const addDoc = async () => {
 }
 const addItem = async (cartId, productId) => {
 
-    let cart = await load(cartId);
+    let cart = await get(cartId);
     const product = await productService.get(productId);
-    const idx = await productService.exists(cart.items, productId);
-
+    const idx = findIndex(cart.items, productId);
+    
     if (idx === -1) {
         const item = new CartItem(product);
         cart.items = [...cart.items, item];
@@ -143,8 +142,8 @@ const addItem = async (cartId, productId) => {
 }
 const removeItem = async (cartId, productId) => {
 
-    let cart = await load(cartId);
-    const idx = await productService.exists(cart.items, productId);
+    let cart = await get(cartId);
+    const idx = findIndex(cart.items, productId);
 
     if (idx !== -1) {
         if (cart.items[idx].quantity > 1) {
@@ -171,6 +170,11 @@ const editQuantity = (items, idx, option) => {
         return items[idx]
     }
 }
+const findIndex = (items, id) => {
+  return items.findIndex((item) => {
+    return item.id === id
+  });
+}
 const deleteItem = (items, idx) => {
     items.splice(idx, 1);
 }
@@ -191,29 +195,24 @@ const calcItemTotal = (items, option) => {
         return 0
     }
 }
-const addCustomerInfo = async(id,data) => {
-    console.log("addCustomerInfo");
-    console.log(`REQ: ${JSON.stringify(data)}`);
-    const deliveryInfo = req.body.deliveryInfo;
-    const paymentInfo = req.body.paymentInfo;
-    return {}
+const addCustomerInfo = async(id, data) => {
+
+    let cart = await get(id);
+
+    cart = deliveryInfo(cart, data.delivery);
+    cart = paymentInfo(cart, data.payment);
+
+    if (await save(cart)) {
+        return cart
+    } else {
+        return {}
+    }
 
 }
 const addDeliveryInfo = async(id, data) => {
 
-    let cart = await load(id);
-
-    cart.delivery.forename = data.deliveryInfo.forename;
-    cart.delivery.surname = data.deliveryInfo.surname;
-    cart.delivery.address1 = data.deliveryInfo.address1;
-    cart.delivery.address2 = data.deliveryInfo.address2;
-    cart.delivery.town = data.deliveryInfo.town;
-    cart.delivery.city = data.deliveryInfo.city;
-    cart.delivery.county = data.deliveryInfo.county;
-    cart.delivery.postcode = data.deliveryInfo.postcode;
-    cart.delivery.email = data.deliveryInfo.email;
-    cart.delivery.telephone = data.deliveryInfo.telephone;
-    cart.delivery.shippingOption = data.deliveryInfo.shippingOption;
+    let cart = await get(id);
+    cart = deliveryInfo(cart, data.delivery);
 
     if (await save(cart)) {
         return cart
@@ -222,28 +221,51 @@ const addDeliveryInfo = async(id, data) => {
     }
 
 }
+const deliveryInfo = (cart, data) => {
+
+    cart.delivery.forename = data.forename;
+    cart.delivery.surname = data.surname;
+    cart.delivery.address1 = data.address1;
+    cart.delivery.address2 = data.address2;
+    cart.delivery.town = data.town;
+    cart.delivery.city = data.city;
+    cart.delivery.county = data.county;
+    cart.delivery.postcode = data.postcode;
+    cart.delivery.email = data.email;
+    cart.delivery.telephone = data.telephone;
+    cart.delivery.shippingOption = data.shippingOption;
+
+    return cart
+}
+
 const addPaymentInfo = async(id, data) => {
 
-    let cart = await load(id);
-
-    cart.payment.cardNo = data.paymentInfo.cardNo;
-    cart.payment.nameOnCard = data.paymentInfo.nameOnCard;
-    cart.payment.csv = data.paymentInfo.csv;
-    cart.payment.expiryDate = data.paymentInfo.expiryDate;
-    cart.payment.completed = data.paymentInfo.completed;
+    let cart = await get(id);
+    cart = paymentInfo(cart, data.payment)
 
     if (await save(cart)) {
         return cart
     } else {
         return {}
     }
+
+}
+const paymentInfo = (cart, data) => {
+
+    cart.payment.cardNo = data.cardNo;
+    cart.payment.nameOnCard = data.nameOnCard;
+    cart.payment.csv = data.csv;
+    cart.payment.expiryDate = data.expiryDate;
+    cart.payment.completed = data.completed;
+
+    return cart
 
 }
 module.exports = {
-    cartMain: main,
-    saveCart: save,
-    addCartItem: addItem,
-    delCartItem: removeItem,
+    main,
+    save,
+    addItem,
+    removeItem,
     addCustomerInfo,
     addDeliveryInfo,
     addPaymentInfo

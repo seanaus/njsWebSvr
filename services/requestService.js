@@ -1,6 +1,6 @@
 const { reqParaMap, reqStatus } = require("../enums/cart");
 const { Request } = require("../models/request");
-const getRequest = (req, action) => {
+const get = (req, action) => {
     if (action === "CART") {
         return cartRequest(req);
     }
@@ -62,5 +62,5 @@ const productRequest = (req) => {
 
 }
 module.exports = {
-    getRequest
+    get
 }

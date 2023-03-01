@@ -10,11 +10,9 @@ const get = (data, option) => {
             return jwt.sign({ data }, config.refreshTokenSecret)
     }
 }
-const verify = (token) => {
-
-    token = null ? "" : token;
-
-    return jwt.verify(token, config.accessTokenSecret, (err, data) => {
+const verify = (token = "", option = token.access) => {
+    const secret = option === token.access ? config.accessTokenSecret : config.refreshTokenSecret
+    return jwt.verify(token, secret, (err, data) => {
         if (err) {
             return "-1"
         } else {

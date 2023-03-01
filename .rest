@@ -1,13 +1,15 @@
 ### REGISTER NEW USER ###
 POST http://localhost:8080/register
 Content-Type: application/json
+Authorization: Bearer: {"T1" : "A01", "T2", "B01"} 
 
 {
     "forename" : "Web",
-    "surname" : "Address02",
-    "email" : "webaddress02@googlemail.com",
+    "surname" : "Address03",
+    "email" : "webaddress03@googlemail.com",
     "password" : "sea25aus"
 }
+
 ### SIGN IN WITH EXISTING USER ###
 POST http://localhost:8080/signIn
 Content-Type: application/json
@@ -43,7 +45,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiMGRvUUNWb
 ### GET ALL PRODUCTS
 GET http://localhost:8080/api/product/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiMGRvUUNWbzJSU2IzMkFVaXZCdGN2RzloVXAzMiIsImlhdCI6MTY3NzE2NzA5MCwiZXhwIjoxNjc3MTY3OTkwfQ.FFG-YK0zRS24S3GTPGLzIdyVWIc30_UgzNYLYIkyRTo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoib244cU02MGpEMmE5T2NPclV2WjFvTVRjdngxMyIsImlhdCI6MTY3NjkxNDMxNSwiZXhwIjoxNjc2OTE0Nzk1fQ.sA00DS5WqGM9ndZuYoKD9ToCckCiOnZizFhTIeEYpIU,eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoib244cU02MGpEMmE5T2NPclV2WjFvTVRjdngxMyIsImlhdCI6MTY3NjkxNDMxNX0.7m5p4RhE-lLCgP2g8983lT8lvkfiBz7lo5kQXbXY8kY
 
 {
     "auth" : {
@@ -152,5 +154,15 @@ Authorization: Bearer ey........
 {
 
 }
+
+### REMOVE FROM CART ( params = cartId, productId ) ###
+GET http://localhost:8080/api/cart/removeItem/QEgQCA5oBy7EzJZrAzBR/57eY6zpRLJIrRYir1h33
+Content-Type: application/json
+Authorization: Bearer ey........
+
+{
+
+}
+
 ###
 

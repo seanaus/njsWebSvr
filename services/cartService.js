@@ -180,9 +180,10 @@ const deleteItem = (items, idx) => {
 }
 const calcTotals = (cart) => {
     cart.totals.count = Number(calcItemTotal(cart.items, "quantity"));
-    cart.totals.exVat = Number(calcItemTotal(cart.items, "cost"));
+    cart.totals.exVat = Number(calcItemTotal(cart.items, "cost")).toFixed(2);
     cart.totals.vatMetric = Number(config.vatMetric());
-    cart.totals.incVat = cart.totals.exVat + (cart.totals.exVat * cart.totals.vatMetric);
+    // cart.totals.incVat = Number(+cart.totals.exVat + (+cart.totals.exVat * +cart.totals.vatMetric)).toFixed(2);
+    cart.totals.incVat = (Number(cart.totals.exVat) + (Number(cart.totals.exVat) * Number(cart.totals.vatMetric))).toFixed(2)
 }
 const calcItemTotal = (items, option) => {
     if (items.length > 0) {

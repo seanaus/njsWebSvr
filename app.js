@@ -11,6 +11,7 @@ const userRoute = require("./routes/userRoute");
 const productRoute = require("./routes/productRoute");
 const cartRoute = require("./routes/cartRoute");
 const methodOverride = require("method-override");
+const cookieParser = require('cookie-parser');
 const { connect, authToken } = require("./middleware/auth");
 let authUser = {};
 
@@ -52,6 +53,7 @@ app.use(async (req, res, next) => {
   next();
 });
 
+app.use(cookieParser());
 app.use("/", routesRoute.routes);
 app.use("/", authRoute.routes);
 app.use("/", userRoute.routes); 

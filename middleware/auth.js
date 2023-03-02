@@ -21,13 +21,24 @@ const authGuard = async (req, res, next) => {
     const refreshToken = authHeader && authHeader.split(' ')[1].split(',')[1]
 
     let data = jwtService.verify(accessToken);
-    
+    // console.log(`AUTH_GUARD: ${data}`)
     if (data === "-1") {
-        data = await getToken(refreshToken);
-        console.log(`ACCESS-TOKEN-NEW: ${data}`)
-        // try for new token using refresh token
-        // if fail redirect to sign in page
-    //     return res.redirect("signIn");
+        // res.clearCookie('auth');
+        await getToken(refreshToken).then(
+            (data)=>{
+                res.cookie('auth', `${data},${refreshToken}`,{
+                    maxAge: 5000,
+                    // expires works the same as the maxAge
+                    // expires: new Date('01 12 2021'),
+                    secure: true,
+                    httpOnly: true,
+                    sameSite: 'lax'
+                });
+            }
+        );
+        
+        // console.log(`ACCESS-TOKEN-NEW: ${data}`)
+        // return res.redirect("signIn");
     }
     next();
     
@@ -35,16 +46,14 @@ const authGuard = async (req, res, next) => {
 const getToken = async (value) => { 
     let data = "-1";
     const cache = await cacheService.get(cacheId.auth)
-    console.log(`ACCESS-TOKEN-NEW: 01`);
     if (cache.items.includes(value)) {
-        console.log(`ACCESS-TOKEN-NEW: 02`);
+        // console.log(`GET_TOKEN_B4: ${data}`);
         data = jwtService.verify(value, token.refresh);
-        console.log(`ACCESS-TOKEN-NEW: 03`);
-        console.log(`ACCESS-TOKEN-NEW-DATA: ${data.data}`);
+        // console.log(`GET_TOKEN_AFTER: ${JSON.stringify(data.data)}`);
         if (data !== "-1") {
-            console.log(`ACCESS-TOKEN-NEW: 04`);
-            data = jwtService.get(data, token.accessToken); 
-            console.log(`ACCESS-TOKEN-NEW: 05`);
+            // console.log(`GET_TOKEN_NEW`);
+            data = jwtService.get(data, token.access); 
+            console.log(`GET_TOKEN_NEW_ACCESS: ${data}`);
         }
     }
     return data

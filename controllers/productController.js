@@ -8,7 +8,7 @@ const get = async (req, res, next) => {
 };
 const getAll = async (req, res, next) => {
     const products = await productService.getAll();
-    res.json(products);
+    res.json(products).send();
     next();
 };
 module.exports = {

@@ -2,7 +2,12 @@
 const authService = require("../services/authService");
 
 const register = async (req, res) => {
-    res.json(await authService.register(req));
+    // res.json(await authService.register(req));
+    const auth = await authService.register(req);
+    // res.cookie("auth",`${auth.accessToken},${auth.refreshToken}`);
+    // res.send;
+    // res.cookie('auth', `${auth.accessToken},${auth.refreshToken}`).send('cookie set');
+    res.cookie('auth', `${auth.accessToken},${auth.refreshToken}`).redirect('/home');
 }
 
 const signIn = async (req, res) => {

@@ -8,6 +8,12 @@ router.get("/:id", productController.get);
 // router.get("/", productController.getAll);
 router.get("/", middleWare.authGuard, productController.getAll);
 
+
+function getFn(fn) {
+    return ()=>(
+        fn());
+}
+
 module.exports = {
     routes: router,
 }

@@ -10,6 +10,7 @@ npm install bcrypt
 npm init (Creates Package.json) add in "start": "nodemon app.js" 
 npm install method-override (ensure post etc work)
 npm i jsonwebtoken
+npm install cookie-parser
 
 ***************************************************************************************************************************************
 ** TO CREATE JSON WEB TOKEN SECRET KEYS **

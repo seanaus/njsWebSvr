@@ -115,7 +115,7 @@ const authorization = (req) => {
 
 }
 const setCookie = (name, data, maxAge = 5000, res)=> {
-  res.cookie(name, data, {
+  return res.cookie(name, data, {
     maxAge: maxAge,
     secure: true,
     httpOnly: true,

@@ -22,7 +22,13 @@ const authGuard = async (req, res, next) => {
     if (data === undefined) {
         data = await authService.regenToken(auth.refreshToken);
         if (data !== undefined) {
-            authService.setCookie("auth",`${data},${refreshToken}`, undefined, res);
+            // authService.setCookie("auth",`${data},${refreshToken}`, undefined, res);
+            res.cookie('auth', `${auth.accessToken},${auth.refreshToken}`, { 
+                maxAge: maxAge,
+                secure: true,
+                httpOnly: true,
+                sameSite: 'lax'
+            });
         }
     }
 

@@ -24,8 +24,21 @@ const signOut = async (req, res, next) => {
     next();
 }
 
+const getToken = async (req, res, next) => {
+
+    const authHeader = req.headers.authorization
+    const refreshToken = authHeader && authHeader.split(' ')[1]
+
+    const data = await authService.getToken(refreshToken);
+    // res.cookie("auth",`${auth.accessToken},${auth.refreshToken}`);
+    // res.send;
+    // res.cookie('auth', `${auth.accessToken},${auth.refreshToken}`).send('cookie set');
+    res.cookie('auth', `${data},${refreshToken}`).redirect('/home');
+}
+
 module.exports = {
     register,
     signIn,
-    signOut
+    signOut,
+    getToken
 };

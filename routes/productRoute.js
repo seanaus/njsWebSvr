@@ -9,10 +9,6 @@ router.get("/:id", productController.get);
 router.get("/", middleWare.authGuard, productController.getAll);
 
 
-function getFn(fn) {
-    return ()=>(
-        fn());
-}
 
 module.exports = {
     routes: router,

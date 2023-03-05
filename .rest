@@ -1,7 +1,6 @@
 ### REGISTER NEW USER ###
 POST http://localhost:8080/register
 Content-Type: application/json
-Authorization: Bearer: {"T1" : "A01", "T2", "B01"} 
 
 {
     "forename" : "Web",
@@ -24,34 +23,25 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiSjVON3pxM3A4T080eXlDZ0lLT3B4R0Z1aFdmMSIsImlhdCI6MTY3NzI1OTMxNCwiZXhwIjoxNjc3MjYwMjE0fQ.60PZEF-nYqOaqNdl0Y_SdLsShTps-oFHz0iveMN5hwE
 
 {
-    "auth" : {
-        "refreshToken" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiRzRjMUx4Q0JvQ1kwS3NRdmhpdXlUSEdYWUVzMiIsImlhdCI6MTY3NzUwOTIzMH0.rCJ-vDuybKaCAc88dwsFhzVdmnXz6wOYmBbpTvKWjFg"
 
-    }
 }
 
 ### GET PRODUCT ###
 GET http://localhost:8080/api/product/57eY6zpRLJIrRYir1h33
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiMGRvUUNWbzJSU2IzMkFVaXZCdGN2RzloVXAzMiIsImlhdCI6MTY3NzE2NzA5MCwiZXhwIjoxNjc3MTY3OTkwfQ.FFG-YK0zRS24S3GTPGLzIdyVWIc30_UgzNYLYIkyRTo
+Authorization: Bearer [access], [refresh]
 
 {
-    "auth" : {
-        "refreshToken" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiMGRvUUNWbzJSU2IzMkFVaXZCdGN2RzloVXAzMiIsImlhdCI6MTY3NzE2NzA5MH0.OOMeQCiC7fR65oLMO_yuzRuBp8DRosn7m90a6Ce-FWU"
 
-    }
 }
 
 ### GET ALL PRODUCTS
 GET http://localhost:8080/api/product/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZTNMRzZFc3FmaFdXSnpXT2JpS2puc3phVGVFMiIsImlhdCI6MTY3Nzc3NDA5OSwiZXhwIjoxNjc3Nzc0OTk5fQ.reZlrCQcAON8e3ZO2GwahZZk7q4rYNSqilN2ZfPa9eU,eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZTNMRzZFc3FmaFdXSnpXT2JpS2puc3phVGVFMiIsImlhdCI6MTY3Nzc3NDA5OX0.h6VAhCYtsdO0YVUXe7_1NdaGUmZ7Bqz0NTYMXCCWJqo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImRhdGEiOiJWeWhWVjk4aWd4TUJpTk1jSUdtZnlGNEw1U0QzIiwiaWF0IjoxNjc3OTc1MDgzfSwiaWF0IjoxNjc3OTc1NTA1LCJleHAiOjE2Nzc5NzU2ODV9.3JQEA1iJzIoXmRlTa9qQO_cxItc7z3H0SiAWbBUxKj8,eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiVnloVlY5OGlneE1CaU5NY0lHbWZ5RjRMNVNEMyIsImlhdCI6MTY3Nzk3NTA4M30.WBm3nsMFJYD7qA9YEWAQzewfAS7G8kbuKRL4XmMoA6k
 
 {
-    "auth" : {
-        "refreshToken" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZTNMRzZFc3FmaFdXSnpXT2JpS2puc3phVGVFMiIsImlhdCI6MTY3Nzc3NDA5OX0.h6VAhCYtsdO0YVUXe7_1NdaGUmZ7Bqz0NTYMXCCWJqo"
 
-    }
 }
 
 ### GET EXISTING CART ( Supply id ) ###

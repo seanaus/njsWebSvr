@@ -55,8 +55,8 @@ app.use(async (req, res, next) => {
 
 app.use(cookieParser());
 app.use("/", routesRoute.routes);
-app.use("/", authRoute.routes);
-app.use("/", userRoute.routes); 
+app.use("/api/auth", authRoute.routes);
+app.use("/api/user", userRoute.routes); 
 app.use("/api/product", productRoute.routes);
 app.use("/api/cart", cartRoute.routes);
 

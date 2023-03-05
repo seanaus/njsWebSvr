@@ -95,9 +95,24 @@ const encrypted = async (user, password) => {
     ? await bcryptService.hash(password, user.salt)
     : config.adminHash;
 }
-
+const getToken = async (value) => { 
+  let data = "-1";
+  const cache = await cacheService.get(cacheId.auth)
+  if (cache.items.includes(value)) {
+      // console.log(`GET_TOKEN_B4: ${data}`);
+      data = jwtService.verify(value, token.refresh);
+      // console.log(`GET_TOKEN_AFTER: ${JSON.stringify(data.data)}`);
+      if (data !== "-1") {
+          // console.log(`GET_TOKEN_NEW`);
+          data = jwtService.get(data, token.access); 
+          console.log(`GET_TOKEN_NEW_ACCESS: ${data}`);
+      }
+  }
+  return data
+}
 module.exports = {
   register,
   signIn,
-  signOut
+  signOut,
+  getToken
 }

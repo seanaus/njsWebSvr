@@ -67,7 +67,7 @@ const register = async (req) => {
 }
 const signIn = async (req) => {
 
-  let auth = new Auth("","");
+  let auth = new Auth("", "");
   const user = await userService.get(undefined, req.body.email);
   const password = await encrypted(user, req.body.password);
 
@@ -95,24 +95,38 @@ const encrypted = async (user, password) => {
     ? await bcryptService.hash(password, user.salt)
     : config.adminHash;
 }
-const getToken = async (value) => { 
-  let data = "-1";
+const regenToken = async (value) => { 
+  let data = undefined;
   const cache = await cacheService.get(cacheId.auth)
   if (cache.items.includes(value)) {
-      // console.log(`GET_TOKEN_B4: ${data}`);
       data = jwtService.verify(value, token.refresh);
-      // console.log(`GET_TOKEN_AFTER: ${JSON.stringify(data.data)}`);
-      if (data !== "-1") {
-          // console.log(`GET_TOKEN_NEW`);
+      if (data !== undefined) {
           data = jwtService.get(data, token.access); 
-          console.log(`GET_TOKEN_NEW_ACCESS: ${data}`);
       }
   }
   return data
+}
+const authorization = (req) => {
+
+  const authHeader = req.headers.authorization
+  const accessToken = authHeader && authHeader.split(' ')[1].split(',')[token.access]
+  const refreshToken = authHeader && authHeader.split(' ')[1].split(',')[token.refresh]
+  return new Auth(accessToken, refreshToken);
+
+}
+const setCookie = (name, data, maxAge = 5000, res)=> {
+  res.cookie(name, data, {
+    maxAge: maxAge,
+    secure: true,
+    httpOnly: true,
+    sameSite: 'lax' 
+  });
 }
 module.exports = {
   register,
   signIn,
   signOut,
-  getToken
+  regenToken,
+  authorization,
+  setCookie
 }

@@ -14,7 +14,7 @@ const verify = (token = "", option = token.access) => {
     const secret = option === token.access ? config.accessTokenSecret : config.refreshTokenSecret
     return jwt.verify(token, secret, (err, data) => {
         if (err) {
-            return "-1"
+            return undefined
         } else {
             return data
         }

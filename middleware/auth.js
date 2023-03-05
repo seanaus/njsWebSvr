@@ -3,7 +3,6 @@ const config = require("../config");
 const authService = require("../services/authService");
 const jwtService = require("../services/jwtService");
 const { token } = require("../enums/jwt");
-// const { cacheId } = require("../enums/cache");
 
 const connect = async (req, res) => {
     const auth = await adminService.signIn({
@@ -16,23 +15,18 @@ const connect = async (req, res) => {
 }
 const authGuard = async (req, res, next) => {
 
-	const authHeader = req.headers.authorization
-    const accessToken = authHeader && authHeader.split(' ')[1].split(',')[token.access]
-    const refreshToken = authHeader && authHeader.split(' ')[1].split(',')[token.refresh]
+    const auth = authService.authorization(req);
 
-    let data = jwtService.verify(accessToken);
+    let data = jwtService.verify(auth.accessToken);
 
-    if (data === "-1") {
-        data = await authService.getToken(refreshToken)
+    if (data === undefined) {
+        data = await authService.regenToken(auth.refreshToken);
+        if (data !== undefined) {
+            authService.setCookie("auth",`${data},${refreshToken}`, undefined, res);
+        }
     }
 
-    if (data !== "-1") {
-        res.cookie('auth', `${data},${refreshToken}`, {
-            maxAge: 5000,
-            secure: true,
-            httpOnly: true,
-            sameSite: 'lax' 
-        });
+    if (data !== undefined) {
         next();
     } else {
         res.sendStatus(403);

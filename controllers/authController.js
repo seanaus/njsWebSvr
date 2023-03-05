@@ -2,16 +2,17 @@
 const authService = require("../services/authService");
 
 const register = async (req, res) => {
-    // res.json(await authService.register(req));
     const auth = await authService.register(req);
-    // res.cookie("auth",`${auth.accessToken},${auth.refreshToken}`);
-    // res.send;
-    // res.cookie('auth', `${auth.accessToken},${auth.refreshToken}`).send('cookie set');
-    res.cookie('auth', `${auth.accessToken},${auth.refreshToken}`).redirect('/home');
+    authService.setCookie("auth",`${auth.accessToken},${auth.refreshToken}`, undefined, res);
+    //res.cookie('auth', `${auth.accessToken},${auth.refreshToken}`).redirect('/home');
+    res.redirect('/home');
 }
 
 const signIn = async (req, res) => {
-    res.json(await authService.signIn(req));
+    const auth = await authService.signIn(req);
+    authService.setCookie("auth",`${auth.accessToken},${auth.refreshToken}`, undefined, res);
+    res.redirect('/home');
+    // res.json(await authService.signIn(req));
 }
 
 const signOut = async (req, res, next) => {

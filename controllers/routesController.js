@@ -1,4 +1,5 @@
 "use strict";
+const productService = require("../services/productService");
 const componentService = require("../services/componentService");
 
 const renderHome = async(req, res) => {
@@ -16,9 +17,15 @@ const renderSignIn = (req, res) => {
         title: "Potteries Jaguar Spares"
     });
 };
-const renderProduct = (req, res) => {
+const renderProduct = async(req, res) => {
+    const cookie = req.cookies['auth']
+    if(cookie !== undefined) {
+        res.setHeader("Authorization",`Bearer ${cookie}`)
+    }
     res.render('pages/product', {
-        title: "Potteries Jaguar Spares"
+        title: "Potteries Jaguar Spares",
+        products: await productService.getAll()
+        // products: [{"name":"Name01"},{"name":"Name02"}]
     });
 };
 module.exports = {

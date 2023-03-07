@@ -16,11 +16,12 @@ const connect = async (req, res) => {
 const authGuard = async (req, res, next) => {
 
     const auth = authService.authorization(req);
-
+    console.log(`AUTH: ${auth}`)
     let data = jwtService.verify(auth.accessToken);
-
+    console.log(`AUTHGUARD: ${data}`)
     if (data === undefined) {
         data = await authService.regenToken(auth.refreshToken);
+        console.log(`AUTHGUARD_02: ${data}`)
         if (data !== undefined) {
             // authService.setCookie("auth",`${data},${refreshToken}`, undefined, res);
             res.cookie('auth', `${auth.accessToken},${auth.refreshToken}`, { 
@@ -31,7 +32,7 @@ const authGuard = async (req, res, next) => {
             });
         }
     }
-
+    console.log(`BELOW COOKIE: ${data}`)
     if (data !== undefined) {
         next();
     } else {

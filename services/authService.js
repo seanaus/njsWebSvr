@@ -97,12 +97,17 @@ const encrypted = async (user, password) => {
 }
 const regenToken = async (value) => { 
   let data = undefined;
-  const cache = await cacheService.get(cacheId.auth)
+  console.log(`regenToken: ${value}`);
+  const cache = await cacheService.get(cacheId.auth);
+  console.log(`regenToken02: ${JSON.stringify(cache)}`);
   if (cache.items.includes(value)) {
       data = jwtService.verify(value, token.refresh);
+      console.log(`regenToken: ${data}`)
       if (data !== undefined) {
           data = jwtService.get(data, token.access); 
       }
+  } else {
+    console.log("DONT EXIST!")
   }
   return data
 }

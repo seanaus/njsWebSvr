@@ -5,7 +5,7 @@ const register = async (req, res) => {
     const auth = await authService.register(req);
     //authService.setCookie("auth",`${auth.accessToken},${auth.refreshToken}`, undefined, res);
     res.cookie('auth', `${auth.accessToken},${auth.refreshToken}`, { 
-        maxAge: 60000,
+        maxAge: 600000,
         secure: true,
         httpOnly: true,
         sameSite: 'lax'
@@ -16,7 +16,7 @@ const register = async (req, res) => {
 const signIn = async (req, res) => {
     const auth = await authService.signIn(req);
     res.cookie('auth', `${auth.accessToken},${auth.refreshToken}`, { 
-        maxAge: 60000,
+        maxAge: 600000,
         secure: true,
         httpOnly: true,
         sameSite: 'lax'

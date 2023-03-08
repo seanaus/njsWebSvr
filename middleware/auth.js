@@ -14,9 +14,12 @@ const connect = async (req, res) => {
     req.body.auth = auth
 }
 const authGuard = async (req, res, next) => {
-
+    const cookie = req.cookies['auth']
+    if (cookie !== undefined) {
+        req.headers['authorization'] = `Bearer ${cookie}`
+    }
     const auth = authService.authorization(req);
-    console.log(`AUTH: ${auth}`)
+    console.log(`AUTH: ${JSON.stringify(auth)}`)
     let data = jwtService.verify(auth.accessToken);
     console.log(`AUTHGUARD: ${data}`)
     if (data === undefined) {
@@ -24,7 +27,7 @@ const authGuard = async (req, res, next) => {
         console.log(`AUTHGUARD_02: ${data}`)
         if (data !== undefined) {
             // authService.setCookie("auth",`${data},${refreshToken}`, undefined, res);
-            res.cookie('auth', `${auth.accessToken},${auth.refreshToken}`, { 
+            res.cookie('auth', `${auth.accessToken},${auth.refreshToken}`, {
                 maxAge: 60000,
                 secure: true,
                 httpOnly: true,

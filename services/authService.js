@@ -97,12 +97,12 @@ const encrypted = async (user, password) => {
 }
 const regenToken = async (value) => { 
   let data = undefined;
-  console.log(`regenToken: ${value}`);
+  // console.log(`regenToken: ${value}`);
   const cache = await cacheService.get(cacheId.auth);
-  console.log(`regenToken02: ${JSON.stringify(cache)}`);
+  // console.log(`regenToken02: ${JSON.stringify(cache)}`);
   if (cache.items.includes(value)) {
       data = jwtService.verify(value, token.refresh);
-      console.log(`regenToken: ${data}`)
+      // console.log(`regenToken: ${data}`)
       if (data !== undefined) {
           data = jwtService.get(data, token.access); 
       }
@@ -112,7 +112,7 @@ const regenToken = async (value) => {
   return data
 }
 const authorization = (req) => {
-
+  console.log(`AUTHORIZATION: ${req.headers.authorization}`)
   const authHeader = req.headers.authorization
   const accessToken = authHeader && authHeader.split(' ')[1].split(',')[token.access]
   const refreshToken = authHeader && authHeader.split(' ')[1].split(',')[token.refresh]

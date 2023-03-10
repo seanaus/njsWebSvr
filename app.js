@@ -53,6 +53,15 @@ app.use(async (req, res, next) => {
   next();
 });
 
+app.use((req, res, next) => {
+  req.headers['auth-x'] = 'What The!';
+  next()
+})
+app.use((req, res, next) => {
+  const header = req.headers['auth-x'];
+  console.log(`AUTH-X: ${header}`)
+  next()
+})
 app.use(cookieParser());
 app.use("/", routesRoute.routes);
 app.use("/api/auth", authRoute.routes);

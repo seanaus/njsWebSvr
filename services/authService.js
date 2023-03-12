@@ -119,13 +119,32 @@ const authorization = (req) => {
   return new Auth(accessToken, refreshToken);
 
 }
-const setCookie = (name, data, maxAge = 5000, res)=> {
-  return res.cookie(name, data, {
-    maxAge: maxAge,
-    secure: true,
-    httpOnly: true,
-    sameSite: 'lax' 
-  });
+const setCookies = (res, auth, lifeSpan = 5000, redirectTo) => {
+  try {
+    setCookie(res,"auth-x", auth.accessToken, lifeSpan);
+    setCookie(res,"auth-xr", auth.refreshToken, lifeSpan, redirectTo);
+    return true
+  } catch (err) {
+    console.log(err);
+    return false
+  }
+}
+const setCookie = (res, name, value, lifeSpan = 5000, redirectTo) => {
+  try {
+    res.cookie(name, value, { 
+        maxAge: lifeSpan,
+        secure: true,
+        httpOnly: true,
+        sameSite: 'lax'
+    })
+    if(redirectTo !== undefined) {
+        res.redirect(redirectTo);
+    }
+    return true
+  } catch (err) {
+    return false
+  }
+
 }
 module.exports = {
   register,
@@ -133,5 +152,6 @@ module.exports = {
   signOut,
   regenToken,
   authorization,
+  setCookies,
   setCookie
 }

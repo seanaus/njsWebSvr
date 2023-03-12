@@ -3,13 +3,14 @@ require("dotenv").config();
 const PORT = process.env.PORT || 8080;
 const HOST = process.env.HOST || "localhost";
 const URL = `http://${process.env.HOST}:${process.env.PORT}`;
-const PRODUCTION = process.env.PRODUCTION  || true;
+const PRODUCTION = process.env.PRODUCTION === "true" ? true : false;
 const VATMETRIC = process.env.VATMETRIC || 0.2;
 const ADMIN_MAIL = process.env.ADMIN_EMAIL || "admin01@googlemail.com";
 const ADMIN_HASH = process.env.ADMIN_HASH || "$2a$10$4SbIkdVXU0x.85H6PQ2qZudHljCZEi42.aAgnReTopjCstHK4GUa.";
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 const TOKEN_LIFE_SPAN = process.env.TOKEN_LIFE_SPAN || "10m";
+const USE_VIEW_ENGINE = process.env.USE_VIEW_ENGINE === "true" ? true : false;
 const FIREBASE_CONFIG = {
   apiKey: process.env.API_KEY,
   authDomain: process.env.AUTH_DOMAIN,
@@ -48,6 +49,7 @@ const log = () => {
   console.log(`Access Token Secret: ${ACCESS_TOKEN_SECRET}`);
   console.log(`Refresh Token Secret:: ${REFRESH_TOKEN_SECRET}`);
   console.log(`Token Life Span: ${TOKEN_LIFE_SPAN}`);
+  console.log(`Use View Engine: ${USE_VIEW_ENGINE}`);
 }
 module.exports = {
   port: PORT,
@@ -60,6 +62,7 @@ module.exports = {
   accessTokenSecret: ACCESS_TOKEN_SECRET,
   refreshTokenSecret: REFRESH_TOKEN_SECRET,
   tokenLifeSpan: TOKEN_LIFE_SPAN,
+  useViewEngine: USE_VIEW_ENGINE,
   vatMetric,
   log
 }

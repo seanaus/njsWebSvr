@@ -3,27 +3,12 @@ const authService = require("../services/authService");
 
 const register = async (req, res) => {
     const auth = await authService.register(req);
-    //authService.setCookie("auth",`${auth.accessToken},${auth.refreshToken}`, undefined, res);
-    res.cookie('auth', `${auth.accessToken},${auth.refreshToken}`, { 
-        maxAge: 600000,
-        secure: true,
-        httpOnly: true,
-        sameSite: 'lax'
-    }).redirect('/home');
-    //res.redirect('/home');
+    authService.setCookies(res, auth, 60000, "/home");
 }
 
 const signIn = async (req, res) => {
     const auth = await authService.signIn(req);
-    res.cookie('auth', `${auth.accessToken},${auth.refreshToken}`, { 
-        maxAge: 600000,
-        secure: true,
-        httpOnly: true,
-        sameSite: 'lax'
-    }).redirect('/home');
-    //authService.setCookie("auth",`${auth.accessToken},${auth.refreshToken}`, undefined, res);
-    // res.redirect('/home');
-    // res.json(await authService.signIn(req));
+    authService.setCookies(res, auth, 60000, "/home");
 }
 
 const signOut = async (req, res, next) => {
@@ -35,6 +20,18 @@ const signOut = async (req, res, next) => {
     }
     next();
 }
+
+// const setCookie = (res, name, value, lifeSpan = 5000, redirectTo) => {
+//     res.cookie(name, value, { 
+//         maxAge: lifeSpan,
+//         secure: true,
+//         httpOnly: true,
+//         sameSite: 'lax'
+//     })
+//     if(redirectTo !== undefined) {
+//         res.redirect(redirectTo);
+//     }
+// }
 
 module.exports = {
     register,

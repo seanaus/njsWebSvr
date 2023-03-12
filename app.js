@@ -5,32 +5,23 @@ const path = require("path");
 const favicon = require("serve-favicon");
 const handlebars = require('express-handlebars');
 const config = require("./config");
-const routesRoute = require("./routes/routesRoute");
+const pageRoute = require("./routes/pageRoute");
 const authRoute = require("./routes/authRoute");
 const userRoute = require("./routes/userRoute");
 const productRoute = require("./routes/productRoute");
 const cartRoute = require("./routes/cartRoute");
 const methodOverride = require("method-override");
 const cookieParser = require('cookie-parser');
-const { connect, authToken } = require("./middleware/auth");
-let authUser = {};
+const middleWare = require("./middleware/auth");
+let adminUser = {};
 
 // Middleware
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(favicon(path.join(__dirname, "public/favicon/", "favicon.ico")));
 app.use(methodOverride("_method"));
-
-app.set('view engine', 'hbs');
-app.engine('hbs', handlebars.engine({
-  layoutsDir: __dirname + '/views/layouts',
-  extname: 'hbs',
-  defaultLayout: 'index',
-  partialsDir: __dirname + '/views/partials/'
-}));
-// app.set('views', 'views');
-
 app.use(
   "/matIcon/",
   express.static(
@@ -44,17 +35,33 @@ app.use(
   )
 );
 
+// View Engine Configuration (Handlebars)
+if(config.useViewEngine) {
+  app.set('view engine', 'hbs');
+  app.engine('hbs', handlebars.engine({
+    layoutsDir: __dirname + '/views/layouts',
+    extname: 'hbs',
+    defaultLayout: 'index',
+    partialsDir: __dirname + '/views/partials/'
+  }));
+}
 // Custom Middleware
 app.use(async (req, res, next) => {
-  if (Object.keys(authUser).length === 0) {
-    await connect(req, res);
-    authUser = req.body.auth;
+  if (Object.keys(adminUser).length === 0) {
+    adminUser = await middleWare.connect(req);
   }
   next();
 });
 
-app.use(cookieParser());
-app.use("/", routesRoute.routes);
+app.use((req, res, next) => {
+  if(config.useViewEngine) {
+    middleWare.setHeaders(req)
+  }
+  next();
+});
+
+// Route Configuration
+if(config.useViewEngine) app.use("/", pageRoute.routes);
 app.use("/api/auth", authRoute.routes);
 app.use("/api/user", userRoute.routes); 
 app.use("/api/product", productRoute.routes);

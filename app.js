@@ -53,20 +53,22 @@ app.use(async (req, res, next) => {
   next();
 });
 
-app.use((req, res, next) => {
-  if(config.useViewEngine) {
-    middleWare.setHeaders(req)
-  }
-  next();
-});
+if (config.useViewEngine) {
+  app.use((req, res, next) => {
+    middleWare.setHeaders(req, res, next)
+  });
+  app.use("/", pageRoute.routes);
+}
 
 // Route Configuration
-if(config.useViewEngine) app.use("/", pageRoute.routes);
 app.use("/api/auth", authRoute.routes);
 app.use("/api/user", userRoute.routes); 
 app.use("/api/product", productRoute.routes);
 app.use("/api/cart", cartRoute.routes);
 
+if (config.useViewEngine) {
+  app.use("/", pageRoute.routes);
+}
 app.listen(config.port, () => {
   console.log(`App listening on ${config.port}.......`);
 });

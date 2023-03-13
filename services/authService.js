@@ -95,34 +95,47 @@ const encrypted = async (user, password) => {
     ? await bcryptService.hash(password, user.salt)
     : config.adminHash;
 }
-const regenToken = async (value) => { 
+
+const authGuard = async (req, res, next) => {
+
+  const auth = getHeaders(req);
+  let data = jwtService.verify(auth.accessToken);
+  // console.log(`AUTHGUARD: ${data}`)
+  if (data === undefined) {
+    data = await regenToken(auth.refreshToken);
+    // console.log(`AUTHGUARD_02: ${data}`)
+    if (data !== undefined) {
+      setCookies(res, auth, config.authLifeSpan());
+    }
+  }
+  console.log(`BELOW COOKIE: ${data}`)
+  if (data !== undefined) {
+    next();
+  } else {
+    res.sendStatus(403);
+  }
+}
+const regenToken = async (value) => {
   let data = undefined;
-  // console.log(`regenToken: ${value}`);
+  console.log(`regenToken: ${value}`);
   const cache = await cacheService.get(cacheId.auth);
-  // console.log(`regenToken02: ${JSON.stringify(cache)}`);
+  console.log(`regenTokenMatch: ${JSON.stringify(cache)}`);
   if (cache.items.includes(value)) {
-      data = jwtService.verify(value, token.refresh);
-      // console.log(`regenToken: ${data}`)
-      if (data !== undefined) {
-          data = jwtService.get(data, token.access); 
-      }
+    console.log(`regenTokenMatched: ${JSON.stringify(cache)}`);
+    data = jwtService.verify(value, token.refresh);
+    // console.log(`regenToken: ${data}`)
+    if (data !== undefined) {
+      data = jwtService.get(data, token.access);
+    }
   } else {
     console.log("DONT EXIST!")
   }
   return data
 }
-const authorization = (req) => {
-  console.log(`AUTHORIZATION: ${req.headers.authorization}`)
-  const authHeader = req.headers.authorization
-  const accessToken = authHeader && authHeader.split(' ')[1].split(',')[token.access]
-  const refreshToken = authHeader && authHeader.split(' ')[1].split(',')[token.refresh]
-  return new Auth(accessToken, refreshToken);
-
-}
 const setCookies = (res, auth, lifeSpan = 5000, redirectTo) => {
   try {
-    setCookie(res,"auth-x", auth.accessToken, lifeSpan);
-    setCookie(res,"auth-xr", auth.refreshToken, lifeSpan, redirectTo);
+    setCookie(res, "authX", auth.accessToken, lifeSpan);
+    setCookie(res, "authXR", auth.refreshToken, lifeSpan, redirectTo);
     return true
   } catch (err) {
     console.log(err);
@@ -131,14 +144,14 @@ const setCookies = (res, auth, lifeSpan = 5000, redirectTo) => {
 }
 const setCookie = (res, name, value, lifeSpan = 5000, redirectTo) => {
   try {
-    res.cookie(name, value, { 
-        maxAge: lifeSpan,
-        secure: true,
-        httpOnly: true,
-        sameSite: 'lax'
+    res.cookie(name, value, {
+      maxAge: lifeSpan,
+      secure: true,
+      httpOnly: true,
+      sameSite: 'lax'
     })
-    if(redirectTo !== undefined) {
-        res.redirect(redirectTo);
+    if (redirectTo !== undefined) {
+      res.redirect(redirectTo);
     }
     return true
   } catch (err) {
@@ -146,12 +159,19 @@ const setCookie = (res, name, value, lifeSpan = 5000, redirectTo) => {
   }
 
 }
+const getHeaders = (req) => {
+  const authX = req.headers['authX'];
+  const authXR = req.headers['authXR'];
+  console.log(`AUTHX: ${JSON.stringify(authX)}`)
+  console.log(`AUTHXR: ${JSON.stringify(authXR)}`)
+  return new Auth(authX, authXR);
+}
 module.exports = {
   register,
   signIn,
   signOut,
   regenToken,
-  authorization,
   setCookies,
-  setCookie
+  setCookie,
+  authGuard
 }

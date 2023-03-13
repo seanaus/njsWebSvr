@@ -76,6 +76,10 @@ const signIn = async (req) => {
       if (user.email !== config.adminMail) {
         auth.accessToken = jwtService.get(user.id, token.access);
         auth.refreshToken = jwtService.get(user.id, token.refresh);
+        if (!await cacheService.add(cacheId.auth, auth.refreshToken)) {
+          auth.accessToken = "";
+          auth.refreshToken = "";
+        }
       }
     }
   }
@@ -100,15 +104,12 @@ const authGuard = async (req, res, next) => {
 
   const auth = getHeaders(req);
   let data = jwtService.verify(auth.accessToken);
-  // console.log(`AUTHGUARD: ${data}`)
   if (data === undefined) {
     data = await regenToken(auth.refreshToken);
-    // console.log(`AUTHGUARD_02: ${data}`)
     if (data !== undefined) {
       setCookies(res, auth, config.authLifeSpan());
     }
   }
-  console.log(`BELOW COOKIE: ${data}`)
   if (data !== undefined) {
     next();
   } else {
@@ -116,19 +117,16 @@ const authGuard = async (req, res, next) => {
   }
 }
 const regenToken = async (value) => {
+  
   let data = undefined;
-  console.log(`regenToken: ${value}`);
   const cache = await cacheService.get(cacheId.auth);
-  console.log(`regenTokenMatch: ${JSON.stringify(cache)}`);
   if (cache.items.includes(value)) {
-    console.log(`regenTokenMatched: ${JSON.stringify(cache)}`);
+    // PULL USER DATA FROM REFRESH TOKEN
     data = jwtService.verify(value, token.refresh);
-    // console.log(`regenToken: ${data}`)
     if (data !== undefined) {
+      // GENERATE NEW AUTHENTICATION TOKEN FROM USER DATA PULLED FROM REFRESH TOKEN
       data = jwtService.get(data, token.access);
     }
-  } else {
-    console.log("DONT EXIST!")
   }
   return data
 }
@@ -162,8 +160,8 @@ const setCookie = (res, name, value, lifeSpan = 5000, redirectTo) => {
 const getHeaders = (req) => {
   const authX = req.headers['authX'];
   const authXR = req.headers['authXR'];
-  console.log(`AUTHX: ${JSON.stringify(authX)}`)
-  console.log(`AUTHXR: ${JSON.stringify(authXR)}`)
+  // console.log(`AUTHX: ${JSON.stringify(authX)}`)
+  // console.log(`AUTHXR: ${JSON.stringify(authXR)}`)
   return new Auth(authX, authXR);
 }
 module.exports = {
@@ -173,5 +171,6 @@ module.exports = {
   regenToken,
   setCookies,
   setCookie,
-  authGuard
+  authGuard,
+  getHeaders
 }

@@ -13,8 +13,8 @@ const signIn = async (req, res) => {
 }
 
 const signOut = async (req, res, next) => {
-    const refreshToken = req.body.auth.refreshToken;
-    if (await authService.signOut(refreshToken)) {
+    const auth = authService.getHeaders();
+    if (await authService.signOut(auth.refreshToken)) {
         res.redirect("/home");
     } else {
         res.sendStatus(500);

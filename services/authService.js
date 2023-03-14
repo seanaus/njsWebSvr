@@ -8,7 +8,7 @@ const userService = require("./userService");
 const jwtService = require("./jwtService");
 const cacheService = require("./cacheService");
 const { token } = require("../enums/jwt");
-const { cacheId } = require("../enums/cache");
+const { docIdField } = require("../enums/docIdField");
 
 const createFirebaseUser = async (email, password) => {
   let cred = {};
@@ -29,7 +29,6 @@ const signInFirebaseUser = async (email, password) => {
 }
 const register = async (req) => {
 
-  // const salt = req.body.salt === undefined ? await bcryptService.genSalt(10) : req.body.salt
   const salt = await bcryptService.genSalt(10)
 
   let user = new User(
@@ -56,7 +55,7 @@ const register = async (req) => {
       auth.refreshToken = jwtService.get(user.id, token.refresh);
       const success = await userService.save(user);
       if (success) {
-        if (!await cacheService.add(cacheId.auth, auth.refreshToken)) {
+        if (!await cacheService.add(docIdField.auth, auth.refreshToken)) {
           auth.accessToken = "";
           auth.refreshToken = "";
         }
@@ -76,7 +75,7 @@ const signIn = async (req) => {
       if (user.email !== config.adminMail) {
         auth.accessToken = jwtService.get(user.id, token.access);
         auth.refreshToken = jwtService.get(user.id, token.refresh);
-        if (!await cacheService.add(cacheId.auth, auth.refreshToken)) {
+        if (!await cacheService.add(docIdField.auth, auth.refreshToken)) {
           auth.accessToken = "";
           auth.refreshToken = "";
         }
@@ -86,13 +85,11 @@ const signIn = async (req) => {
   return auth
 }
 const signOut = async (token = undefined) => {
-
   if (token !== undefined) {
-    return await cacheService.remove(cacheId.auth, token);
+    return await cacheService.remove(docIdField.auth, token);
   } else {
     return true
   }
-
 }
 const encrypted = async (user, password) => {
   return user.email !== config.adminMail
@@ -113,13 +110,12 @@ const authGuard = async (req, res, next) => {
   if (data !== undefined) {
     next();
   } else {
-    res.sendStatus(403);
+    res.redirect("/signIn");
   }
 }
 const regenToken = async (value) => {
-  
   let data = undefined;
-  const cache = await cacheService.get(cacheId.auth);
+  const cache = await cacheService.get(docIdField.auth);
   if (cache.items.includes(value)) {
     // PULL USER DATA FROM REFRESH TOKEN
     data = jwtService.verify(value, token.refresh);
@@ -158,10 +154,8 @@ const setCookie = (res, name, value, lifeSpan = 5000, redirectTo) => {
 
 }
 const getHeaders = (req) => {
-  const authX = req.headers['authX'];
-  const authXR = req.headers['authXR'];
-  // console.log(`AUTHX: ${JSON.stringify(authX)}`)
-  // console.log(`AUTHXR: ${JSON.stringify(authXR)}`)
+  const authX = req?.headers['authX'];
+  const authXR = req?.headers['authXR'];
   return new Auth(authX, authXR);
 }
 module.exports = {

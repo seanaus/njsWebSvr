@@ -1,6 +1,6 @@
-const cacheId = {
+const docIdField = {
     auth: "auth"
 }
 module.exports = {
-    cacheId
+    docIdField
 }

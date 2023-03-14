@@ -13,8 +13,13 @@ const signIn = async (req, res) => {
 }
 
 const signOut = async (req, res, next) => {
-    const auth = authService.getHeaders();
-    if (await authService.signOut(auth.refreshToken)) {
+    // console.log("controllerSignOut")
+    // const auth = authService.getHeaders();
+    // console.log(`${auth.refreshToken}`)
+    const authXR = req?.cookies['authXR'];
+    if (await authService.signOut(authXR)) {
+        res.clearCookie('authX');
+        res.clearCookie('authXR');
         res.redirect("/home");
     } else {
         res.sendStatus(500);

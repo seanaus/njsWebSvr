@@ -20,7 +20,10 @@ body {
     background-color: var(--themeBgColorLight);
     color: var(--themeFColor);
 }
-
+a {
+    color: var(--themeFColor);
+    text-decoration: none;
+}
 input {
     width: 100%;
     color: var(--themeFColor);
@@ -60,8 +63,6 @@ input:-webkit-autofill:active {
     background-color: var(--themeBgColorDark);
     padding: 10px 0px;
 }
-
-
 
 li {
     font-size: 2rem;

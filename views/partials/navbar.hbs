@@ -6,14 +6,15 @@
     </div>
 </div>
 <div class="navBar" id="navBar">
+    <p>{{auth}}</p>
     {{#each navbar.items}}
-        <a class="navPill navLink showMenuButton" href = {{this.route}}>
-            <div class="material-icons icon">
-                {{this.matIcon}}
-            </div>
-            <div class="iconLabel">
-                {{this.caption}}
-            </div>
-        </a>
+    <a class="navPill navLink{{#if this.visible}}showMenuButton{{else}}hideMenuButton{{/if}}" href={{this.route}}>
+        <div class=" material-icons icon">
+            {{this.matIcon}}
+        </div>
+        <div class="iconLabel">
+            {{this.caption}}
+        </div>
+    </a>
     {{/each}}
 </div>

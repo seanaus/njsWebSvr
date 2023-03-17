@@ -36,13 +36,30 @@ app.use(
 );
 
 // View Engine Configuration (Handlebars)
-if(config.useViewEngine) {
+if (config.useViewEngine) {
   app.set('view engine', 'hbs');
   app.engine('hbs', handlebars.engine({
     layoutsDir: __dirname + '/views/layouts',
     extname: 'hbs',
     defaultLayout: 'index',
-    partialsDir: __dirname + '/views/partials/'
+    partialsDir: __dirname + '/views/partials/',
+    helpers: {
+      setVisibility: (visibility, auth) => {
+        console.log(`setVisibilty: ${auth}`)
+        if (visibility === 'true') {
+          return 'showMenuButton'
+        }
+        if (visibility === 'false') {
+          return 'hideMenuButton'
+        }
+        if (visibility === 'onAuth') {
+          return 'showMenuButton'
+        }
+        if (visibility === '!onAuth') {
+          return 'showMenuButton'
+        }
+      }
+    }
   }));
 }
 // Custom Middleware
@@ -62,7 +79,7 @@ if (config.useViewEngine) {
 
 // Route Configuration
 app.use("/api/auth", authRoute.routes);
-app.use("/api/user", userRoute.routes); 
+app.use("/api/user", userRoute.routes);
 app.use("/api/product", productRoute.routes);
 app.use("/api/cart", cartRoute.routes);
 

@@ -13,6 +13,7 @@ const cartRoute = require("./routes/cartRoute");
 const methodOverride = require("method-override");
 const cookieParser = require('cookie-parser');
 const middleWare = require("./middleware/auth");
+const navBar = require('./views/viewHelpers/components/navBar');
 let adminUser = {};
 
 // Middleware
@@ -44,21 +45,7 @@ if (config.useViewEngine) {
     defaultLayout: 'index',
     partialsDir: __dirname + '/views/partials/',
     helpers: {
-      setVisibility: (visibility, auth) => {
-        console.log(`setVisibilty: ${auth}`)
-        if (visibility === 'true') {
-          return 'showMenuButton'
-        }
-        if (visibility === 'false') {
-          return 'hideMenuButton'
-        }
-        if (visibility === 'onAuth') {
-          return 'showMenuButton'
-        }
-        if (visibility === '!onAuth') {
-          return 'showMenuButton'
-        }
-      }
+      setVisibility: navBar.setVisibility
     }
   }));
 }

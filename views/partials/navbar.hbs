@@ -6,10 +6,8 @@
     </div>
 </div>
 <div class="navBar" id="navBar">
-    <p>{{auth}}</p>
-    {{!-- <div>{{ternary true "yes" "no"}}</div> --}}
     {{#each navbar.items}}
-    <a class="navPill navLink {{ setVisibility this.visible auth }}" href={{this.route}}>
+    <a class="navPill navLink {{ setVisibility this.visible ../auth }}" href={{this.route}}>
         <div class=" material-icons icon">
             {{this.matIcon}}
         </div>

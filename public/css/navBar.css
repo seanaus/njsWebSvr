@@ -3,6 +3,8 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  transition: height 2s;
+  transition-timing-function: linear;
 }
 .navPill {
   margin: 0px 0px 0px 0px;

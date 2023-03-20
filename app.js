@@ -3,7 +3,6 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const favicon = require("serve-favicon");
-const handlebars = require('express-handlebars');
 const config = require("./config");
 const pageRoute = require("./routes/pageRoute");
 const authRoute = require("./routes/authRoute");
@@ -13,7 +12,23 @@ const cartRoute = require("./routes/cartRoute");
 const methodOverride = require("method-override");
 const cookieParser = require('cookie-parser');
 const middleWare = require("./middleware/auth");
+const handlebars = require('express-handlebars');
 const navBar = require('./views/viewHelpers/components/navBar');
+const hbs = handlebars.create({
+  layoutsDir: __dirname + '/views/layouts',
+  extname: 'hbs',
+  defaultLayout: 'index',
+  partialsDir: __dirname + '/views/partials/',
+  helpers: {
+    setVisibility: navBar.setVisibility
+  },
+  events: {
+    clickMe: () => {
+      console.log("button was clicked");
+    }
+  }
+})
+
 let adminUser = {};
 
 // Middleware
@@ -39,15 +54,16 @@ app.use(
 // View Engine Configuration (Handlebars)
 if (config.useViewEngine) {
   app.set('view engine', 'hbs');
-  app.engine('hbs', handlebars.engine({
-    layoutsDir: __dirname + '/views/layouts',
-    extname: 'hbs',
-    defaultLayout: 'index',
-    partialsDir: __dirname + '/views/partials/',
-    helpers: {
-      setVisibility: navBar.setVisibility
-    }
-  }));
+  app.engine('hbs', hbs.engine);
+  // app.engine('hbs', handlebars.engine({
+  //   layoutsDir: __dirname + '/views/layouts',
+  //   extname: 'hbs',
+  //   defaultLayout: 'index',
+  //   partialsDir: __dirname + '/views/partials/',
+  //   helpers: {
+  //     setVisibility: navBar.setVisibility
+  //   }
+  // }));
 }
 // Custom Middleware
 app.use(async (req, res, next) => {

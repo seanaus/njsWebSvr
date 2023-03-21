@@ -1,7 +1,31 @@
 const toggle = () => {
-    const navBar = document.getElementById('navBar')
-    navBar.style.display = navBar.style.display === 'flex' ? 'none' : 'flex';
+    const navBar = document.getElementById("navBar");
+    const navPills = navBar.getElementsByClassName("navPill");
+    for (let idx = 0; idx < navPills.length; idx++) {
+        // let isCollapsed = navPills[i].classList.contains("isCollapsed");
+        if(navPills[idx].classList.contains("isCollapsed")) {
+            navPills[idx].classList.remove("isCollapsed");
+            // const children = navPills[idx].getElementsByTagName("div");
+            // for (let cIdx = 0; cIdx < children.length; cIdx++) {
+                // children[cIdx].classList.remove("isCollapsed");
+                // console.log(`CHILD: ${children[cIdx]}`)
+                // children[cIdx].style.visibility = "visible";
+            // }
+        } else {
+            navPills[idx].classList.add("isCollapsed"); 
+            // const children = navPills[idx].getElementsByTagName("div");
+            // for (let cIdx = 0; cIdx < children.length; cIdx++) {
+            //     // children[cIdx].classList.add("isCollapsed");
+            //     // console.log(`CHILD: ${children[cIdx]}`)
+            //     children[cIdx].style.visibility = "hidden"
+            // }        
+        }
+    }
 
-    console.log(`I Was Clicked!!! ${navBar.style.display}`)
-
+    for (let idx = 0; idx < navPills.length; idx++) {
+        const children = navPills[idx].getElementsByTagName("div");
+        for (let cIdx = 0; cIdx < children.length; cIdx++) {
+            children[cIdx].style.visibility = children[cIdx].style.visibility === "hidden" ? "visible" : "hidden";
+        }
+    }
 }

@@ -3,21 +3,17 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  transition: height 2s;
-  transition-timing-function: linear;
 }
 .navPill {
   margin: 0px 0px 0px 0px;
-  padding: 10px 15px;
+  /* padding: 10px 15px; */
   text-align: center;
+  transition: height 2s;
+  transition-timing-function: linear;
 }
 .navLink {
   text-decoration: none;
   color: var(--themeFColor);
-  /* cursor: pointer; */
-  /*display: inline;
-  /* padding: 5px 5px;
-  min-width: 80px; */
 }
 .navLink:hover {
   opacity: 0.4;
@@ -28,14 +24,17 @@
   font-size: xx-small;
 }
 .showMenuButton {
-  /* display: inline-block; */
   display: block;
+  height: 50px;
 }
 .hideMenuButton {
   display: none !important;
 }
 .active {
   border-bottom: 2px solid var(--themeActiveLink);
+}
+.isCollapsed {
+  height: 0px !important;
 }
 .burger-container {
   display: flex;

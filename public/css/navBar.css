@@ -7,8 +7,9 @@
 .navPill {
   margin: 0px 0px 0px 0px;
   /* padding: 10px 15px; */
+  visibility: visible;
   text-align: center;
-  transition: height 2s;
+  transition: visibility 1s;
   transition-timing-function: linear;
 }
 .navLink {
@@ -34,7 +35,7 @@
   border-bottom: 2px solid var(--themeActiveLink);
 }
 .isCollapsed {
-  height: 0px !important;
+  visibility: hidden !important;
 }
 .burger-container {
   display: flex;
@@ -94,6 +95,7 @@
   }
   .navPill {
     text-align: center;
+    padding: 5px 15px;
   }
   .navLink {
     text-align: center;

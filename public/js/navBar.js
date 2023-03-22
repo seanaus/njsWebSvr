@@ -11,8 +11,10 @@ const toggle = () => {
                 // console.log(`CHILD: ${children[cIdx]}`)
                 // children[cIdx].style.visibility = "visible";
             // }
+           // navBar.style.display = "none";
         } else {
             navPills[idx].classList.add("isCollapsed"); 
+            // navBar.style.display = "flex";
             // const children = navPills[idx].getElementsByTagName("div");
             // for (let cIdx = 0; cIdx < children.length; cIdx++) {
             //     // children[cIdx].classList.add("isCollapsed");
@@ -22,10 +24,10 @@ const toggle = () => {
         }
     }
 
-    for (let idx = 0; idx < navPills.length; idx++) {
-        const children = navPills[idx].getElementsByTagName("div");
-        for (let cIdx = 0; cIdx < children.length; cIdx++) {
-            children[cIdx].style.visibility = children[cIdx].style.visibility === "hidden" ? "visible" : "hidden";
-        }
-    }
+    // for (let idx = 0; idx < navPills.length; idx++) {
+    //     const children = navPills[idx].getElementsByTagName("div");
+    //     for (let cIdx = 0; cIdx < children.length; cIdx++) {
+    //         children[cIdx].style.visibility = children[cIdx].style.visibility === "hidden" ? "visible" : "hidden";
+    //     }
+    // }
 }

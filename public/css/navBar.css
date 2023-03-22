@@ -1,64 +1,46 @@
 .navBar {
-  padding: 5px 10px;
   display: flex;
+  padding: 5px 10px;
   flex-direction: column;
   justify-content: center;
 }
-
 .navPill {
   margin: 0px 0px 0px 0px;
-  /* padding: 10px 15px; */
-  /* visibility: visible; */
   height: 50px;
-  opacity: 1;
   text-align: center;
-  /* transition: opacity 1s; */
-  transition: height 500ms;
-  /* transition-timing-function: linear; */
+  transition: height 800ms;
   transition-timing-function: ease-in;
 }
-
 .navLink {
   text-decoration: none;
   color: var(--themeFColor);
 }
-
 .navLink:hover {
   opacity: 0.4;
 }
-
 .icon {
   opacity: 1;
 }
-
 .iconLabel {
   font-size: xx-small;
 }
-
 .showMenuButton {
   display: block;
   height: 50px;
 }
-
 .hideMenuButton {
   display: none !important;
 }
-
-.active {
-  border-bottom: 2px solid var(--themeActiveLink);
-}
-
 .isCollapsed {
-  /* visibility: hidden !important; */
   height: 0px !important;
-  /* opacity: 0 !important; */
 }
-
+.isCollapsedChild {
+  color: transparent !important;
+}
 .burger-container {
   display: flex;
   justify-content: flex-end;
 }
-
 .burger {
   border: 1px solid var(--themeFColor);
   border-radius: 3px;
@@ -69,37 +51,28 @@
   height: 26px;
   cursor: pointer;
 }
-
 .burger:hover {
   opacity: 0.4;
 }
-
 .burger-line {
   border-bottom: 1px solid var(--themeFColor);
 }
-
 .burger-line:hover {
   border-bottom: 1px solid var(--themeActiveLink);
 }
-
 .burger-line-top {
   margin: 5px 0px 0px 0px;
 }
-
 .burger-line-middle {
   margin: 5px 0px 0px 0px;
 }
-
 .burger-line-bottom {
   margin: 5px 0px 0px 0px;
 }
-
 .cartCounter {
   color: var(--themeHighlightFColor);
   background-color: var(--themeHighlightBgColor);
-  /* color: white; */
   border: 1px solid var(--themeHighlightBgColor);
-  ;
   position: relative;
   display: inline-block;
   width: 15px;
@@ -117,16 +90,13 @@
     flex-direction: row;
     justify-content: flex-end;
   }
-
   .burger-container {
     display: none;
   }
-
   .navPill {
     text-align: center;
     padding: 5px 15px;
   }
-
   .navLink {
     text-align: center;
   }

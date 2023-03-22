@@ -1,53 +1,23 @@
-const toggle = () => {
+const toggleNavPills = () => {
     const navBar = document.getElementById("navBar");
     const navPills = navBar.getElementsByClassName("navPill");
     for (let idx = 0; idx < navPills.length; idx++) {
-        // let isCollapsed = navPills[i].classList.contains("isCollapsed");
         if (navPills[idx].classList.contains("isCollapsed")) {
             navPills[idx].classList.remove("isCollapsed");
-            // const children = navPills[idx].getElementsByTagName("div");
-            // for (let cIdx = 0; cIdx < children.length; cIdx++) {
-            // children[cIdx].classList.remove("isCollapsed");
-            // console.log(`CHILD: ${children[cIdx]}`)
-            // children[cIdx].style.visibility = "visible";
-            // }
-            // navBar.style.display = "none";
+            toggleNavPillChildren(navPills[idx], true);
         } else {
             navPills[idx].classList.add("isCollapsed");
-            // navBar.style.display = "flex";
-            // const children = navPills[idx].getElementsByTagName("div");
-            // for (let cIdx = 0; cIdx < children.length; cIdx++) {
-            //     // children[cIdx].classList.add("isCollapsed");
-            //     // console.log(`CHILD: ${children[cIdx]}`)
-            //     children[cIdx].style.visibility = "hidden"
-            // }        
+            toggleNavPillChildren(navPills[idx], false);     
         }
     }
-
-    // setTimeout(() => {
-    //     for (let idx = 0; idx < navPills.length; idx++) {
-    //         if (navPills[idx].style.opacity === '0') {
-    //             navPills[idx].style.opacity = '1';
-    //         } else {
-    //             navPills[idx].style.opacity = '0';
-    //         }
-    //     }
-    // }, 500)
-
-    // for (let idx = 0; idx < navPills.length; idx++) {
-    //     const color = navPills[idx].style.color;
-    //     // const color2 = navPills[idx].style.backgroundColor; 
-
-    //     if (navPills[idx].style.opacity === '0') {
-    //         navPills[idx].style.opacity = '1';
-    //     } else {
-    //         navPills[idx].style.opacity = '0';
-    //     }
-    // }
-    // for (let idx = 0; idx < navPills.length; idx++) {
-    //     const children = navPills[idx].getElementsByTagName("div");
-    //     for (let cIdx = 0; cIdx < children.length; cIdx++) {
-    //         children[cIdx].style.visibility = children[cIdx].style.visibility === "hidden" ? "visible" : "hidden";
-    //     }
-    // }
+}
+const toggleNavPillChildren = (navPill, visible = true) => {
+    const children = navPill.getElementsByTagName("div");
+    for (let Idx = 0; Idx < children.length; Idx++) {
+        if(visible) {
+            children[Idx].classList.remove("isCollapsedChild");
+        } else {
+            children[Idx].classList.add("isCollapsedChild");
+        }
+    } 
 }

@@ -9,6 +9,7 @@
     --themeBgColorDark: #111;
     --themeFColor: #fff;
     --themeBtnMskColor: #454a50;
+    --themeHighlightFColor: rgb(0, 136, 255);
 }
 
 html {
@@ -64,18 +65,6 @@ input:-webkit-autofill:active {
     padding: 10px 0px;
 }
 
-li {
-    font-size: 2rem;
-    width: 300px;
-    margin: 4px;
-    padding: 4px;
-    list-style: none
-}
-
-.midlaner {
-    background-color: #eeeeee
-}
-
-.toplaner {
-    background-color: #ffea00
+@media only screen and (min-width: 768px) {
+    
 }

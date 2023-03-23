@@ -5,9 +5,12 @@
   justify-content: center;
 }
 .navPill {
-  margin: 0px 0px 0px 0px;
+  /* margin: 0px 0px 0px 0px; */
   height: 50px;
+  opacity: 1;
   text-align: center;
+  margin: 0px 0px 10px 0px;
+  border-bottom: 1px solid transparent;
   transition: height 800ms;
   transition-timing-function: ease-in;
 }
@@ -33,9 +36,13 @@
 }
 .isCollapsed {
   height: 0px !important;
+  border-bottom: 1px solid transparent !important;
 }
 .isCollapsedChild {
   color: transparent !important;
+}
+.isSelected {
+  border-bottom: 1px solid var(--themeHighlightFColor);
 }
 .burger-container {
   display: flex;
@@ -69,22 +76,6 @@
 .burger-line-bottom {
   margin: 5px 0px 0px 0px;
 }
-.cartCounter {
-  color: var(--themeHighlightFColor);
-  background-color: var(--themeHighlightBgColor);
-  border: 1px solid var(--themeHighlightBgColor);
-  position: relative;
-  display: inline-block;
-  width: 15px;
-  height: 15px;
-  left: 10px;
-  top: -45px;
-  border-radius: 50px;
-  font-size: small;
-  font-weight: bold;
-  z-index: 1;
-}
-
 @media only screen and (min-width: 768px) {
   .navBar {
     flex-direction: row;
@@ -96,6 +87,7 @@
   .navPill {
     text-align: center;
     padding: 5px 15px;
+    min-width: 100px;
   }
   .navLink {
     text-align: center;

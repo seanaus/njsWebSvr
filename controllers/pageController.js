@@ -18,7 +18,16 @@ const renderAbout = async(req, res) => {
     }); 
 }
 const renderProduct = async(req, res) => {
+    const id = req.params.id
     res.render('pages/product', {
+        title: "Potteries Jaguar Spares",
+        navbar: await componentService.get("navbar"),
+        product: await productService.get(id),
+        auth: getAuth(req)
+    });
+};
+const renderProducts = async(req, res) => {
+    res.render('pages/products', {
         title: "Potteries Jaguar Spares",
         navbar: await componentService.get("navbar"),
         products: await productService.getAll(),
@@ -60,6 +69,7 @@ module.exports = {
     renderHome,
     renderAbout,
     renderProduct,
+    renderProducts,
     renderLocation,
     renderCart,
     renderSignIn,

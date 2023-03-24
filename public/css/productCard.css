@@ -1,0 +1,52 @@
+.productCardLink {
+  text-decoration: none;
+  color: var(--fColor);
+  width: 100%;
+}
+.productCard {
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: 15px 5px;
+  min-width: 300px;
+  width: 100%;
+  margin: 10px 0px 10px 0px;
+  /* height: 400px;
+    width: 400px; */
+  /* display: inline-grid; */
+  display: inline-grid;
+  /* min-width: 200px; */
+  /* max-width: 400px; */
+  grid-template-rows: auto 300px auto;
+  border: 1px solid rgba(136, 136, 136, 0.4);
+  box-shadow: 5px 5px 8px rgba(136, 136, 136, 0.4);
+}
+.productCardName {
+  text-align: center;
+  font-weight: bold;
+  font-size: medium;
+  padding: 0px 0px 10px 0px;
+}
+.productCardImage {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.productCardUnitCost {
+  text-align: center;
+  font-weight: bold;
+  font-size: medium;
+  padding: 10px 0px 0px 0px;
+}
+.productCard:hover {
+  opacity: 0.6;
+}
+
+@media only screen and (min-width: 768px) {
+  .productCard {
+    width: 300px;
+  }
+  .productCardLink {
+    width: 300px;
+    margin: 15px;
+  }
+}

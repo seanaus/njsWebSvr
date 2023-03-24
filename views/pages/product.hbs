@@ -1,7 +1,4 @@
 {{> navbar }}
-<h3>Products</h3>
-<div>
-  {{#each products}}
-  <div>{{name}}</div>
-  {{/each}}
-</div>
+{{#each products}}
+  {{> productCard }}
+{{/each}}

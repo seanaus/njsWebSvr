@@ -1,5 +1,4 @@
 {{> navbar }}
-<h3>Sign In</h3>
 <div class="container">
     <div class="pannel">
         <form action="/api/auth/signIn" method="POST">
@@ -7,10 +6,11 @@
             <input type="text" id="email" name="email" placeholder="Email" required>
             <input type="password" id="password" name="password" placeholder="Password" required>
             <div class="btnBar">
-                <input type="submit" id="signIn" name="signIn">
+                <input type="submit" id="signIn" name="signIn" value="OK">
             </div>
+            <div style="text-align: center;">OR</div>
             <div class="btnBar">
-                <a href="/register" id="register" class="register">register</a>
+                <a href="/register" id="register" class="btn">Register</a>
             </div>
         </form>
     </div>

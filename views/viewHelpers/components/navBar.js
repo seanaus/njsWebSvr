@@ -1,26 +1,14 @@
 const setVisibility =  (visibility, auth) => {
-    if (visibility === 'true') {
-        return 'showMenuButton'
-    }
-    if (visibility === 'false') {
-        return 'hideMenuButton'
+    if (visibility === 'true' || visibility === 'false') {
+        return visibility === 'true' ? 'showMenuButton' : 'hideMenuButton'
     }
     if (visibility === 'onAuth') {
-        if(auth) {
-        return 'showMenuButton' 
-        } else {
-        return 'hideMenuButton'
-        }
+        return auth ? 'showMenuButton' : 'hideMenuButton'
     }
     if (visibility === '!onAuth') {
-        if(auth) {
-        return 'hideMenuButton' 
-        } else {
-        return 'showMenuButton'
-        }
+        return auth ? 'hideMenuButton' : 'showMenuButton'
     }
 }
-
 module.exports = {
     setVisibility
 }

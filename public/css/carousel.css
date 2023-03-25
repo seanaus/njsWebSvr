@@ -17,7 +17,7 @@
 }
 .text {
     color: var(--themeBgColorDark);
-    font-size: 20px;
+    font-size: 15px;
     font-weight: bolder;
     padding: 8px 12px;
     position: absolute;
@@ -27,7 +27,7 @@
 }
 .numbertext {
     color: var(--themeBgColorDark);
-    font-size: 20px;
+    font-size: 15px;
     font-weight: bolder;
     padding: 8px 12px;
     position: absolute;

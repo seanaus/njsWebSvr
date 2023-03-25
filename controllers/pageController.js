@@ -7,6 +7,7 @@ const renderHome = async (req, res) => {
     res.render('pages/home', {
         title: "Potteries Jaguar Spares",
         navbar: await componentService.get("navbar"),
+        carousel: await componentService.get("carousel"),
         auth: getAuth(req)
     });
 }

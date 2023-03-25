@@ -14,13 +14,15 @@ const cookieParser = require('cookie-parser');
 const middleWare = require("./middleware/auth");
 const handlebars = require('express-handlebars');
 const navBar = require('./views/viewHelpers/components/navBar');
+const carousel = require('./views/viewHelpers/components/carousel');
 const hbs = handlebars.create({
   layoutsDir: __dirname + '/views/layouts',
   extname: 'hbs',
   defaultLayout: 'index',
   partialsDir: __dirname + '/views/partials/',
   helpers: {
-    setVisibility: navBar.setVisibility
+    setVisibility: navBar.setVisibility,
+    currentSlide: carousel.curentSlide
   },
   events: {
     clickMe: () => {

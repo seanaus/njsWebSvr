@@ -1,0 +1,12 @@
+<div class="lightBoxContainer">
+    <div class="lightBoxImage" style="background-image: url('{{product.image}}')"></div>
+    <div class="lightBoxThumbnailContainer">
+    {{#each product.gallery}}
+        <div class="lightBoxThumbnail" style="background-image: url('{{this}}')"></div>
+    {{/each}}
+    </div>
+
+</div>
+
+
+

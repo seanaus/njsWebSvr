@@ -15,8 +15,13 @@ const handlebars = require('express-handlebars');
 const navBar = require('./views/viewHelpers/components/navBar');
 const carousel = require('./views/viewHelpers/components/carousel');
 const productCard = require('./views/viewHelpers/components/productCard');
-const midWAuth = require("./middleware/auth");
-const settingsService = require("./services/settingsService");
+// const lightBox = require('./views/viewHelpers/components/lightBox');
+const middleware = require("./middleware/middleware");
+
+let adminUser = {};
+// let projectSettings = {};
+
+///////////// HANDLEBARS SETUP ///////////////
 const hbs = handlebars.create({
   layoutsDir: __dirname + '/views/layouts',
   extname: 'hbs',
@@ -33,9 +38,8 @@ const hbs = handlebars.create({
     }
   }
 })
-let adminUser = {};
 
-// Middleware
+/////////////// MIDDLEWARE /////////////////
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -55,28 +59,21 @@ app.use(
   )
 );
 
-// View Engine Configuration (Handlebars)
-if (config.useViewEngine) {
-  app.set('view engine', 'hbs');
-  app.engine('hbs', hbs.engine);
-}
-// Custom Middleware
 app.use(async (req, res, next) => {
   if (Object.keys(adminUser).length === 0) {
-    adminUser = await midWAuth.connect(req);
+    adminUser = await middleware.connect(req);
+    // console.log(`AUTH: ${JSON.stringify(adminUser)}`)
   }
   next();
 });
 
-const a = await settingsService.get()
-if(a.useViewEngine) {
-  console.log("GOT YA!!!")
-}
+// Apply Handlebars View Engine Configuration
 if (config.useViewEngine) {
+  app.set('view engine', 'hbs');
+  app.engine('hbs', hbs.engine);
   app.use((req, res, next) => {
-    midWAuth.setHeaders(req, res, next)
+    middleware.setHeaders(req, res, next)
   });
-  app.use("/", pageRoute.routes);
 }
 
 // Route Configuration
@@ -84,10 +81,10 @@ app.use("/api/auth", authRoute.routes);
 app.use("/api/user", userRoute.routes);
 app.use("/api/product", productRoute.routes);
 app.use("/api/cart", cartRoute.routes);
-
 if (config.useViewEngine) {
   app.use("/", pageRoute.routes);
 }
+
 app.listen(config.port, () => {
   console.log(`App listening on ${config.port}.......`);
 });

@@ -2,19 +2,17 @@ class Settings {
     constructor(
         name,
         vatMatric,
+        accessTokenSecret,
+        refreshTokenSecret,
         tokenLifeSpan,
         authLifeSpan,
-        useViewEngine,
-        accessTokenSecret,
-        refreshTokenSecret
     ) {
         this.name = name,
         this.vatMatric = vatMatric,
-        this.tokenLifeSpan = tokenLifeSpan,
-        this.authLifeSpan = authLifeSpan,
-        this.useViewEngine = useViewEngine,
         this.accessTokenSecret = accessTokenSecret,
-        this.refreshTokenSecret = refreshTokenSecret
+        this.refreshTokenSecret = refreshTokenSecret,
+        this.tokenLifeSpan = tokenLifeSpan,
+        this.authLifeSpan = authLifeSpan
     }
 }
 module.exports = Settings

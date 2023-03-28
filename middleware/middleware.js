@@ -1,6 +1,6 @@
 const config = require("../config");
 const authService = require("../services/authService");
-
+// const settingsService = require("../services/settingsService");
 const connect = async (req) => {
     const auth = await authService.signIn({
         body: {
@@ -25,6 +25,10 @@ const setHeaders = (req, res, next) => {
     next();
 }
 
+// GET PROJECT SETTINGS FROM FIREBASE ( SETTINGS NOT REQUIRED IN .dotEnv)
+// const projectSettings = async() => {
+//     return await settingsService.get()
+// }
 module.exports = {
     connect,
     setHeaders

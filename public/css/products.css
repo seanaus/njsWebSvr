@@ -1,10 +1,10 @@
-.productContainer{
+.productsContainer{
     padding: 5px 10px;
     display: flex;
     flex-direction: column;
 }
 @media only screen and (min-width: 768px) {
-    .productContainer {
+    .productsContainer {
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;

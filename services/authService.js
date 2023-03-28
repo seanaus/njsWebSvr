@@ -79,6 +79,8 @@ const signIn = async (req) => {
           auth.accessToken = "";
           auth.refreshToken = "";
         }
+      } else {
+        auth.accessToken = user.email;
       }
     }
   }

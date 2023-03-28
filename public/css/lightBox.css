@@ -1,0 +1,40 @@
+.lightBoxContainer {
+    border: 1px solid black;
+    padding: 5px 10px;
+    margin: 0px 0px 5px 0px;
+}
+.lightBoxImage {
+    height: 600px;
+    /* overflow: hidden; */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.lightBoxThumbnailContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    /* overflow: auto; */
+    /* overflow-x: scroll; */
+    /* overflow-y: scroll; */
+    padding: 15px;
+    /* height: 50px;
+    height: 50px; */
+    flex-wrap: wrap;
+}
+.lightBoxThumbnail {
+    height: 100px;
+    width: 200px;
+    min-height: 100px;
+    min-width: 200px;
+    margin: 5px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 5px; 
+}
+@media only screen and (min-width: 768px) {
+    .lightBoxThumbnailContainer {
+        /* flex-direction: row; */
+    }
+}

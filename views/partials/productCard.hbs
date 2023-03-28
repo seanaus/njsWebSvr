@@ -1,5 +1,4 @@
-<a href="/product/{{id}}" class="productCardLink" data-node-type="product" data-node-id="{{id}}"
-    data-node-productLevelId="<%= product.productLevelId %>">
+{{!-- <a href="/product/{{id}}" class="productCardLink" data-node-type="product" data-node-id="{{id}}">
     <div class="productCard">
         <div class="productCardName">
             {{ name }}
@@ -9,4 +8,15 @@
             {{ unitCost }}
         </div>
     </div>
-</a>
+</a> --}}
+<div class="productCard">
+    <a href="/product/{{id}}" class="productCardLink" data-node-type="product" data-node-id="{{id}}">
+        <div class="productCardName">
+            {{ name }}
+        </div>
+        <div class="productCardImage" style="background-image: url('{{image}}')"></div>
+        <div class="productCardUnitCost">
+            {{ ukCurrency unitCost }}
+        </div>
+    </a>
+</div>

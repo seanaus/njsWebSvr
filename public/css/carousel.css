@@ -1,4 +1,4 @@
-.carouselContainer {
+/* .carouselContainer {
     position: relative;
     padding: 0px 10px;
 }
@@ -47,5 +47,57 @@
     }
     to {
       opacity: 1;
+    }
+  } */
+
+
+  :host {
+    position: relative;
+  }
+  .carousel {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 400px;
+    /* width: 100%; */
+    border: 1px solid black;
+  }
+  .slide {
+    height: 400px;
+    overflow: hidden;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+   .kenburns-top-right {
+    -webkit-animation: kenburns-top-right 5s ease-out infinite both;
+            animation: kenburns-top-right 5s ease-out infinite both;
+  }
+  @-webkit-keyframes kenburns-top-right {
+    0% {
+      -webkit-transform: scale(1) translate(0, 0);
+              transform: scale(1) translate(0, 0);
+      -webkit-transform-origin: 84% 16%;
+              transform-origin: 84% 16%;
+    }
+    100% {
+      -webkit-transform: scale(1.25) translate(20px, -15px);
+              transform: scale(1.25) translate(20px, -15px);
+      -webkit-transform-origin: right top;
+              transform-origin: right top;
+    }
+  }
+  @keyframes kenburns-top-right {
+    0% {
+      -webkit-transform: scale(1) translate(0, 0);
+              transform: scale(1) translate(0, 0);
+      -webkit-transform-origin: 84% 16%;
+              transform-origin: 84% 16%;
+    }
+    100% {
+      -webkit-transform: scale(1.25) translate(20px, -15px);
+              transform: scale(1.25) translate(20px, -15px);
+      -webkit-transform-origin: right top;
+              transform-origin: right top;
     }
   }

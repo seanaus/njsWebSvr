@@ -11,10 +11,12 @@ const productRoute = require("./routes/productRoute");
 const cartRoute = require("./routes/cartRoute");
 const methodOverride = require("method-override");
 const cookieParser = require('cookie-parser');
-const middleWare = require("./middleware/auth");
 const handlebars = require('express-handlebars');
 const navBar = require('./views/viewHelpers/components/navBar');
 const carousel = require('./views/viewHelpers/components/carousel');
+const productCard = require('./views/viewHelpers/components/productCard');
+const midWAuth = require("./middleware/auth");
+const settingsService = require("./services/settingsService");
 const hbs = handlebars.create({
   layoutsDir: __dirname + '/views/layouts',
   extname: 'hbs',
@@ -22,7 +24,8 @@ const hbs = handlebars.create({
   partialsDir: __dirname + '/views/partials/',
   helpers: {
     setVisibility: navBar.setVisibility,
-    currentSlide: carousel.curentSlide
+    currentSlide: carousel.curentSlide,
+    ukCurrency: productCard.ukCurrency
   },
   events: {
     clickMe: () => {
@@ -30,7 +33,6 @@ const hbs = handlebars.create({
     }
   }
 })
-
 let adminUser = {};
 
 // Middleware
@@ -57,27 +59,22 @@ app.use(
 if (config.useViewEngine) {
   app.set('view engine', 'hbs');
   app.engine('hbs', hbs.engine);
-  // app.engine('hbs', handlebars.engine({
-  //   layoutsDir: __dirname + '/views/layouts',
-  //   extname: 'hbs',
-  //   defaultLayout: 'index',
-  //   partialsDir: __dirname + '/views/partials/',
-  //   helpers: {
-  //     setVisibility: navBar.setVisibility
-  //   }
-  // }));
 }
 // Custom Middleware
 app.use(async (req, res, next) => {
   if (Object.keys(adminUser).length === 0) {
-    adminUser = await middleWare.connect(req);
+    adminUser = await midWAuth.connect(req);
   }
   next();
 });
 
+const a = await settingsService.get()
+if(a.useViewEngine) {
+  console.log("GOT YA!!!")
+}
 if (config.useViewEngine) {
   app.use((req, res, next) => {
-    middleWare.setHeaders(req, res, next)
+    midWAuth.setHeaders(req, res, next)
   });
   app.use("/", pageRoute.routes);
 }

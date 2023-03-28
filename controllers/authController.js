@@ -13,9 +13,6 @@ const signIn = async (req, res) => {
 }
 
 const signOut = async (req, res, next) => {
-    // console.log("controllerSignOut")
-    // const auth = authService.getHeaders();
-    // console.log(`${auth.refreshToken}`)
     const authXR = req?.cookies['authXR'];
     if (await authService.signOut(authXR)) {
         res.clearCookie('authX');
@@ -26,19 +23,6 @@ const signOut = async (req, res, next) => {
     }
     next();
 }
-
-// const setCookie = (res, name, value, lifeSpan = 5000, redirectTo) => {
-//     res.cookie(name, value, { 
-//         maxAge: lifeSpan,
-//         secure: true,
-//         httpOnly: true,
-//         sameSite: 'lax'
-//     })
-//     if(redirectTo !== undefined) {
-//         res.redirect(redirectTo);
-//     }
-// }
-
 module.exports = {
     register,
     signIn,

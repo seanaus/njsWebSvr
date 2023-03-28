@@ -10,11 +10,11 @@ const get = async () => {
         } else {
             return new Settings(
                 doc.data()?.name,
-                doc.data()?.vatMetric,
+                vatMetric(doc.data()?.vatMetric),
                 doc.data()?.accessTokenSecret,
                 doc.data()?.refreshTokenSecret,
-                doc.data()?.tokenLifeSpan,
-                doc.data()?.authLifeSpan
+                toMilliseconds(doc.data()?.tokenLifeSpan),
+                toMilliseconds(doc.data()?.authLifeSpan)
             )
         }
     } catch (error) {
@@ -22,6 +22,37 @@ const get = async () => {
         return {}
     }
 }
+const toMilliseconds = (value) => {
+    if(!value || value === undefined) {
+        return 0
+    }
+    // MILLISECONDS
+    if (value.includes("ms")) {
+      return Number(value.replace('ms', ""))
+    }
+     // SECONDS
+    if (value.includes("s") && !AUTH_LIFE_SPAN.includes("ms")) {
+      return Number(value.replace('s', "")) * 1000
+    }
+    // MINUTES
+    if (value.includes("m") && !AUTH_LIFE_SPAN.includes("ms")) {
+      return Number(value.replace('m', "")) * 60 * 1000
+    }
+    // HOURSvalue
+    if (AUTH_LIFE_SPAN.includes("h")) {
+      return Number(value.replace('h', "")) * 60 * 60 * 1000
+    }
+  
+  }
+  const vatMetric = (value) => {
+  
+    if(value.includes(".")) {
+        return Number(value)
+    } else {
+      return Number(value.replace("%","")) / 100
+    }
+    
+  }
 module.exports = {
     get
 }

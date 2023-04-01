@@ -15,7 +15,7 @@ const handlebars = require('express-handlebars');
 const navBar = require('./views/viewHelpers/components/navBar');
 const carousel = require('./views/viewHelpers/components/carousel');
 const productCard = require('./views/viewHelpers/components/productCard');
-// const lightBox = require('./views/viewHelpers/components/lightBox');
+const lightBox = require('./views/viewHelpers/components/lightBox');
 const middleware = require("./middleware/middleware");
 
 let adminUser = {};
@@ -30,7 +30,9 @@ const hbs = handlebars.create({
   helpers: {
     setVisibility: navBar.setVisibility,
     currentSlide: carousel.curentSlide,
-    ukCurrency: productCard.ukCurrency
+    ukCurrency: productCard.ukCurrency,
+    createImageId: lightBox.createImageId,
+    createEventCall: lightBox.createEventCall
   },
   events: {
     clickMe: () => {

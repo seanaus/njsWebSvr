@@ -16,15 +16,11 @@
         {{!-- <div class="numbertext">
             {{ currentSlide @index }} / {{ ../slides }}
         </div> --}}
-        {{!-- <img src="{{ this.image }}" class="slide kenburns-top-right"> --}}
-        <div class="slide kenburns-top-right" style="background-image: url('{{this.image}}')"></div>
+        <div class="slide kenburns-top-right" 
+                style="background-image: url('{{this.image}}')">
+        </div>
         {{!-- <div class="text">
             {{ this.caption }}
         </div> --}}
 	{{/each}}
 </div>
-
-{{!-- <div class="carousel">
-  <div class="slide kenburns-top-right" style="background-image: url({{carousel?.items[slide]?.image}});"></div>
-</div> --}}
-

@@ -1,6 +1,10 @@
-// const setImage =  (value) => {
-//     return `backgroundImage: ${value}`;
-// }
+const createImageId =  (value) => {
+    return `id=${value}`;
+}
+const createEventCall =  (value) => {
+    return `onClick=selectImage('${value}')`;
+}
 module.exports = {
-    // setImage
+    createImageId,
+    createEventCall
 }

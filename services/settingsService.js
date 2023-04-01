@@ -23,6 +23,7 @@ const get = async () => {
     }
 }
 const toMilliseconds = (value) => {
+
     if(!value || value === undefined) {
         return 0
     }
@@ -31,21 +32,20 @@ const toMilliseconds = (value) => {
       return Number(value.replace('ms', ""))
     }
      // SECONDS
-    if (value.includes("s") && !AUTH_LIFE_SPAN.includes("ms")) {
+    if (value.includes("s") && !value.includes("ms")) {
       return Number(value.replace('s', "")) * 1000
     }
     // MINUTES
-    if (value.includes("m") && !AUTH_LIFE_SPAN.includes("ms")) {
+    if (value.includes("m") && !value.includes("ms")) {
       return Number(value.replace('m', "")) * 60 * 1000
     }
     // HOURSvalue
-    if (AUTH_LIFE_SPAN.includes("h")) {
+    if (value.includes("h")) {
       return Number(value.replace('h', "")) * 60 * 60 * 1000
     }
   
   }
   const vatMetric = (value) => {
-  
     if(value.includes(".")) {
         return Number(value)
     } else {

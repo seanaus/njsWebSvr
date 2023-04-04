@@ -1,10 +1,6 @@
-const createImageId =  (value) => {
-    return `id=${value}`;
-}
-const createEventCall =  (value) => {
-    return `onClick=selectImage('${value}')`;
+const log =  (value) => {
+    console.log(`Log: ${value}`)
 }
 module.exports = {
-    createImageId,
-    createEventCall
+    log
 }

@@ -1,17 +1,4 @@
-{{!-- <div class="carouselContainer">
-    {{#each carousel.items}}
-		<div class="slides fade">
-			<div class="numbertext">
-                {{ currentSlide @index }} / {{ ../slides }}
-			</div>
-			<img src="{{ this.image }}" class="slide">
-			<div class="text">
-				{{ this.caption }}
-			</div>
-		</div>
-	{{/each}}
-</div> --}}
-<div class="carousel">
+<div class="carousel" id={{carousel.id}}>
     {{#each carousel.items}}
         {{!-- <div class="numbertext">
             {{ currentSlide @index }} / {{ ../slides }}
@@ -24,3 +11,20 @@
         </div> --}}
 	{{/each}}
 </div>
+
+
+
+
+{{!-- <div class="carouselContainer">
+    {{#each carousel.items}}
+    <div class="slides fade">
+        <div class="numbertext">
+            {{ currentSlide @index }} / {{ ../slides }}
+        </div>
+        <img src="{{ this.image }}" class="slide">
+        <div class="text">
+            {{ this.caption }}
+        </div>
+    </div>
+    {{/each}}
+</div> --}}

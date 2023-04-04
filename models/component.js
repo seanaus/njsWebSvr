@@ -6,8 +6,11 @@ class Component {
         {
             this.id = id;
             this.items = [];
-            this.add = (item) => {
-                this.items.push(item);
+            this.add = (field, value) => {
+                this[field] = value
+            };
+            this.addItem = (item) => {
+                this.items = [...this.items, item];
             };
 
         }

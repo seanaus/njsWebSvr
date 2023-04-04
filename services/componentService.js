@@ -12,10 +12,17 @@ const get = async (id) => {
         } else {
             const component = new Component(id);
             const docData = doc.data() ?? {};
-            if (docData?.items?.length) {
-                docData?.items.forEach((item) => {
-                    component.items = [...component.items, item];
-                })
+            for (const field in docData) {
+                if(field !== 'items') {
+                    component.add(field, docData[field])
+                } else {
+                    if (docData?.items?.length) {
+                        docData?.items.forEach((item) => {
+                            component.addItem(item);
+                        }) 
+                    }
+                }
+
             }
             return component;
         }

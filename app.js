@@ -30,9 +30,10 @@ const hbs = handlebars.create({
   helpers: {
     setVisibility: navBar.setVisibility,
     currentSlide: carousel.curentSlide,
-    ukCurrency: productCard.ukCurrency,
-    createImageId: lightBox.createImageId,
-    createEventCall: lightBox.createEventCall
+    styleSlide: carousel.styleSlide,
+    ukCurrency: productCard.ukCurrency
+    // createImageId: lightBox.createImageId,
+    // createEventCall: lightBox.createEventCall
   },
   events: {
     clickMe: () => {

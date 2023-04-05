@@ -3,8 +3,9 @@
         {{!-- <div class="numbertext">
             {{ currentSlide @index }} / {{ ../slides }}
         </div> --}}
-        <div class="slide kenburns-top-right" 
-                style="background-image: url('{{this.image}}')">
+        {{!-- <div class="slide kenburns-top-right" style="background-image: url('{{this.image}}')"> --}}
+        <div class="slide kenburns-top-right"
+                {{{ styleSlide this.image this.height }}}>
         </div>
         {{!-- <div class="text">
             {{ this.caption }}

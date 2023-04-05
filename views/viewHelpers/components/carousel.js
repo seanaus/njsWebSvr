@@ -1,14 +1,17 @@
-const curentSlide =  (value) => {
+const curentSlide = (value) => {
     return parseInt(value) + 1;
 }
-const applyStyle =  (config) => {
-    switch(config.id) {
-        case 1:
-        case 2:
-        default:
-    }
-    return parseInt(value) + 1;
+const styleSlide = (image, height) => {
+    console.log(`style="background-image: url('${image}');height:${height}px"`);
+    // return "style='background-image:url('" + image + "'),height:" + height + "px"
+    return `style="background-image: url('${image}');height:${height}px"`
 }
+
+// const addStyle = (height) => {
+
+// }
+
 module.exports = {
-    curentSlide
+    curentSlide,
+    styleSlide
 }

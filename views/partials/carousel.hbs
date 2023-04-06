@@ -1,14 +1,12 @@
 <div id={{carousel.id}} class="carousel" >
     {{#each carousel.items}}
-        {{!-- <div class="numbertext">
-            {{ currentSlide @index }} / {{ ../slides }}
-        </div> --}}
-        {{!-- <div class="slide kenburns-top-right" style="background-image: url('{{this.image}}')"> --}}
-        <div class="slide kenburns-top-right"
-                {{{ styleSlide this.image this.height }}}>
+        <div class="slide kenburns-top-right" {{{ styleSlide this.styles }}}>
+            {{!-- <div class="numbertext">
+                {{ currentSlide @index }} / {{ ../carousel.items.length}}
+            </div>
+            <div class="text">
+                {{ this.caption }}
+            </div> --}}
         </div>
-        {{!-- <div class="text">
-            {{ this.caption }}
-        </div> --}}
 	{{/each}}
 </div>

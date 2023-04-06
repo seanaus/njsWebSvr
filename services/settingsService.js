@@ -8,6 +8,13 @@ const get = async () => {
         if (!doc.exists) {
             return new Settings('Not Found', '', 'false', '', "", "", "");
         } else {
+            console.log("SETINGS SERVICE");
+            console.log(`Name: ${doc.data()?.name}`);
+            console.log(`Vat Metric: ${doc.data()?.vatMetric}`);
+            console.log(`Access Token Secret: ${doc.data()?.accessTokenSecret}`);
+            console.log(`Refresh Token Secret: ${doc.data()?.refreshTokenSecret}`);
+            console.log(`Token Life Span: ${doc.data()?.tokenLifeSpan}`);
+            console.log(`Auth Life Span: ${doc.data()?.authLifeSpan}`);
             return new Settings(
                 doc.data()?.name,
                 vatMetric(doc.data()?.vatMetric),

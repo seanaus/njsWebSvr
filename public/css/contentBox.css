@@ -1,0 +1,25 @@
+.h3 {
+    font-size: medium;
+    font-weight: medium;
+}
+.contentBox {
+    display: flex;
+    flex-direction: column;
+
+}
+.col {
+    margin: 5px;
+    padding: 5px;
+    display: flex;
+    flex-wrap: wrap;
+}
+@media only screen and (min-width: 768px) {
+    .contentBox {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .col {
+        min-width: 50px;
+        max-width: 45%;
+    }
+}

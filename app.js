@@ -78,7 +78,13 @@ if (config.useViewEngine) {
     middleware.setHeaders(req, res, next)
   });
 }
-
+// Cache Project Settings From Firebase
+app.use(async(req,res,next)=> {
+  const settings = await middleware.setProjectSettings();
+  // console.log("FB SETTINGS");
+  // console.log(`CONFIG: ${JSON.stringify(config.projectSettings)}`);
+  next();
+})
 // Route Configuration
 app.use("/api/auth", authRoute.routes);
 app.use("/api/user", userRoute.routes);

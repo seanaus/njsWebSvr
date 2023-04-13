@@ -23,11 +23,12 @@ const get = async (id, page = undefined) => {
                     }
                 }
             }
+            console.log(`filterSelection Page: ${page}`)
             if (page && page !== undefined) {
-                return filterSelection(component)
-            } else {
-                return component;
+                console.log(`CALL filterSelection`);
+                component.items = filterSelection(component.items, page);
             }
+            return component;
         }
 
     } catch (error) {
@@ -35,9 +36,10 @@ const get = async (id, page = undefined) => {
         return {}
     }
 }
-const filterSelection = async (page) => {
+const filterSelection =  (data, page) => {
+    console.log(`filterSelection: ${JSON.stringify(data)}`)
     return data.filter((value) => {
-        return value.onPage === page
+        return value.page === page
     })
 }
 module.exports = {

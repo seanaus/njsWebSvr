@@ -16,6 +16,7 @@ const navBar = require('./views/viewHelpers/components/navBar');
 const carousel = require('./views/viewHelpers/components/carousel');
 const productCard = require('./views/viewHelpers/components/productCard');
 const lightBox = require('./views/viewHelpers/components/lightBox');
+const content = require('./views/viewHelpers/components/content');
 const middleware = require("./middleware/middleware");
 
 let adminUser = {};
@@ -31,7 +32,8 @@ const hbs = handlebars.create({
     setVisibility: navBar.setVisibility,
     currentSlide: carousel.curentSlide,
     styleSlide: carousel.styleSlide,
-    ukCurrency: productCard.ukCurrency
+    ukCurrency: productCard.ukCurrency,
+    content: content.content
     // createImageId: lightBox.createImageId,
     // createEventCall: lightBox.createEventCall
   },

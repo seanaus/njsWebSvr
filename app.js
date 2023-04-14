@@ -13,6 +13,7 @@ const methodOverride = require("method-override");
 const cookieParser = require('cookie-parser');
 const handlebars = require('express-handlebars');
 const navBar = require('./views/viewHelpers/components/navBar');
+const general = require('./views/viewHelpers/components/general');
 const carousel = require('./views/viewHelpers/components/carousel');
 const productCard = require('./views/viewHelpers/components/productCard');
 const lightBox = require('./views/viewHelpers/components/lightBox');
@@ -31,9 +32,9 @@ const hbs = handlebars.create({
   helpers: {
     setVisibility: navBar.setVisibility,
     currentSlide: carousel.curentSlide,
-    styleSlide: carousel.styleSlide,
+    styleAttr: general.styleAttr,
     ukCurrency: productCard.ukCurrency,
-    content: content.content
+    contentElement: content.contentElement
     // createImageId: lightBox.createImageId,
     // createEventCall: lightBox.createEventCall
   },

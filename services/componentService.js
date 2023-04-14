@@ -23,10 +23,8 @@ const get = async (id, page = undefined) => {
                     }
                 }
             }
-            console.log(`filterSelection Page: ${page}`)
             if (page && page !== undefined) {
-                console.log(`CALL filterSelection`);
-                component.items = filterSelection(component.items, page);
+                component.items = pageItems(component.items, page);
             }
             return component;
         }
@@ -36,8 +34,7 @@ const get = async (id, page = undefined) => {
         return {}
     }
 }
-const filterSelection =  (data, page) => {
-    console.log(`filterSelection: ${JSON.stringify(data)}`)
+const pageItems =  (data, page) => {
     return data.filter((value) => {
         return value.page === page
     })

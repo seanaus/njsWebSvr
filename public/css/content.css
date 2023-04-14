@@ -20,6 +20,6 @@
     }
     .col {
         min-width: 50px;
-        max-width: 45%;
+        /* max-width: 45%; */
     }
 }

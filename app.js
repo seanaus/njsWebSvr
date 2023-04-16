@@ -34,7 +34,8 @@ const hbs = handlebars.create({
     currentSlide: carousel.curentSlide,
     styleAttr: general.styleAttr,
     ukCurrency: productCard.ukCurrency,
-    contentElement: content.contentElement
+    contentItem: content.contentItem
+    // contentElement: content.contentElement
     // createImageId: lightBox.createImageId,
     // createEventCall: lightBox.createEventCall
   },

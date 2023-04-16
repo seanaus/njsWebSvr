@@ -1,8 +1,38 @@
 <div class="contentContainer">
 	{{#each content.items}}
-	<div class='col'>
-		<div class="h3">{{this.heading}}</div>
-		{{{ contentElement this}}}
-	</div>
+		<div class='col' {{{ styleAttr this.styles.contentContainer.col }}}>
+			{{#if this?.heading}}
+				<div class="h3" {{{ styleAttr this?.styles?.contentContainer?.col?.heading }}}>
+					{{this?.heading}}
+				</div>
+			{{/if}}
+			{{{contentItem this (styleAttr this?.styles?.contentContainer?.col?.heading)}}}
+		</div>
 	{{/each}}
+	{{!-- {{#each content.items}}
+	<div class='col' {{{ styleAttr this?.styles?.contentContainer?.col }}}>
+		{{#if this?.heading}}
+			<div class="h3" {{{ styleAttr this?.styles?.contentContainer?.col?.heading }}}>{{this?.heading}}</div>
+		{{/if}} --}}
+		{{!-- {{#contentItem content.items }}
+			{{ content }}
+		{{/contentItem}} --}}
+    	{{!-- {{> contentItem  styles = {{ styleAttr this?.styles?.contentContainer?.col?.content}} }} --}}
+		{{!-- {{{ contentItem this }}} --}}
+		{{!-- {{#if isText(this.contentType)}}
+  			<div class="content" {{{ styleAttr this?.styles?.contentContainer?.col?.content }}}>{{this?.content}}</div>
+		{{/if}} --}}
+		{{!-- {{#if this?.contentType ==="text"}}
+			<div class="content" {{{ styleAttr this?.styles?.contentContainer?.col?.content }}}>{{this?.content}}</div>
+		{{/if}} --}}
+		{{!-- {{#if this?.contentType ==="image"}}
+			<div class="content" {{{ styleAttr this?.styles?.contentContainer?.col?.content }}}></div>
+		{{/if}} --}}
+		{{!-- {{#if this?.contentType ==="card"}}
+			<div class="content" {{{ styleAttr this?.styles?.contentContainer?.col?.content }}}></div>
+		{{/if}} --}}
+
+		{{!-- {{{ contentElement this}}} --}}
+	{{!-- </div>
+	{{/each}} --}}
 </div>

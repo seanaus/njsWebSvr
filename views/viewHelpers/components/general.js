@@ -1,8 +1,12 @@
 const styleAttr = (styles) => {
     let concat = "";
     for (const style in styles) {
-        concat += `${style}: ${styleAttrVal(style, styles[style])};`
+        if(typeof style !== 'object') {
+            concat = concat + `${style}: ${styleAttrVal(style, styles[style])};`
+        }
     }
+    console.log(`WTF!!!${concat}`)
+    // return concat.length > 0 ? `style='${concat}'`: ''
     return `style='${concat}'`
 }
 const styleAttrVal = (style, value) => {
